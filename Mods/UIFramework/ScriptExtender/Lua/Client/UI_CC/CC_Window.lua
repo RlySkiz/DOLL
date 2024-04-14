@@ -6,6 +6,7 @@
 ------------------------------------------------------
 tSec:AddText("Character Creation:")
 
+---- Base Headers
 CCBody = tSec:AddCollapsingHeader("Body")
 tSec:AddSeparatorText("")
 CCFace = tSec:AddCollapsingHeader("Face")
@@ -39,7 +40,7 @@ headSelector = headsRow:AddCell():AddCombo("")
 headNext = headsRow:AddCell():AddButton(">")
 -----
 CCBody:AddDummy(0,5)
--- Skincolor
+--- Skincolor
 skincolorHeader = CCBody:AddCollapsingHeader("Skincolor")
 -- skincolor:AddColorEdit("Skincolor Editor")
 --- AddColorEdit fun(self:ExtuiTreeParent, a1:string, a2:vec3|nil):ImguiHandle
@@ -51,7 +52,7 @@ skincolorSelector = skincolorRow:AddCell():AddCombo("")
 skincolorNext = skincolorRow:AddCell():AddButton(">")
 -----
 CCBody:AddDummy(0,5)
--- Scars
+----- Scars
 scarsHeader = CCBody:AddCollapsingHeader("Scars")
 scarsTable = scarsHeader:AddTable("", 4)
 scarsRow = scarsTable:AddRow()
@@ -112,7 +113,7 @@ CCBody:AddDummy(0,5)
 --                                                  --
 ------------------------------------------------------
 
--- Tattoos
+----- Tattoos
 tattooHeader = CCFace:AddCollapsingHeader("Tattos")
 tattooTable = tattooHeader:AddTable("", 4)
 tattooRow = tattooTable:AddRow()
@@ -121,9 +122,9 @@ tattooSelector = tattooRow:AddCell():AddCombo("")
 tattooNext = tattooRow:AddCell():AddButton(">")
 -----
 CCFace:AddDummy(0,5)
--- Piercing
+----- Piercing
 piercingHeader = CCFace:AddCollapsingHeader("Piercing")
-piercingTable = piercingHeader:AddTable("", 4)
+piercingTable = piercingHeader:AddTable("", 3)
 piercingRow = piercingTable:AddRow()
 piercingPrevious = piercingRow:AddCell():AddButton("<")
 piercingSelector = piercingRow:AddCell():AddCombo("")
@@ -137,14 +138,14 @@ CCFace:AddDummy(0,5)
 --                                                  --
 ------------------------------------------------------
 
--- Heterochromia
+----- Heterochromia
 heterechromiaHeader = CCEyes:AddSeparatorText("")
 heterechromiaButton = CCEyes:AddCheckbox("Heterochromia")
 -----
 CCEyes:AddDummy(0,5)
--- Eyecolor
+----- Eyecolor
 eyecolorHeader = CCEyes:AddCollapsingHeader("Eyecolor")
--- skincolor:AddColorEdit("Skincolor Editor")
+----- skincolor:AddColorEdit("Skincolor Editor")
 --- AddColorEdit fun(self:ExtuiTreeParent, a1:string, a2:vec3|nil):ImguiHandle
 --- AddColorPicker fun(self:ExtuiTreeParent, a1:string, a2:vec3|nil):ImguiHandle
 eyecolorTable = eyecolorHeader:AddTable("", 10)
@@ -152,17 +153,17 @@ eyecolorRow = eyecolorTable:AddRow()
 eyecolorPrevious = eyecolorRow:AddCell():AddButton("<")
 eyecolorSelector = eyecolorRow:AddCell():AddCombo("")
 eyecolorNext = eyecolorRow:AddCell():AddButton(">")
------
+--- Left Eye
 eyecolorLHeader = CCEyes:AddCollapsingHeader("Left Eye")
 -- skincolor:AddColorEdit("Skincolor Editor")
---- AddColorEdit fun(self:ExtuiTreeParent, a1:string, a2:vec3|nil):ImguiHandle
---- AddColorPicker fun(self:ExtuiTreeParent, a1:string, a2:vec3|nil):ImguiHandle
+-- AddColorEdit fun(self:ExtuiTreeParent, a1:string, a2:vec3|nil):ImguiHandle
+-- AddColorPicker fun(self:ExtuiTreeParent, a1:string, a2:vec3|nil):ImguiHandle
 eyecolorLTable = eyecolorLHeader:AddTable("", 10)
 eyecolorLRow = eyecolorLTable:AddRow()
 eyecolorLPrevious = eyecolorLRow:AddCell():AddButton("<")
 eyecolorLSelector = eyecolorLRow:AddCell():AddCombo("")
 eyecolorLNext = eyecolorLRow:AddCell():AddButton(">")
------
+--- Right Eye
 eyecolorRHeader = CCEyes:AddCollapsingHeader("Right Eye")
 -- skincolor:AddColorEdit("Skincolor Editor")
 --- AddColorEdit fun(self:ExtuiTreeParent, a1:string, a2:vec3|nil):ImguiHandle
