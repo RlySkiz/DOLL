@@ -1,0 +1,27 @@
+{
+    "AlwaysAutoResize" : false,
+    "AlwaysHorizontalScrollbar" : false,
+    "AlwaysVerticalScrollbar" : false,
+    "Closeable" : false,
+    "HorizontalScrollbar" : false,
+    "Label" : "BG3 Sextender",
+    "MenuBar" : false,
+    "NoBackground" : false,
+    "NoBringToFrontOnFocus" : false,
+    "NoCollapse" : false,
+    "NoDecoration" : false,
+    "NoFocusOnAppearing" : false,
+    "NoInputs" : false,
+    "NoMouseInputs" : false,
+    "NoMove" : false,
+    "NoNav" : false,
+    "NoNavFocus" : false,
+    "NoNavInputs" : false,
+    "NoResize" : false,
+    "NoSavedSettings" : false,
+    "NoScrollWithMouse" : false,
+    "NoScrollbar" : false,
+    "NoTitleBar" : true
+    
+    
+    }

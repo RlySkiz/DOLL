@@ -1,0 +1,97 @@
+----------------------------------------------------------------------------------------------------
+-- 
+-- 			                        		User Settings
+-- 
+----------------------------------------------------------------------------------------------------
+
+-- TODO - move to UI 
+
+
+local UserSettings = {}
+
+UserSettings.__index = UserSettings
+
+
+
+----------------------------------------------------------------------------------------------------
+-- 
+-- 			                        		Choices
+-- 
+----------------------------------------------------------------------------------------------------
+
+-- Toggle Auto Erection during Sex
+-- @param bool   - On or Off
+local function setAutoErection(bool)
+end
+
+
+-- Get Auto Erection choice
+-- @retun        - bool user choice
+local function getAutoErection(bool)
+end
+
+
+
+
+----------------------------------------------------------------------------------------------------
+-- 
+-- 			                        Saving the settings
+-- 
+----------------------------------------------------------------------------------------------------
+
+
+-- Save user choices in Settings file
+local function saveSettings()
+end
+
+
+----------------------------------------------------------------------------------------------------
+-- 
+-- 			                        Loading the Settings
+-- 
+----------------------------------------------------------------------------------------------------
+
+
+-- Load user settings and update variables
+local function loadSettings()
+    -- If there is no json. instantiate default values and create savefile
+end
+
+----------------------------------------------------------------------------------------------------
+-- 
+-- 			                        Default Settings
+-- 
+----------------------------------------------------------------------------------------------------
+
+-- Create new SaveFile with default values
+local function instantiateDefaultSettings()
+    setAutoErection(1)
+end
+
+
+----------------------------------------------------------------------------------------------------
+-- 
+-- 			                        JSON TEMPLATE
+-- 
+----------------------------------------------------------------------------------------------------
+
+local filename = "BG3SX_Settings.json"
+
+----------------------------------------------------------------------------------------------------
+-- 
+-- 			                        Event Listeners
+-- 
+----------------------------------------------------------------------------------------------------
+
+
+Ext.Osiris.RegisterListener("UsingSpell", 5, "after", function(caster, spell, spellType, spellElement, storyActionID) 
+    -- TODO - call save
+    
+    
+end)
+
+
+Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "after", function(levelName, isEditorMode) 
+
+-- TODO - load settings
+end)
