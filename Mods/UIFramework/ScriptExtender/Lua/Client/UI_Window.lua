@@ -4,12 +4,12 @@
 --                    UI Layout                     --
 --                                                  --
 ------------------------------------------------------
-w = Ext.IMGUI.NewWindow("BG3 Sextender")
+w = Ext.IMGUI.NewWindow("BG3 REDACTEDtender")
 -- w:AddText("Test") -- test if you can add above tab bar (works)
 tabBar = w:AddTabBar("")
 tSec = tabBar:AddTabItem("Secret")
 tExp = tabBar:AddTabItem("Browser")
-tOne = tabBar:AddTabItem("BG3SX Controls")
+tOne = tabBar:AddTabItem("REDACTED Controls")
 tTwo = tabBar:AddTabItem("Settings")
 tThr = tabBar:AddTabItem("About")
 ------------------------------------------------------
@@ -42,12 +42,12 @@ browserInfo = btrow1:AddCell():AddText("Test")
 ------------------------------------------------------
 
 tOne:AddSeparatorText("General:")
-tOne:AddText("Choose your Genital:")
+tOne:AddText("Choose your REDACTED:")
 tableOne = tOne:AddTable("AddTable", 3, 3)
 row1 = tableOne:AddRow()
-genitalPrevious = row1:AddCell():AddButton("<")
-genitalSelector = row1:AddCell():AddCombo("")
-genitalNext = row1:AddCell():AddButton(">")
+SXgenitalPrevious = row1:AddCell():AddButton("<")
+SXgenitalSelector = row1:AddCell():AddCombo("")
+SXgenitalNext = row1:AddCell():AddButton(">")
 
 
 -- tableOne:AddRow()
@@ -70,9 +70,9 @@ tOne:AddText("AddText")
 --                                                  --
 ------------------------------------------------------
 
-tTwo:AddSeparatorText("BG3SX Settings")
-stripCheckBox = tTwo:AddCheckbox("Block stripping?", true)
-erectionCheckBox = tTwo:AddCheckbox("Would you like to get erections?", true)
+tTwo:AddSeparatorText("REDACTED Settings")
+stripCheckBox = tTwo:AddCheckbox("Block REDACTED?", true)
+erectionCheckBox = tTwo:AddCheckbox("Would you like to get REDACTED?", true)
 -- check.SetColor(0.3, 0.3, 0.7, 1.0)
 
 tTwo:AddSeparatorText("General Settings")

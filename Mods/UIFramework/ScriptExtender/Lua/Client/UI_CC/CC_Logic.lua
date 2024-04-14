@@ -1,6 +1,6 @@
 ------------------------------------------------------------
 --                                                        --
---                       UI Logic                         --
+--                      CC Logic                          --
 --                                                        --
 ------------------------------------------------------------ 
 
@@ -26,28 +26,28 @@ local function getAllGenitalsHandles()
 end
 
 local genitals = getAllGenitalsHandles()
-local genitalIndex = SXgenitalSelector.SelectedIndex
+local genitalIndex = genitalSelector.SelectedIndex
 
-SXgenitalSelector.Options = {}
+genitalSelector.Options = {}
 for genitalIndex, genital in ipairs(genitals) do
-    SXgenitalSelector.Options[genitalIndex] = genital
+    genitalSelector.Options[genitalIndex] = genital
 end
 
 local genitalIndexMax = genitals[#genitals]
 
-SXgenitalPrevious.OnClick = function ()
+genitalPrevious.OnClick = function ()
     if genitalIndex ~= 1 then
-        SXgenitalSelector.SelectedIndex = SXgenitalSelector.SelectedIndex-1
+        genitalSelector.SelectedIndex = genitalSelector.SelectedIndex-1
     else
-        SXgenitalSelector.SelectedIndex = genitalIndexMax
+        genitalSelector.SelectedIndex = genitalIndexMax
     end
 end
-SXgenitalNext.OnClick = function ()
+genitalNext.OnClick = function ()
     
     if genitalIndex ~= genitalIndexMax then
-        SXgenitalSelector.SelectedIndex = SXgenitalSelector.SelectedIndex+1
+        genitalSelector.SelectedIndex = genitalSelector.SelectedIndex+1
     else
-        SXgenitalSelector.SelectedIndex = 1
+        genitalSelector.SelectedIndex = 1
     end
 end
 
