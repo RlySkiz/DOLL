@@ -119,21 +119,65 @@ end
 ------------------------------------------------------
 
 ----- Heterochromia
---eyecolorHeader.Header() -- maybe not needed because they already are headers
---eyecolorLHeader.Header()
---eyecolorRHeader.Header()
-------------------------------
---if heterochromiaButton.OnChange() then 
----if heterochromiaButton.Checked == true then
----eyecolorHeader.HeaderActive = false
----eyecolorLHeader.HeaderActive = true
----eyecolorRHeader.HeaderActive = true
----else
----eyecolorHeader.HeaderActive = true
----eyecolorLHeader.HeaderActive = false
----eyecolorRHeader.HeaderActive = false
----end
----end
+heterochromiaButton.OnChange = function()
+    print("OnChange")
+    if heterochromiaButton.Checked == true then
+        print("Checked")
+        eyecolorHeader.Visible = false
+        eyecolorLHeader.Visible = true
+        eyecolorRHeader.Visible = true
+    else
+        print("Unchecked")
+        eyecolorHeader.Visible = true
+        eyecolorLHeader.Visible = false
+        eyecolorRHeader.Visible = false
+    end
+end
+
+
+
+-- then
+-- --     print("OnChange") -- doesn't happen on clicking the checkbox
+-- -- end
+-- if heterochromiaButton.OnChange == true then
+--     print("OnChange == true") -- doesn't happen on clicking the checkbox
+-- end
+-- if heterochromiaButton.OnChange == 1 then
+--     print("OnChange == 1") -- doesn't happen on clicking the checkbox
+-- end
+
+
+-- if heterochromiaButton.Checked == false then
+--     print("UNCHECKED")
+--     if heterochromiaButton.OnChange == true then
+--         print("CHANGE")
+--         heterochromiaButton.Checked = false
+--         print("CHECKING")
+--     end
+-- end
+-- if heterochromiaButton.Checked == true then
+--     print("CHECKED")
+--     if heterochromiaButton.OnChange == true then
+--         print("CHANGE")
+--         heterochromiaButton.Checked = false
+--         print("UNCHECKING")
+--     end
+-- end
+
+
+
+-- if heterochromiaButton.OnChange == true and heterochromiaButton.Checked == false then -- "Checked" is the press itself
+--         print("Button checked")
+--         eyecolorHeader.Visible = false
+--         eyecolorLHeader.Visible = true
+--         eyecolorRHeader.Visible = true
+-- end
+-- if heterochromiaButton.OnChange == true and heterochromiaButton.Checked == true then
+--         print("Button unchecked")
+--         eyecolorHeader.Visible = true
+--         eyecolorLHeader.Visible = false
+--         eyecolorRHeader.Visible = false
+-- end
 
 ----- Eyecolor
 --same as skincolor but with available eyecolors

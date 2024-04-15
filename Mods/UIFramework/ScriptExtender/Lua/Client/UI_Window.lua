@@ -4,6 +4,7 @@
 --                    UI Layout                     --
 --                                                  --
 ------------------------------------------------------
+d = Ext.IMGUI.EnableDemo(true)
 w = Ext.IMGUI.NewWindow("BG3 REDACTEDtender")
 -- w:AddText("Test") -- test if you can add above tab bar (works)
 tabBar = w:AddTabBar("")
