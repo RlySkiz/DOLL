@@ -4,66 +4,34 @@
 --                    UI Layout                     --
 --                                                  --
 ------------------------------------------------------
+--- Windows
 d = Ext.IMGUI.EnableDemo(true)
 w = Ext.IMGUI.NewWindow("BG3 REDACTEDtender")
+
 -- w:AddText("Test") -- test if you can add above tab bar (works)
-tabBar = w:AddTabBar("")
-tSec = tabBar:AddTabItem("Secret")
-tExp = tabBar:AddTabItem("Browser")
-tOne = tabBar:AddTabItem("REDACTED Controls")
-tTwo = tabBar:AddTabItem("Settings")
-tThr = tabBar:AddTabItem("About")
+--- Tab Bar
+tBar = w:AddTabBar("")
+tCC = tBar:AddTabItem("Character Creation")
+tBRO = tBar:AddTabItem("Browser")
+tSX = tBar:AddTabItem("REDACTED Controls")
+tSET = tBar:AddTabItem("Settings")
+tABO = tBar:AddTabItem("About")
 ------------------------------------------------------
 --                                                  --
 --                     Browser                      --
 --                                                  --
 ------------------------------------------------------
 
-tExp:AddSeparatorText("General:")
-browserTable = tExp:AddTable("AddTable", 2)
-
--- Row 1 - Column 1
-btrow1 = browserTable:AddRow()
-btrow1:AddCell():AddText("Game Browser:")
--- Row 1 - Column 2
-browserSearch = btrow1:AddCell():AddInputText("Search")
--- Row 2 - Column 1
-btrow2 = browserTable:AddRow()
-browserTree = btrow1:AddCell():AddTree("Data")
--- Row 2 - Column 2
-browserInfo = btrow1:AddCell():AddText("Test")
-
-
-
-
-------------------------------------------------------
---                                                  --
---                 BG3SX Elements                   --
---                                                  --
-------------------------------------------------------
-
-tOne:AddSeparatorText("General:")
-tOne:AddText("Choose your REDACTED:")
-tableOne = tOne:AddTable("AddTable", 3, 3)
-row1 = tableOne:AddRow()
-SXgenitalPrevious = row1:AddCell():AddButton("<")
-SXgenitalSelector = row1:AddCell():AddCombo("")
-SXgenitalNext = row1:AddCell():AddButton(">")
-
-
--- tableOne:AddRow()
-
-
-tOne:AddSeparatorText("Misc.:")
-tOne:AddText("Text before :AddSpacing")
-tOne:AddSpacing("AddSpacing")
-tOne:AddText("Text before :AddNewLine")
-tOne:AddNewLine("AddNewLine")
-tOne:AddText("Text before :AddDummy(widthGap, heightGap)(0,40)")
-tOne:AddDummy(0, 40)
-tOne:AddText("AddText")
-l1 = tOne:AddText("AddText"); tOne:AddText("AddText"); tOne:AddText("AddText")
-tOne:AddText("AddText")
+tBRO:AddDummy(0,5)
+--Search
+browserHeaderText = tBRO:AddText("Game Browser:")
+browserSearch = tBRO:AddInputText("Search")
+browserSearch.SameLine = true
+--Tree
+browserTable = tBRO:AddTable("AddTable", 2)
+browserTableRow = browserTable:AddRow()
+browserTree = browserTableRow:AddCell():AddTree("Data")
+browserInfo = browserTableRow:AddCell():AddText("Test")
 
 ------------------------------------------------------
 --                                                  --
@@ -71,12 +39,10 @@ tOne:AddText("AddText")
 --                                                  --
 ------------------------------------------------------
 
-tTwo:AddSeparatorText("REDACTED Settings")
-stripCheckBox = tTwo:AddCheckbox("Block REDACTED?", true)
-erectionCheckBox = tTwo:AddCheckbox("Would you like to get REDACTED?", true)
--- check.SetColor(0.3, 0.3, 0.7, 1.0)
-
-tTwo:AddSeparatorText("General Settings")
+tSET:AddDummy(0,5)
+tSET:AddSeparatorText("REDACTED Settings")
+stripCheckBox = tSET:AddCheckbox("Block REDACTED?", true)
+erectionCheckBox = tSET:AddCheckbox("Would you like to get REDACTED?", true)
 
 ------------------------------------------------------
 --                                                  --
@@ -84,47 +50,15 @@ tTwo:AddSeparatorText("General Settings")
 --                                                  --
 ------------------------------------------------------
 
-tThr:AddSeparatorText("Authors:")
-tThr:AddText("Skiz & Satan")
-tThr:AddText("Test")
+tABO:AddDummy(0,5)
+tABO:AddSeparatorText("Authors:")
+tABO:AddText("Skiz & Satan")
 
-
--- tThr:AddText("Test2").SameLine = true
-
--- currentPositionButton = tOne:AddButton("Update current position")
--- locationInputX = tOne:AddInputInt("X", 0)
--- locationInputY = tOne:AddInputInt("Y", 0)
--- locationInputZ = tOne:AddInputInt("Z", 0)
--- teleportButton = tOne:AddButton("Teleport")
-
-
--- textbox = tOne:AddInputText("New name:", "Sextender")
--- tOne:AddBulletText("AddBulletText")
--- tOne:AddButton("AddButton")
--- tOne:AddCheckbox("AddCheckbox")
--- h = tOne:AddCollapsingHeader("AddCollapsingHeader")
--- tOne:AddColorEdit("AddColorEdit")
--- tOne:AddColorPicker("AddColorPicker")
--- tOne:AddCombo("AddCombo")
--- h:AddText("Text next to Combobox")
--- tOne:AddDrag("AddDrag")
--- tOne:AddDragInt("AddDragInt")
--- tOne:AddDummy(6,4) -- (widthgap, heightgap)
--- tOne:AddGroup("AddGroup")
--- tOne:AddInputInt("AddInputInt")
--- tOne:AddInputScalar("AddInputScalar")
--- tOne:AddInputText("AddInputText")
--- tOne:AddNewLine("AddNewLine")
--- tOne:AddPopup("AddPopup")
--- tOne:AddSeparator("AddSeparator")
--- tOne:AddSeparatorText("AddSeparatorText")
--- tOne:AddSlider("AddSlider")
--- tOne:AddSliderInt("AddSliderInt")
--- tOne:AddSpacing("AddSpacing")
--- tOne:AddTable("AddTable",2)
--- tOne:AddText("AddText")
--- tOne:AddTree("AddTree")
-
+------------------------------------------------------
+--                                                  --
+--                  Elements to Add                 --
+--                                                  --
+------------------------------------------------------
 
 ---  ExtuiTreeParent:ExtuiStyledRenderable
 --- AddBulletText fun(self:ExtuiTreeParent, a1:string):ImguiHandle
@@ -153,5 +87,3 @@ tThr:AddText("Test")
 --- AddTable fun(self:ExtuiTreeParent, a1:string, a2:uint32):ImguiHandle
 --- AddText fun(self:ExtuiTreeParent, a1:string):ImguiHandle
 --- AddTree fun(self:ExtuiTreeParent, a1:string):ImguiHandle
-
-_D("Dump Window: ", w)

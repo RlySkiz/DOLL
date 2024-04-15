@@ -7,6 +7,11 @@
 ---- Base Headers
 
 
+
+--------------- Event Sender---------------
+-- Ext.Net.PostMessageToServer("Teleport", _)
+-------------------------------------------
+
 ------------------------------------------------------
 --                                                  --
 --                      Body                        --
@@ -30,15 +35,17 @@
 
 ----- Maturity
 --if ageSelector.OnChange then
+--set these
 --"AdditionalChoices" :
 -- [
---     1036831949, <-- this one = ageSelector.Value
---     1058139013,
---     1058306785,
---     1045220557
+--     1038174126,   = vitiligoSelector.Value
+--     1040522936,   = freckleQSelector.Value     
+--     1041194025,   = ageSelector.Value 
+--     1039516303    = freckleISelector.Value 
 -- ],
+--to ageSelector.Value, so the third value for this slider
 
------additional info -- CHOICESVALUE seems to increase by a rate of 1,055869637763624 per 1 value on slider
+-----additional info -- AdditionalChoices Values are mapped in AdditionalChoices.txt
 
 ----- Freckle Quantity
 --same as maturity but with freckleQSelector and the second value
@@ -81,24 +88,23 @@ for genitalIndex, genital in ipairs(genitals) do
     genitalSelector.Options[genitalIndex] = genital
 end
 
-local genitalIndexMax = genitals[#genitals]
-
 --- Handles "Previous" and "Next" Button Clicks
-genitalPrevious.OnClick = function ()
-    if genitalIndex ~= 1 then
-        genitalSelector.SelectedIndex = genitalSelector.SelectedIndex-1
-    else
-        genitalSelector.SelectedIndex = genitalIndexMax
-    end
-end
-genitalNext.OnClick = function ()
+-- local genitalIndexMax = genitals[#genitals]
+-- genitalPrevious.OnClick = function ()
+--     if genitalIndex ~= 1 then
+--         genitalSelector.SelectedIndex = genitalSelector.SelectedIndex-1
+--     else
+--         genitalSelector.SelectedIndex = genitalIndexMax
+--     end
+-- end
+-- genitalNext.OnClick = function ()
     
-    if genitalIndex ~= genitalIndexMax then
-        genitalSelector.SelectedIndex = genitalSelector.SelectedIndex+1
-    else
-        genitalSelector.SelectedIndex = 1
-    end
-end
+--     if genitalIndex ~= genitalIndexMax then
+--         genitalSelector.SelectedIndex = genitalSelector.SelectedIndex+1
+--     else
+--         genitalSelector.SelectedIndex = 1
+--     end
+-- end
 
 ------------------------------------------------------
 --                                                  --
@@ -119,6 +125,7 @@ end
 ------------------------------------------------------
 
 ----- Heterochromia
+
 heterochromiaButton.OnChange = function()
     print("OnChange")
     if heterochromiaButton.Checked == true then
@@ -133,51 +140,6 @@ heterochromiaButton.OnChange = function()
         eyecolorRHeader.Visible = false
     end
 end
-
-
-
--- then
--- --     print("OnChange") -- doesn't happen on clicking the checkbox
--- -- end
--- if heterochromiaButton.OnChange == true then
---     print("OnChange == true") -- doesn't happen on clicking the checkbox
--- end
--- if heterochromiaButton.OnChange == 1 then
---     print("OnChange == 1") -- doesn't happen on clicking the checkbox
--- end
-
-
--- if heterochromiaButton.Checked == false then
---     print("UNCHECKED")
---     if heterochromiaButton.OnChange == true then
---         print("CHANGE")
---         heterochromiaButton.Checked = false
---         print("CHECKING")
---     end
--- end
--- if heterochromiaButton.Checked == true then
---     print("CHECKED")
---     if heterochromiaButton.OnChange == true then
---         print("CHANGE")
---         heterochromiaButton.Checked = false
---         print("UNCHECKING")
---     end
--- end
-
-
-
--- if heterochromiaButton.OnChange == true and heterochromiaButton.Checked == false then -- "Checked" is the press itself
---         print("Button checked")
---         eyecolorHeader.Visible = false
---         eyecolorLHeader.Visible = true
---         eyecolorRHeader.Visible = true
--- end
--- if heterochromiaButton.OnChange == true and heterochromiaButton.Checked == true then
---         print("Button unchecked")
---         eyecolorHeader.Visible = true
---         eyecolorLHeader.Visible = false
---         eyecolorRHeader.Visible = false
--- end
 
 ----- Eyecolor
 --same as skincolor but with available eyecolors

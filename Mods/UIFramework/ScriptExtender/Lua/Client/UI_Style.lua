@@ -25,8 +25,8 @@ browserTable.Borders = true
 ------------------------------------------------------ 
 
 -- tOne:SetStyle("ChildBorderSize", 30)
-tableOne.Borders = true
-tableOne.RowBg = true
+-- tableOne.Borders = true
+-- tableOne.RowBg = true
 
 ------------------------------------------------------
 --                                                  --
