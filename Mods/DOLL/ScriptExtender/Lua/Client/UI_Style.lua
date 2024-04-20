@@ -10,23 +10,14 @@ w:SetStyle("WindowMinSize", 200, 200)
 w:SetStyle("WindowRounding", 15)
 w:SetColor("WindowBg", {0.4824, 0.4078, 0.9333, 0.2})
 w:SetColor("TableRowBg", {0.4824, 0.4078, 0.9333, 0.4})
-------------------------------------------------------
---                                                  --
---                     Browser                      --
---                                                  --
------------------------------------------------------- 
-
-browserTable.Borders = true
 
 ------------------------------------------------------
 --                                                  --
---                 BG3SX Elements                   --
+--                    CC Elements                   --
 --                                                  --
 ------------------------------------------------------ 
 
--- tOne:SetStyle("ChildBorderSize", 30)
--- tableOne.Borders = true
--- tableOne.RowBg = true
+
 
 ------------------------------------------------------
 --                                                  --
@@ -34,7 +25,7 @@ browserTable.Borders = true
 --                                                  --
 ------------------------------------------------------ 
 
-erectionCheckBox:SetColor("CheckMark", {1, 1, 1, 1})
+-- erectionCheckBox:SetColor("CheckMark", {1, 1, 1, 1})
 
 ------------------------------------------------------
 --                                                  --

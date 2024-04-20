@@ -4,7 +4,7 @@
 --                                                        --
 ------------------------------------------------------------ 
 
----- Base Headers
+
 
 
 
@@ -58,34 +58,19 @@
 
 ----- Genital
 
--- Checks all available CharacterCreationAppearanceVisuals and finds those names "Private Parts"
--- @return allGenitalsHandles
-local function getAllGenitalsHandles()
-    local allGenitalsHandles = {}
-    local allCCAV = Ext.StaticData.GetAll("CharacterCreationAppearanceVisual")
-    -- _P("allCCAV: ", allCCAV)
-    for _, CCAV in pairs(allCCAV)do
-        local content = Ext.StaticData.Get(CCAV, "CharacterCreationAppearanceVisual")
-        local handle = content.DisplayName.Handle.Handle
-        -- _P("handle: ", handle)
-        local slotName = content.SlotName
-        -- _P("slotName: ", slotName)
-        if slotName and slotName == "Private Parts" then
-            local trans =  Ext.Loca.GetTranslatedString(handle)
-            -- _P("trans: ", trans)
-            table.insert(allGenitalsHandles, trans)
-        end
+local previousGenital = genitalSelector.SelectedIndex
+genitalSelector.OnChange = function()
+    Ext.Net.PostMessageToServer("requestCCAVOfType", Ext.Json.Stringify("Private Parts"))
+    if genitalSelector.SelectedIndex ~= previousGenital then
+        print("New Genital Chosen")
+        
+        local newGenital = genitalSelector.Options[genitalSelector.SelectedIndex+1]
+        print("Removing ", previousGenital, " and adding ", newGenital)
+        Ext.Net.PostMessageToServer("changeCCAV", Ext.Json.Stringify(newGenital))
+
+        previousGenital = newGenital
+        print("Previous Genital set to: ", previousGenital, " until next choice.")
     end
-    return allGenitalsHandles
-end
-
-local genitals = getAllGenitalsHandles()
-local genitalIndex = genitalSelector.SelectedIndex
-
---- Populates the genitalSelector Combobox
-genitalSelector.Options = {}
-for genitalIndex, genital in ipairs(genitals) do
-    genitalSelector.Options[genitalIndex] = genital
 end
 
 --- Handles "Previous" and "Next" Button Clicks
@@ -98,7 +83,7 @@ end
 --     end
 -- end
 -- genitalNext.OnClick = function ()
-    
+
 --     if genitalIndex ~= genitalIndexMax then
 --         genitalSelector.SelectedIndex = genitalSelector.SelectedIndex+1
 --     else

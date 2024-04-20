@@ -12,26 +12,8 @@ w = Ext.IMGUI.NewWindow("BG3 REDACTEDtender")
 --- Tab Bar
 tBar = w:AddTabBar("")
 tCC = tBar:AddTabItem("Character Creation")
-tBRO = tBar:AddTabItem("Browser")
-tSX = tBar:AddTabItem("REDACTED Controls")
 tSET = tBar:AddTabItem("Settings")
 tABO = tBar:AddTabItem("About")
-------------------------------------------------------
---                                                  --
---                     Browser                      --
---                                                  --
-------------------------------------------------------
-
-tBRO:AddDummy(0,5)
---Search
-browserHeaderText = tBRO:AddText("Game Browser:")
-browserSearch = tBRO:AddInputText("Search")
-browserSearch.SameLine = true
---Tree
-browserTable = tBRO:AddTable("AddTable", 2)
-browserTableRow = browserTable:AddRow()
-browserTree = browserTableRow:AddCell():AddTree("Data")
-browserInfo = browserTableRow:AddCell():AddText("Test")
 
 ------------------------------------------------------
 --                                                  --

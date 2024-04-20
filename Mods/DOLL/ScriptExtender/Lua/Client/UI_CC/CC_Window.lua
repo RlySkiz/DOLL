@@ -22,6 +22,8 @@ CCHair = tCC:AddCollapsingHeader("Hair")
 ------------------------------------------------------
 
 CCBody:AddDummy(0,5)
+TESTBUTTON = CCBody:AddButton("BUMP ME")
+TestText = CCBody:AddText("No UUID Recieved")
 ----- Race
 -- raceHeader = CCBody:AddSeparatorText("Race")
 -- racePrevious = CCBody:AddButton("<")
@@ -33,12 +35,13 @@ raceSelector = CCBody:AddCombo("Race")
 CCBody:AddDummy(0,5) -- Dummies are used for spacing until i figure it out in UI_Style
 ----- Heads
 headsHeader = CCBody:AddCollapsingHeader("Heads")
+headsAdder = headsHeader:AddButton("Add Head")
 headsTable = headsHeader:AddTable("", 4)
 headsRow = headsTable:AddRow()
 headButton1 = headsRow:AddCell():AddButton("X")
 headButton2 = headsRow:AddCell():AddButton("X")
 headButton3 = headsRow:AddCell():AddButton("X")
-headButton4 = headsRow:AddCell():AddButton("X")
+
 -----
 CCBody:AddDummy(0,5)
 --- Skincolor
