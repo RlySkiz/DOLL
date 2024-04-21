@@ -5,6 +5,18 @@
 --                                                  --
 ------------------------------------------------------
 tCC:AddDummy(0,5)
+
+----- Race
+-- raceHeader = CCBody:AddSeparatorText("Race")
+-- racePrevious = CCBody:AddButton("<")
+raceSelector = tCC:AddCombo("Race")
+showAllOptionsButton = tCC:AddButton("Show All Options")
+showAllOptionsButton.SameLine = true
+-- raceSelector.SameLine = true
+-- raceNext = CCBody:AddButton(">")
+-- raceNext.SameLine = true
+
+tCC:AddSeparatorText("")
 ---- Base Headers
 CCBody = tCC:AddCollapsingHeader("Body")
 tCC:AddSeparatorText("")
@@ -15,14 +27,22 @@ tCC:AddSeparatorText("")
 CCMakeup = tCC:AddCollapsingHeader("Makeup")
 tCC:AddSeparatorText("")
 CCHair = tCC:AddCollapsingHeader("Hair")
-tCC:AddSeparatorText("")
+CCFacialSep = tCC:AddSeparatorText("")
+CCFacialSep.Visible = false
 CCFacial = tCC:AddCollapsingHeader("Facial Hair")
-tCC:AddSeparatorText("")
+CCFacial.Visible = false
+CCHornsSep = tCC:AddSeparatorText("")
+CCHornsSep.Visible = false
 CCHorns = tCC:AddCollapsingHeader("Horns")
-tCC:AddSeparatorText("")
+CCHorns.Visible = false
+CCTailsSep = tCC:AddSeparatorText("")
+CCTailsSep.Visible = false
 CCTails = tCC:AddCollapsingHeader("Tail")
-tCC:AddSeparatorText("")
+CCTails.Visible = false
+CCWingsSep = tCC:AddSeparatorText("")
+CCWingsSep.Visible = false
 CCWings = tCC:AddCollapsingHeader("Wings")
+CCWings.Visible = false
 ------------------------------------------------------
 --                                                  --
 --                      Body                        --
@@ -32,13 +52,6 @@ CCWings = tCC:AddCollapsingHeader("Wings")
 CCBody:AddDummy(0,5)
 TESTBUTTON = CCBody:AddButton("BUMP ME")
 TestText = CCBody:AddText("No UUID Recieved")
------ Race
--- raceHeader = CCBody:AddSeparatorText("Race")
--- racePrevious = CCBody:AddButton("<")
-raceSelector = CCBody:AddCombo("Race")
--- raceSelector.SameLine = true
--- raceNext = CCBody:AddButton(">")
--- raceNext.SameLine = true
 -----
 CCBody:AddDummy(0,5) -- Dummies are used for spacing until i figure it out in UI_Style
 ----- Heads
@@ -482,12 +495,13 @@ CCTails:AddDummy(0,5)
 ------------------------------------------------------
 
 CCWings:AddDummy(0,5)
------ Tail Style
-wingsHeader = CCWings:AddCollapsingHeader("Wings")
-wingsTable = wingsHeader:AddTable("", 4)
-wingsRow = wingsTable:AddRow()
-wingsButton1 = wingsRow:AddCell():AddButton("X")
-wingsButton2 = wingsRow:AddCell():AddButton("X")
-wingsButton3 = wingsRow:AddCell():AddButton("X")
+----- Wing Style
+-- wingsHeader = CCWings:AddCollapsingHeader("Wings")
+wingsSelector = CCWings:AddCombo("Wings")
+-- wingsTable = wingsHeader:AddTable("", 4)
+-- wingsRow = wingsTable:AddRow()
+-- wingsButton1 = wingsRow:AddCell():AddButton("X")
+-- wingsButton2 = wingsRow:AddCell():AddButton("X")
+-- wingsButton3 = wingsRow:AddCell():AddButton("X")
 -----
 CCTails:AddDummy(0,5)

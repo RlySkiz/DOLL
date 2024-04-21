@@ -12,11 +12,11 @@ TESTBUTTON.OnClick = function ()
     local wingColorRed = wingColors[1]
     local wingColorGreen = wingColors[2]
     local wingColorBlue = wingColors[3]
- 
+
     print("[CLIENT] Red: ", wingColorRed)
     print("[CLIENT] Green: ", wingColorGreen)
     print("[CLIENT] Blue: ", wingColorBlue)
-    
+
     wingColorRed = 0.75
 
     newWingColors = {
@@ -25,7 +25,7 @@ TESTBUTTON.OnClick = function ()
         wingColorBlue
     }
     print("[CLIENT] Wing Color Red after change = ", wingColorRed)
-    
+
     wingColors = newWingColors
     _P("[CLIENT] wingColors:")
     _D(wingColors)
@@ -90,15 +90,16 @@ end
 ----- Genital
 local previousGenital = genitalSelector.SelectedIndex
 genitalSelector.OnChange = function()
-    Ext.Net.PostMessageToServer("RequestCCAVOfType", Ext.Json.Stringify("Private Parts"))
     if genitalSelector.SelectedIndex ~= previousGenital then
+        print("-----------------------------")
         print("New Genital Chosen")
-        
+
         local newGenital = genitalSelector.Options[genitalSelector.SelectedIndex+1]
         print("Removing ", previousGenital, " and adding ", newGenital)
-        Ext.Net.PostMessageToServer("changeCCAV", Ext.Json.Stringify(newGenital))
+        Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newGenital))
 
         previousGenital = newGenital
+        genitalSelector.Options[0] = previousGenital
         print("Previous Genital set to: ", previousGenital, " until next choice.")
     end
 end
@@ -133,15 +134,16 @@ end
 ----- Piercing
 local previousPiercing = piercingSelector.SelectedIndex
 piercingSelector.OnChange = function()
-    Ext.Net.PostMessageToServer("RequestCCAVOfType", Ext.Json.Stringify("Piercing"))
     if piercingSelector.SelectedIndex ~= previousPiercing then
+        print("-----------------------------")
         print("New Piercing Chosen")
-        
+
         local newPiercing = piercingSelector.Options[piercingSelector.SelectedIndex+1]
         print("Removing ", previousPiercing, " and adding ", newPiercing)
-        Ext.Net.PostMessageToServer("changeCCAV", Ext.Json.Stringify(newPiercing))
+        Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newPiercing))
 
         previousPiercing = newPiercing
+        piercingSelector.Options[0] = previousPiercing
         print("Previous Piercing set to: ", previousPiercing, " until next choice.")
     end
 end
@@ -238,3 +240,67 @@ end
 
 --- Color
 --same procedure as with highlight colors but for greying instead
+
+------------------------------------------------------
+--                                                  --
+--                   Facial Hair                    --
+--                                                  --
+------------------------------------------------------
+
+----- Hair Style
+--same as heads but with facialhair styles instead
+
+----- Hair Color
+--same as skincolor but with available facialhair colors instead
+
+----- Greying
+--- Intensity
+--same procedure as with highlight intensity but for greying instead
+
+------------------------------------------------------
+--                                                  --
+--                      Horns                       --
+--                                                  --
+------------------------------------------------------
+
+----- Horn Style
+--same as heads but with horns styles instead
+
+----- Horn Color
+--same as skincolor but with available horn colors instead
+
+----- Horn Tip Color
+--same as horn color but for the tips instead
+
+------------------------------------------------------
+--                                                  --
+--                       Tail                       --
+--                                                  --
+------------------------------------------------------
+
+----- Tail Style
+--same as heads but with tail styles instead
+
+------------------------------------------------------
+--                                                  --
+--                      Wings                       --
+--                                                  --
+------------------------------------------------------
+
+----- Wing Style
+--same as heads but with wing styles instead
+local previousWings = wingsSelector.SelectedIndex
+wingsSelector.OnChange = function()
+    if wingsSelector.SelectedIndex ~= previousWings then
+        print("-----------------------------")
+        print("New Wings Chosen")
+
+        local newWings = wingsSelector.Options[wingsSelector.SelectedIndex+1]
+        print("Removing ", previousWings, " and adding ", newWings)
+        Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newWings))
+
+        previousWings = newWings
+        wingsSelector.Options[0] = previousWings
+        print("Previous Wings set to: ", previousWings, " until next choice.")
+    end
+end

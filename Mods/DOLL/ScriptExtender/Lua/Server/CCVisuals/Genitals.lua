@@ -55,30 +55,6 @@ function Genitals:listToSet(list)
     return set
 end
 
---- Retrieves the value of a specified property from an object or returns a default value if the property doesn't exist.
--- @param obj           The object from which to retrieve the property value.
--- @param propertyName  The name of the property to retrieve.
--- @param defaultValue  The default value to return if the property is not found.
--- @return              The value of the property if found; otherwise, the default value.
-function Genitals:GetPropertyOrDefault(obj, propertyName, defaultValue)
-    local success, value = pcall(function() return obj[propertyName] end)
-    if success then
-        return value or defaultValue
-    else
-        return defaultValue
-    end
-end
-
-
--- for maps
-function  Genitals:getKey(map, item)
-    for key, object in pairs(map) do
-        if object == item then
-            return key
-        end
-    end
-    return nil
-end
 ----------------------------------------------------------------------------------------------------
 -- 
 -- 									XML Handling
@@ -185,6 +161,24 @@ function Genitals:getAdditionalGenitals(allGenitals)
 end
 
 
+
+-- Add the name of the CCAVs to the list
+--@param				- list of CharacterCreationAppearaceVisual IDs for CCAV
+---return 				- list of names and CharacterCreationAppearaceVisual IDs
+function Genitals:addName(listOfCCAV)
+
+	local namesWithCCAV = {}
+    for _, item in pairs(listOfCCAV) do
+		local content = Ext.StaticData.Get(item,"CharacterCreationAppearanceVisual")
+        local handle = content.DisplayName.Handle.Handle
+        local entry = {name = Ext.Loca.GetTranslatedString(handle), uuid = item}
+        table.insert(namesWithCCAV, entry)
+	end
+	
+	return namesWithCCAV
+end
+
+
 -- Get Mod that genital belongs to
 --@param  			- genital ID
 ---return 			- Name of Mod (Folder Name)
@@ -273,7 +267,7 @@ function Genitals:getPermittedGenitals(uuid)
 	local allGenitals = Genitals:getAllGenitals()
 
 	-- Get the properties for the character
-	local E = Genitals:GetPropertyOrDefault(Ext.Entity.Get(uuid),"CharacterCreationStats", nil)
+	local E = GetPropertyOrDefault(Ext.Entity.Get(uuid),"CharacterCreationStats", nil)
 	local bt =  Ext.Entity.Get(uuid).BodyType.BodyType
 	local bs = 0
 
@@ -288,7 +282,7 @@ function Genitals:getPermittedGenitals(uuid)
 	local race
 	for _, tag in pairs(raceTags) do
 		if RACETAGS[tag] then
-			race = Genitals:getKey(RACES, RACETAGS[tag])
+			race = GetKey(RACES, RACETAGS[tag])
 			break
 		end
 	end

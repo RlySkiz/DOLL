@@ -35,8 +35,10 @@ RACES = {
     ["4f5d1434-5175-4fa9-b7dc-ab24fba37929"] = "DROW",
     ["9c61a74a-20df-4119-89c5-d996956b6c66"] = "DRAGONBORN",
     ["5c39a726-71c8-4748-ba8d-f768b3c11a91"] = "HALF-ORC",
+    ["ff2b6894-b03e-4bc6-a3b4-ce16ce405e7e"] = "AASIMAR"
 }
 
+-- TODO - check if we have to check aasimar subclasses
 RACETAGS = {
 
     ["69fd1443-7686-4ca9-9516-72ec0b9d94d7"] = "HUMAN",
@@ -50,6 +52,9 @@ RACETAGS = {
     ["a672ac1d-d088-451a-9537-3da4bf74466c"] = "DROW",
     ["3311a9a9-cdbc-4b05-9bf6-e02ba1fc72a3"] = "HALF-ORC",
     ["02e5e9ed-b6b2-4524-99cd-cb2bc84c754a"] = "DRAGONBORN",
+    ["41c6cdc9-aff5-46ae-afc4-aa0ccd9cd201"] = "AASIMAR",
+    ["2fddf7dd-f79b-4998-882c-d7257badbfe6"] = "AASIMAR",
+
 
 }
 

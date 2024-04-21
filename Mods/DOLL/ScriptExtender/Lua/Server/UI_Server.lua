@@ -11,12 +11,12 @@
 -- Events to be received:
 
 -- RequestHost              - Client requests the HostCharacter
--- RequestCCAV, Type        - Client requests list of all CCAV of one type (ex: private parts)     
--- changeCCAV,uuidNewItem   - Client requests removal of CCAV of type and addition of certain CCAV uuid
--- addCCAV, uuidNewItem     - Client requests addition of certain CCAV uuid
--- removeCCAV, uuidCCAV     - Client requests removal of CCAV
+-- RequestCCVisuals, Type        - Client requests list of all CCAV of one type (ex: private parts)     
+-- ChangeVisual,uuidNewItem   - Client requests removal of CCAV of type and addition of certain CCAV uuid
+-- addVisual, uuidNewItem     - Client requests addition of certain CCAV uuid
+-- removeVisual, uuidCCAV     - Client requests removal of CCAV
 
--- RequestCCAVOfType, type  - Client request lists of CCAVs of certian type (ex: "Private Parts")
+-- RequestCCVisualsOfType, type  - Client request lists of CCAVs of certian type (ex: "Private Parts")
 -------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -31,6 +31,62 @@
 -- InitialPopulate       - Server sends message on LevelGameplayStarted
 --------------------------------------------------------------------------------------------------------------------------------------
 
+-- TODO - move to own class
+
+
+-- Get all permitted CCAVs of a type with names for an entity
+local function getCCAVWithName(type, character)
+    local CCAV = CCAV:new()
+    local allCCAV = CCAV:getAllCCAVOfType(type)
+    local CCAVOfType = CCAV:getPermittedCCAV(character, allCCAV)
+    local CCAVWithName = CCAV:addName(CCAVOfType)
+    return CCAVWithName
+end
+
+-- Get all permitted CCSVs of a type with names for an entity
+local function getCCSVWithName(type, character)
+    local CCSV = CCSV:new()
+    local allCCSV = CCSV:getAllCCSVOfType(type)
+    local CCSVOfType = CCSV:getPermittedCCSV(character, allCCSV)
+    local CCSVWithName = CCSV:addName(CCSVOfType)
+    return CCSVWithName
+end
+
+
+local function getAllVisualWithName(type,character)
+    local allAV = getCCAVWithName(type,character)
+    local allSV = getCCSVWithName(type,character)
+
+    -- Append 
+    for i, v in ipairs(allSV) do
+        table.insert(allAV, v)
+    end
+
+    return allAV
+end
+
+
+-- get type of uuid
+local function getType(uuid)
+
+    local ccav = Ext.StaticData.Get(uuid,"CharacterCreationAppearanceVisual")
+    local ccsv = Ext.StaticData.Get(uuid,"CharacterCreationSharedVisual")
+
+    if ccav then
+        return "ccav", ccav.SlotName
+    elseif ccsv then
+        return "ccsv", ccsv.SlotName
+    end
+
+end
+
+-----------------------------------------------------------------------------------
+
+
+
+---------------------------------------------------------------------------------
+
+
 -- Send Host Character on Request
 Ext.Events.NetMessage:Subscribe(function(e)
     if (e.Channel == "RequestHost") then
@@ -41,123 +97,146 @@ Ext.Events.NetMessage:Subscribe(function(e)
 end)
 
 
+-- TODO - I think items can be either CCAV or CCSV 
+-- SO we scan for both (they need different methods since
+-- CCAV are filtered by bodytype while CCSV are onyl filtered by race)
+-- TODO: check what happens when we add the wrong races CCSV
+
+
 -- TODO - filter based on HostCharacter/Clicked Character
 -- TODO - make variable, currently only genitals supported
 -- CCAV handling
+
+
 Ext.Events.NetMessage:Subscribe(function(e)
-    if (e.Channel == "RequestCCAV") then
+    
+
+    -------------------------------------------------
+    --                                             --
+    --   Client request content to populate UI     --
+    --                                             --
+    -------------------------------------------------
+
+    if (e.Channel == "RequestCCVisualsOfType") then
         local type = Ext.Json.Parse(e.Payload)
-        print("Requested CCAV of Type: ", type)
+        print("Requested Visual of Type: ", type)
         -- TODO - instead of hostCharacter, take clicked character 
         local doll = Osi.GetHostCharacter()
 
+        -- Special case for genitals since there are double entries in vanilla
         if type == "Private Parts" then
-            -- Creating an instance of Genitals
             local genital = Genitals:new()
             local permittedGenitals = genital:getPermittedGenitals(doll)
-            _P("Permitted Genitals")
-            _D(permittedGenitals)    
-            local payload = {}
+            local genitalsWithName = Genitals:addName(permittedGenitals)
+            local payload = {"Private Parts", genitalsWithName}
+            Ext.Net.BroadcastMessage("SendCCAV",Ext.Json.Stringify(payload)) 
+        else 
+            print("Requested Visual Type: ", type)
+            -- TODO - instead of hostCharacter, take clicked character 
+            local character = Osi.GetHostCharacter()       
+            local visuals = getAllVisualWithName(type,character)
+            local payload = {type, visuals}
+            Ext.Net.BroadcastMessage("SendCCAV",Ext.Json.Stringify(payload)) 
+        end
+    end
 
-            for _, genital in pairs(permittedGenitals) do
-                local content = Ext.StaticData.Get(genital,"CharacterCreationAppearanceVisual")
-                local handle = content.DisplayName.Handle.Handle
-                local entry = {name = Ext.Loca.GetTranslatedString(handle), uuid = genital}
-                table.insert(payload, entry)
 
-                return payload
+
+    ---------------------------------------------------
+    --                                               --
+    --   Client requests removal of Visual of type   --
+    --     and addition of certain CCAV uuid         --
+    --                                               --
+    ---------------------------------------------------
+
+    if (e.Channel == "ChangeVisual") then
+        local payload = Ext.Json.Parse(e.Payload)
+        local visualUuid = getUUID(Ext.Json.Parse(e.Payload))
+
+        if visualUuid then
+            -- TODO - allow character to be sent via payload
+            local character = Osi.GetHostCharacter()
+            -- Determine type of uuid
+            local class, type = getType(visualUuid)
+            
+            if class == "ccav" then
+                local CCAV = CCAV:new()  
+                CCAV:overrideCCAV(visualUuid, character)
+            elseif class == "ccsv" then
+                local CCSV = CCSV:new()  
+                CCSV:overrideCCSV(visualUuid, character)
             end
         end
-
-        if type == "Piercing" then
-                -- Creating an instance of Piercings
-                local piercing = Piercings:new()
-                local permittedPiercings = piercing:getPermittedPiercings(doll)
-                _P("Permitted Piercings")
-                _D(permittedPiercings)    
-                local payload = {}
-
-                for _, piercing in pairs(permittedPiercings) do
-                    local content = Ext.StaticData.Get(piercing,"CharacterCreationAppearanceVisual")
-                    local handle = content.DisplayName.Handle.Handle
-                    local entry = {name = Ext.Loca.GetTranslatedString(handle), uuid = piercing}
-                    table.insert(payload, entry)
-
-                    return payload
-                end
-        end
-        Ext.Net.BroadcastMessage("SendCCAV",Ext.Json.Stringify(payload)) 
     end
 
-    -- Client requests removal of CCAV of type and addition of certain CCAV uuid
-    if (e.Channel == "changeCCAV") then
-        local payload = Ext.Json.Parse(e.Payload)
-        _P("Payload received:")
-        _D(payload)
-        local genitalUuid = getUUID(Ext.Json.Parse(e.Payload))
-        -- TODO - allow character to be sent via payload
-        local character = Osi.GetHostCharacter()
-        -- Determine type of uuid
-        local content = Ext.StaticData.Get(genitalUuid,"CharacterCreationAppearanceVisual")
-        local type = content.SlotName
-        -- TODO - make more variable, currently only works for genitals
-        local genitals = Genitals:new()  
-        genitals:overrideGenital(genitalUuid, character)
 
+    ----------------------------------------------------------
+    --                                                      --
+    --   Client requests addition of certain Visual uuid    --
+    --                                                      --
+    ----------------------------------------------------------
+
+    if (e.Channel == "addVisual") then
+        local visual = getUUID(Ext.Json.Parse(e.Payload))
+        Osi.AddCustomVisualOverride(Osi.GetHostCharacter(), visual)
     end
 
-    -- Client requests addition of certain CCAV uuid
-    if (e.Channel == "addCCAV") then
-        local ccav = getUUID(Ext.Json.Parse(e.Payload))
-        local CCAV = CCAV:new()
-        CCAV:addCCAV(Osi.GetHostCharacter(), ccav)
-    end
 
-    -- Client requests removal of CCAV
-     if (e.Channel == "removeCCAV") then
-        local ccav = getUUID(Ext.Json.Parse(e.Payload))
-        local CCAV = CCAV:new()
-        CCAV:RemoveCCAV(Osi.GetHostCharacter(),ccav)
-     end
+    --------------------------------------------------
+    --                                              --
+    --   Client requests removal of Visual          --
+    --                                              --
+    --------------------------------------------------
 
-
-    -- TODO - allow receiving of character uuid
-    -- Client request lists of CCAVs of certian type (ex: "Private Parts")
-     if (e.Channel == "RequestCCAVOfType") then
-        local type = Ext.Json.Parse(e.Payload)
-        print("Requested CCAV Type: ", type)
-        local CCAV = CCAV:new()
-        local allCCAV = CCAV:getAllCCAVOfType(type)
-        local payload = CCAV:getPermittedCCAV(Osi.GetHostCharacter(), allCCAV)
-        Ext.Net.BroadcastMessage("SendCCAV",Ext.Json.Stringify(payload)) 
-     end
-
-     if (e.Channel == "UpdateWingColor") then
-        local wingColorRed = Ext.Json.Parse(e.Payload)
-
-        local materialBank = Ext.Resource.Get("5e5b7f76-8fa5-16ff-0cf3-33d94f5ea041", "Material")
-        _P("[SERVER] Wing Colors:")
-        _D(materialBank.Instance.Parameters.Vector3Parameters[1].Value)
-        local wingColors = materialBank.Instance.Parameters.Vector3Parameters[1].Value
-        print("[SERVER] Color Red before payload input: ", wingColors[1])
-        local wingColorRed = wingColorRed
-        local wingColorGreen = wingColors[2]
-        local wingColorBlue = wingColors[3]
-        
-        print("[SERVER] Red: ", wingColorRed)
-        print("[SERVER] Green: ", wingColorGreen)
-        print("[SERVER] Blue: ", wingColorBlue)
-        
+     if (e.Channel == "removeVisual") then
+        local visual = getUUID(Ext.Json.Parse(e.Payload))
+        Osi.AddCustomVisualOvirride(Osi.GetHostCharacter(), visual)
      end
 
 end)
 
+
+
+    -----------------------------------------------------------------------
+    --                                                                   --
+    --   Send Client Signal to send population request on Level Loaded   --
+    --                                                                   --
+    -----------------------------------------------------------------------
 
 Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "after", function(_, _)  
     Ext.Net.BroadcastMessage("PopulateRefresh", "LevelGameplayStarted")
 end)
 
+    ------------------------------------------------------------------------------------
+    --                                                                                --
+    --   Send Client Signal to send population request on HostCharacter switched      --
+    --                                                                                --
+    ------------------------------------------------------------------------------------
 
 Ext.Osiris.RegisterListener("GainedControl", 1, "after", function(target)  
     Ext.Net.BroadcastMessage("PopulateRefresh", "GainedControl")
 end)
+
+
+
+
+-- Skiz wing coloring 
+
+
+     --if (e.Channel == "UpdateWingColor") then
+        --local wingColorRed = Ext.Json.Parse(e.Payload)
+
+       -- local materialBank = Ext.Resource.Get("5e5b7f76-8fa5-16ff-0cf3-33d94f5ea041", "Material")
+        --_P("[SERVER] Wing Colors:")
+       -- _D(materialBank.Instance.Parameters.Vector3Parameters[1].Value)
+       -- local wingColors = materialBank.Instance.Parameters.Vector3Parameters[1].Value
+       -- print("[SERVER] Color Red before payload input: ", wingColors[1])
+       -- local wingColorRed = wingColorRed
+       -- local wingColorGreen = wingColors[2]
+       -- local wingColorBlue = wingColors[3]
+        
+       -- print("[SERVER] Red: ", wingColorRed)
+       -- print("[SERVER] Green: ", wingColorGreen)
+       -- print("[SERVER] Blue: ", wingColorBlue)
+        
+     --end

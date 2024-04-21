@@ -25,6 +25,7 @@ end
 ----------------------------------------------------------------------------------------------------
 
 
+
 ----------------------------------------------------------------------------------------------------
 -- 
 -- 									XML Handling
@@ -36,6 +37,7 @@ end
 ---return 				- list of CharacterCreationAppearaceVisual IDs for all CCAV
 function CCAV:getAllCCAV()
 	local allCCAV = Ext.StaticData.GetAll("CharacterCreationAppearanceVisual")
+		_P("Length of list: ", #allCCAV)
 	return allCCAV
 end
 
@@ -43,14 +45,32 @@ end
 ---return 				- list of CharacterCreationAppearaceVisual IDs for all CCAV of type x
 function CCAV:getAllCCAVOfType(type)
 	local allCCAV = CCAV:getAllCCAV()
-	for _, CCAV in pairs(allCCAV)do
+    local CCAVOfType = {}
+	for i, CCAV in pairs(allCCAV)do
 		local contents = Ext.StaticData.Get(CCAV, "CharacterCreationAppearanceVisual")
 		local slotName = contents.SlotName
 		if slotName and slotName == type then
-			table.insert(allCCAV, CCAV)
+			_P("Added ", slotName)
+			table.insert(CCAVOfType, CCAV)
 		end
 	end
-	return allCCAV
+	return CCAVOfType
+end
+
+-- Add the name of the CCAVs to the list
+--@param				- list of CharacterCreationAppearaceVisual IDs for CCAV
+---return 				- list of names and CharacterCreationAppearaceVisual IDs
+function CCAV:addName(listOfCCAV)
+
+	local namesWithCCAV = {}
+    for _, item in pairs(listOfCCAV) do
+		local content = Ext.StaticData.Get(item,"CharacterCreationAppearanceVisual")
+        local handle = content.DisplayName.Handle.Handle
+        local entry = {name = Ext.Loca.GetTranslatedString(handle), uuid = item}
+        table.insert(namesWithCCAV, entry)
+	end
+	
+	return namesWithCCAV
 end
 
 
@@ -152,7 +172,7 @@ function CCAV:getPermittedCCAV(uuid, allCCAV)
     local permittedCCAV = {}
     
 	-- Get the properties for the character
-	local E = CCAV:GetPropertyOrDefault(Ext.Entity.Get(uuid),"CharacterCreationStats", nil)
+	local E = GetPropertyOrDefault(Ext.Entity.Get(uuid),"CharacterCreationStats", nil)
 	local bt =  Ext.Entity.Get(uuid).BodyType.BodyType
 	local bs = 0
 
@@ -167,7 +187,7 @@ function CCAV:getPermittedCCAV(uuid, allCCAV)
 	local race
 	for _, tag in pairs(raceTags) do
 		if RACETAGS[tag] then
-			race = CCAV:getKey(RACES, RACETAGS[tag])
+			race = GetKey(RACES, RACETAGS[tag])
 			break
 		end
 	end
@@ -285,26 +305,30 @@ end
 -- Override the current CCAV with the new one
 -- @param newCCAV	- ID of CharacterCreationAppearaceVisual of type PrivateParts
 -- @param uuid 	     	- uuid of entity that will receive the CCAV
-function overrideCCAV(newCCAV, uuid)
+function CCAV:overrideCCAV(newCCAV, uuid)
 	local currentCCAV = CCAV:getCurrentCCAV(uuid, type)
+	_P("Current CCAV of type ", type , " = ", uuid)
 
-	-- Origins don't have CCAV - We have to add one before we can remove it
-	if currentCCAV and not (currentCCAV == newCCAV) then
-		-- Note: This is not a typo, It's actually called Ovirride
-		Osi.RemoveCustomVisualOvirride(uuid, currentCCAV) 
+    for _, ccav in pairs(currentCCAV) do
+	    -- Origins don't have CCAV - We have to add one before we can remove it
+	    if not (ccav == newCCAV) then
+		    -- Note: This is not a typo, It's actually called Ovirride
+		    Osi.RemoveCustomVisualOvirride(uuid, ccav) 
+	    end
 	end
+	
 	if newCCAV then
 		Osi.AddCustomVisualOverride(uuid, newCCAV)
 	end
 end
 
 
-function CCAV:addCCAV(uuid, ccav)
+function CCAV:addVisual(uuid, ccav)
     Osi.AddCustomVisualOverride(uuid, ccav)
 end
 
 
-function CCAV:removeCCAV(uuid, ccav)
+function CCAV:removeVisual(uuid, ccav)
      Osi.RemoveCustomVisualOvirride(uuid, ccav)
 end
 
