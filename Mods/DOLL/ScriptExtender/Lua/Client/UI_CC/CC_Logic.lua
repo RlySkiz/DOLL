@@ -4,7 +4,38 @@
 --                                                        --
 ------------------------------------------------------------ 
 
+TESTBUTTON.OnClick = function ()
+    local materialBank = Ext.Resource.Get("5e5b7f76-8fa5-16ff-0cf3-33d94f5ea041", "Material")
+    _P("[CLIENT] Wing Colors:")
+    _D(materialBank.Instance.Parameters.Vector3Parameters[1].Value)
+    local wingColors = materialBank.Instance.Parameters.Vector3Parameters[1].Value
+    local wingColorRed = wingColors[1]
+    local wingColorGreen = wingColors[2]
+    local wingColorBlue = wingColors[3]
+ 
+    print("[CLIENT] Red: ", wingColorRed)
+    print("[CLIENT] Green: ", wingColorGreen)
+    print("[CLIENT] Blue: ", wingColorBlue)
+    
+    wingColorRed = 0.75
 
+    newWingColors = {
+        wingColorRed,
+        wingColorGreen,
+        wingColorBlue
+    }
+    print("[CLIENT] Wing Color Red after change = ", wingColorRed)
+    
+    wingColors = newWingColors
+    _P("[CLIENT] wingColors:")
+    _D(wingColors)
+    _P("[CLIENT] materialbank value:")
+    _D(materialBank.Instance.Parameters.Vector3Parameters[1].Value)
+    materialBank.Instance.Parameters.Vector3Parameters[1].Value = wingColors
+    _P("[CLIENT] materialbank value 2:")
+    _D(materialBank.Instance.Parameters.Vector3Parameters[1].Value)
+    Ext.Net.PostMessageToServer("UpdateWingColor", Ext.Json.Stringify(newWingColors))
+end
 
 
 
@@ -57,10 +88,9 @@
 --same as maturity but with vitiligoSelector and the fourth value
 
 ----- Genital
-
 local previousGenital = genitalSelector.SelectedIndex
 genitalSelector.OnChange = function()
-    Ext.Net.PostMessageToServer("requestCCAVOfType", Ext.Json.Stringify("Private Parts"))
+    Ext.Net.PostMessageToServer("RequestCCAVOfType", Ext.Json.Stringify("Private Parts"))
     if genitalSelector.SelectedIndex ~= previousGenital then
         print("New Genital Chosen")
         
@@ -101,7 +131,20 @@ end
 --same as heads but with tattoos
 
 ----- Piercing
---same as genitals but with piercings
+local previousPiercing = piercingSelector.SelectedIndex
+piercingSelector.OnChange = function()
+    Ext.Net.PostMessageToServer("RequestCCAVOfType", Ext.Json.Stringify("Piercing"))
+    if piercingSelector.SelectedIndex ~= previousPiercing then
+        print("New Piercing Chosen")
+        
+        local newPiercing = piercingSelector.Options[piercingSelector.SelectedIndex+1]
+        print("Removing ", previousPiercing, " and adding ", newPiercing)
+        Ext.Net.PostMessageToServer("changeCCAV", Ext.Json.Stringify(newPiercing))
+
+        previousPiercing = newPiercing
+        print("Previous Piercing set to: ", previousPiercing, " until next choice.")
+    end
+end
 
 ------------------------------------------------------
 --                                                  --

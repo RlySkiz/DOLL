@@ -46,22 +46,45 @@ end)
 -- CCAV handling
 Ext.Events.NetMessage:Subscribe(function(e)
     if (e.Channel == "RequestCCAV") then
-        _P("Requested Penises")
         local type = Ext.Json.Parse(e.Payload)
+        print("Requested CCAV of Type: ", type)
         -- TODO - instead of hostCharacter, take clicked character 
         local doll = Osi.GetHostCharacter()
-        -- Creating an instance of Genitals
-        local genital = Genitals:new()
-        local permittedGenitals = genital:getPermittedGenitals(doll)
-        _P("Permitted Genitals")
-        _D(permittedGenitals)    
-        local payload = {}
 
-        for _, genital in pairs(permittedGenitals) do
-            local content = Ext.StaticData.Get(genital,"CharacterCreationAppearanceVisual")
-            local handle = content.DisplayName.Handle.Handle
-            local entry = {name = Ext.Loca.GetTranslatedString(handle), uuid = genital}
-            table.insert(payload, entry)
+        if type == "Private Parts" then
+            -- Creating an instance of Genitals
+            local genital = Genitals:new()
+            local permittedGenitals = genital:getPermittedGenitals(doll)
+            _P("Permitted Genitals")
+            _D(permittedGenitals)    
+            local payload = {}
+
+            for _, genital in pairs(permittedGenitals) do
+                local content = Ext.StaticData.Get(genital,"CharacterCreationAppearanceVisual")
+                local handle = content.DisplayName.Handle.Handle
+                local entry = {name = Ext.Loca.GetTranslatedString(handle), uuid = genital}
+                table.insert(payload, entry)
+
+                return payload
+            end
+        end
+
+        if type == "Piercing" then
+                -- Creating an instance of Piercings
+                local piercing = Piercings:new()
+                local permittedPiercings = piercing:getPermittedPiercings(doll)
+                _P("Permitted Piercings")
+                _D(permittedPiercings)    
+                local payload = {}
+
+                for _, piercing in pairs(permittedPiercings) do
+                    local content = Ext.StaticData.Get(piercing,"CharacterCreationAppearanceVisual")
+                    local handle = content.DisplayName.Handle.Handle
+                    local entry = {name = Ext.Loca.GetTranslatedString(handle), uuid = piercing}
+                    table.insert(payload, entry)
+
+                    return payload
+                end
         end
         Ext.Net.BroadcastMessage("SendCCAV",Ext.Json.Stringify(payload)) 
     end
@@ -101,11 +124,30 @@ Ext.Events.NetMessage:Subscribe(function(e)
     -- TODO - allow receiving of character uuid
     -- Client request lists of CCAVs of certian type (ex: "Private Parts")
      if (e.Channel == "RequestCCAVOfType") then
-        local type = getType(Ext.Json.Parse(e.Payload))
+        local type = Ext.Json.Parse(e.Payload)
+        print("Requested CCAV Type: ", type)
         local CCAV = CCAV:new()
         local allCCAV = CCAV:getAllCCAVOfType(type)
         local payload = CCAV:getPermittedCCAV(Osi.GetHostCharacter(), allCCAV)
         Ext.Net.BroadcastMessage("SendCCAV",Ext.Json.Stringify(payload)) 
+     end
+
+     if (e.Channel == "UpdateWingColor") then
+        local wingColorRed = Ext.Json.Parse(e.Payload)
+
+        local materialBank = Ext.Resource.Get("5e5b7f76-8fa5-16ff-0cf3-33d94f5ea041", "Material")
+        _P("[SERVER] Wing Colors:")
+        _D(materialBank.Instance.Parameters.Vector3Parameters[1].Value)
+        local wingColors = materialBank.Instance.Parameters.Vector3Parameters[1].Value
+        print("[SERVER] Color Red before payload input: ", wingColors[1])
+        local wingColorRed = wingColorRed
+        local wingColorGreen = wingColors[2]
+        local wingColorBlue = wingColors[3]
+        
+        print("[SERVER] Red: ", wingColorRed)
+        print("[SERVER] Green: ", wingColorGreen)
+        print("[SERVER] Blue: ", wingColorBlue)
+        
      end
 
 end)

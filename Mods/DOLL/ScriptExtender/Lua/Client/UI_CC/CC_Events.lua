@@ -10,6 +10,7 @@ Ext.Events.NetMessage:Subscribe(function(e)
     if (e.Channel == "PopulateRefresh") then
         Ext.Net.PostMessageToServer("RequestHost", "Hi")
         Ext.Net.PostMessageToServer("RequestCCAV", Ext.Json.Stringify("Private Parts"))
+        Ext.Net.PostMessageToServer("RequestCCAV", Ext.Json.Stringify("Piercing"))
         print("SEND START MESSAGE")
     end
 
@@ -20,7 +21,7 @@ Ext.Events.NetMessage:Subscribe(function(e)
         print(msg)
     end
 
-    -- Recieves available Genitals based on host race
+    -- Recieves available CCAVs based on requested type and controlled character race
     if (e.Channel == "SendCCAV") then
         print("----------------")
         print("CCAV recieved")
@@ -29,9 +30,12 @@ Ext.Events.NetMessage:Subscribe(function(e)
         print("CCAV Dump:")
         _D(e.Payload)
         
+
         genitalSelector.Options = {}
+        piercingSelector.Options = {}
         local genitalTable = Ext.Json.Parse(e.Payload)
         
+
         print("Parsed Payload:")
         print(genitalTable)
         _D(genitalTable)
@@ -48,7 +52,6 @@ Ext.Events.NetMessage:Subscribe(function(e)
             print("genitalSelector.Option: ", genitalSelector.Options[i])
             
         end
-
 
         TestText.Label = "Genitals Recieved"
     end
