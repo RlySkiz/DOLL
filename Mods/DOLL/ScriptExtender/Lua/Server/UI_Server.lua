@@ -67,7 +67,7 @@ end
 
 
 -- get type of uuid
-local function getType(uuid)
+function getType(uuid)
 
     local ccav = Ext.StaticData.Get(uuid,"CharacterCreationAppearanceVisual")
     local ccsv = Ext.StaticData.Get(uuid,"CharacterCreationSharedVisual")
@@ -119,7 +119,6 @@ Ext.Events.NetMessage:Subscribe(function(e)
 
     if (e.Channel == "RequestCCVisualsOfType") then
         local type = Ext.Json.Parse(e.Payload)
-        print("Requested Visual of Type: ", type)
         -- TODO - instead of hostCharacter, take clicked character 
         local doll = Osi.GetHostCharacter()
 
@@ -130,8 +129,7 @@ Ext.Events.NetMessage:Subscribe(function(e)
             local genitalsWithName = Genitals:addName(permittedGenitals)
             local payload = {"Private Parts", genitalsWithName}
             Ext.Net.BroadcastMessage("SendCCAV",Ext.Json.Stringify(payload)) 
-        else 
-            print("Requested Visual Type: ", type)
+        else
             -- TODO - instead of hostCharacter, take clicked character 
             local character = Osi.GetHostCharacter()       
             local visuals = getAllVisualWithName(type,character)
@@ -152,20 +150,24 @@ Ext.Events.NetMessage:Subscribe(function(e)
     if (e.Channel == "ChangeVisual") then
         local payload = Ext.Json.Parse(e.Payload)
         local visualUuid = getUUID(Ext.Json.Parse(e.Payload))
+        print("RECEIVED CHANGE VISUAL")
 
         if visualUuid then
             -- TODO - allow character to be sent via payload
             local character = Osi.GetHostCharacter()
             -- Determine type of uuid
             local class, type = getType(visualUuid)
-            
+            print("ATTENTION : SKIZ ASKED TO CHANGE CURRENT ", type ," TO ", visualUuid)
+
             if class == "ccav" then
-                local CCAV = CCAV:new()  
-                CCAV:overrideCCAV(visualUuid, character)
+                local CCAV = CCAV:new()
+                CCAV:overrideCCAV(visualUuid, character, type)
             elseif class == "ccsv" then
-                local CCSV = CCSV:new()  
-                CCSV:overrideCCSV(visualUuid, character)
+                local CCSV = CCSV:new()
+                CCSV:overrideCCSV(visualUuid, character, type)
             end
+        else
+            print("BUT THE UUID WAS EMPTY")
         end
     end
 

@@ -4,7 +4,8 @@
         "redundant-parameter"
     ],
     "Lua.diagnostics.globals": [
-        "Ext"
+        "Ext",
+        "_D"
     ],
     "bg3ModHelper.rootModPath": "c:\\Users\\janda\\Desktop\\BG3 Modding\\Mods\\DOLL"
 }

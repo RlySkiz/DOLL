@@ -9,6 +9,7 @@ tCC:AddDummy(0,5)
 ----- Race
 -- raceHeader = CCBody:AddSeparatorText("Race")
 -- racePrevious = CCBody:AddButton("<")
+TestText = tCC:AddText("No CCAVs/CCSVs Recieved")
 raceSelector = tCC:AddCombo("Race")
 showAllOptionsButton = tCC:AddButton("Show All Options")
 showAllOptionsButton.SameLine = true
@@ -27,22 +28,22 @@ tCC:AddSeparatorText("")
 CCMakeup = tCC:AddCollapsingHeader("Makeup")
 tCC:AddSeparatorText("")
 CCHair = tCC:AddCollapsingHeader("Hair")
-CCFacialSep = tCC:AddSeparatorText("")
-CCFacialSep.Visible = false
-CCFacial = tCC:AddCollapsingHeader("Facial Hair")
-CCFacial.Visible = false
+CCBeardSep = tCC:AddSeparatorText("")
+CCBeardSep.Visible = true
+CCBeard = tCC:AddCollapsingHeader("Facial Hair")
+CCBeard.Visible = true
 CCHornsSep = tCC:AddSeparatorText("")
-CCHornsSep.Visible = false
+CCHornsSep.Visible = true
 CCHorns = tCC:AddCollapsingHeader("Horns")
-CCHorns.Visible = false
+CCHorns.Visible = true
 CCTailsSep = tCC:AddSeparatorText("")
-CCTailsSep.Visible = false
+CCTailsSep.Visible = true
 CCTails = tCC:AddCollapsingHeader("Tail")
-CCTails.Visible = false
+CCTails.Visible = true
 CCWingsSep = tCC:AddSeparatorText("")
-CCWingsSep.Visible = false
+CCWingsSep.Visible = true
 CCWings = tCC:AddCollapsingHeader("Wings")
-CCWings.Visible = false
+CCWings.Visible = true
 ------------------------------------------------------
 --                                                  --
 --                      Body                        --
@@ -50,18 +51,18 @@ CCWings.Visible = false
 ------------------------------------------------------
 
 CCBody:AddDummy(0,5)
-TESTBUTTON = CCBody:AddButton("BUMP ME")
-TestText = CCBody:AddText("No UUID Recieved")
+-- TESTBUTTON = CCBody:AddButton("BUMP ME")
 -----
 CCBody:AddDummy(0,5) -- Dummies are used for spacing until i figure it out in UI_Style
 ----- Heads
-headsHeader = CCBody:AddCollapsingHeader("Heads")
-headsAdder = headsHeader:AddButton("Add Head")
-headsTable = headsHeader:AddTable("", 4)
-headsRow = headsTable:AddRow()
-headButton1 = headsRow:AddCell():AddButton("X")
-headButton2 = headsRow:AddCell():AddButton("X")
-headButton3 = headsRow:AddCell():AddButton("X")
+-- headsHeader = CCBody:AddCollapsingHeader("Heads")
+-- headsAdder = headsHeader:AddButton("Add Head")
+-- headsTable = headsHeader:AddTable("", 4)
+-- headsRow = headsTable:AddRow()
+-- headButton1 = headsRow:AddCell():AddButton("X")
+-- headButton2 = headsRow:AddCell():AddButton("X")
+-- headButton3 = headsRow:AddCell():AddButton("X")
+headSelector = CCBody:AddCombo("Heads")
 
 -----
 CCBody:AddDummy(0,5)
@@ -303,12 +304,13 @@ CCMakeup:AddDummy(0,5)
 
 CCHair:AddDummy(0,5)
 ----- Hair Style
-hairStyleHeader = CCHair:AddCollapsingHeader("Hair Style")
-hairStyleTable = hairStyleHeader:AddTable("", 4)
-hairStyleRow = hairStyleTable:AddRow()
-hairStylePrevious = hairStyleRow:AddCell():AddButton("<")
-hairStyleSelector = hairStyleRow:AddCell():AddCombo("")
-hairStyleNext = hairStyleRow:AddCell():AddButton(">")
+-- hairStyleHeader = CCHair:AddCollapsingHeader("Hair Style")
+-- hairStyleTable = hairStyleHeader:AddTable("", 4)
+-- hairStyleRow = hairStyleTable:AddRow()
+-- hairStylePrevious = hairStyleRow:AddCell():AddButton("<")
+-- hairStyleSelector = hairStyleRow:AddCell():AddCombo("")
+-- hairStyleNext = hairStyleRow:AddCell():AddButton(">")
+hairSelector = CCHair:AddCombo("Hair Style")
 -----
 CCHair:AddDummy(0,5)
 ----- Hair Color
@@ -384,43 +386,44 @@ CCHair:AddDummy(0,5)
 --                                                  --
 ------------------------------------------------------
 
-CCFacial:AddDummy(0,5)
+CCBeard:AddDummy(0,5)
 ----- Hair Style
-facialhairstyleHeader = CCTails:AddCollapsingHeader("Hairstyle")
-facialhairstyleTable = facialhairstyleHeader:AddTable("", 4)
-facialhairstyleRow = facialhairstyleTable:AddRow()
-facialhairstyleButton1 = facialhairstyleRow:AddCell():AddButton("X")
-facialhairstyleButton2 = facialhairstyleRow:AddCell():AddButton("X")
-facialhairstyleButton3 = facialhairstyleRow:AddCell():AddButton("X")
+-- beardstyleHeader = CCBeard:AddCollapsingHeader("Beard")
+-- beardstyleTable = beardstyleHeader:AddTable("", 4)
+-- beardstyleRow = beardstyleTable:AddRow()
+-- beardstyleButton1 = beardstyleRow:AddCell():AddButton("X")
+-- beardstyleButton2 = beardstyleRow:AddCell():AddButton("X")
+-- beardstyleButton3 = beardstyleRow:AddCell():AddButton("X")
+beardSelector = CCBeard:AddCombo("Beard Types")
 -----
-CCFacial:AddDummy(0,5)
+CCBeard:AddDummy(0,5)
 ----- Hair Color
-facialhairColorHeader = CCFacial:AddCollapsingHeader("Hair Color")
-facialhairColorTable = facialhairColorHeader:AddTable("", 10)
-facialhairColorRow = facialhairColorTable:AddRow()
-facialhairColorButton1 = facialhairColorRow:AddCell():AddButton("X")
-facialhairColorButton2 = facialhairColorRow:AddCell():AddButton("X")
-facialhairColorButton3 = facialhairColorRow:AddCell():AddButton("X")
-facialhairColorButton4 = facialhairColorRow:AddCell():AddButton("X")
-facialhairColorButton5 = facialhairColorRow:AddCell():AddButton("X")
-facialhairColorButton6 = facialhairColorRow:AddCell():AddButton("X")
-facialhairColorButton7 = facialhairColorRow:AddCell():AddButton("X")
-facialhairColorButton8 = facialhairColorRow:AddCell():AddButton("X")
-facialhairColorButton9 = facialhairColorRow:AddCell():AddButton("X")
-facialhairColorButton10 = facialhairColorRow:AddCell():AddButton("X")
+beardColorHeader = CCBeard:AddCollapsingHeader("Hair Color")
+beardColorTable = beardColorHeader:AddTable("", 10)
+beardColorRow = beardColorTable:AddRow()
+beardColorButton1 = beardColorRow:AddCell():AddButton("X")
+beardColorButton2 = beardColorRow:AddCell():AddButton("X")
+beardColorButton3 = beardColorRow:AddCell():AddButton("X")
+beardColorButton4 = beardColorRow:AddCell():AddButton("X")
+beardColorButton5 = beardColorRow:AddCell():AddButton("X")
+beardColorButton6 = beardColorRow:AddCell():AddButton("X")
+beardColorButton7 = beardColorRow:AddCell():AddButton("X")
+beardColorButton8 = beardColorRow:AddCell():AddButton("X")
+beardColorButton9 = beardColorRow:AddCell():AddButton("X")
+beardColorButton10 = beardColorRow:AddCell():AddButton("X")
 -----
-CCFacial:AddDummy(0,5)
+CCBeard:AddDummy(0,5)
 ----- Greying
-facialgreyingHeaderContainer = CCFacial:AddCollapsingHeader("Greying")
+beardgreyingHeaderContainer = CCBeard:AddCollapsingHeader("Greying")
 --- Intensity
 -- greyingIntHeader = greyingHeaderContainer:AddSeparatorText("Greying Intensity")
 -- greyingIntPrevious = greyingHeaderContainer:AddButton("<")
-facialgreyingIntSelector = facialgreyingHeaderContainer:AddSliderInt("Greying Intensity", 0, 0, 100)
+beardgreyingIntSelector = beardgreyingHeaderContainer:AddSliderInt("Greying Intensity", 0, 0, 100)
 -- greyingIntSelector.SameLine = true
 -- greyingIntNext = greyingHeaderContainer:AddButton(">")
 -- greyingIntNext.SameLine = true
 -----
-CCFacial:AddDummy(0,5)
+CCBeard:AddDummy(0,5)
 
 ------------------------------------------------------
 --                                                  --
@@ -430,12 +433,13 @@ CCFacial:AddDummy(0,5)
 
 CCHorns:AddDummy(0,5)
 ----- Hair Style
-hornstyleHeader = CCTails:AddCollapsingHeader("Horn Style")
-hornstyleTable = hornstyleHeader:AddTable("", 4)
-hornstyleRow = hornstyleTable:AddRow()
-hornstyleButton1 = hornstyleRow:AddCell():AddButton("X")
-hornstyleButton2 = hornstyleRow:AddCell():AddButton("X")
-hornstyleButton3 = hornstyleRow:AddCell():AddButton("X")
+-- hornstyleHeader = CCHorns:AddCollapsingHeader("Horn Style")
+-- hornstyleTable = hornstyleHeader:AddTable("", 4)
+-- hornstyleRow = hornstyleTable:AddRow()
+-- hornstyleButton1 = hornstyleRow:AddCell():AddButton("X")
+-- hornstyleButton2 = hornstyleRow:AddCell():AddButton("X")
+-- hornstyleButton3 = hornstyleRow:AddCell():AddButton("X")
+hornSelector = CCHorns:AddCombo("Horns Types")
 -----
 CCHorns:AddDummy(0,5)
 ----- Horn Color
@@ -455,7 +459,7 @@ hornColorButton10 = hornColorRow:AddCell():AddButton("X")
 -----
 CCHorns:AddDummy(0,5)
 ----- Horn Tip Color
-horntipColorHeader = CCHorns:AddCollapsingHeader("Hair Color")
+horntipColorHeader = CCHorns:AddCollapsingHeader("Horn Tip Color")
 horntipColorTable = horntipColorHeader:AddTable("", 10)
 horntipColorRow = horntipColorTable:AddRow()
 horntipColorButton1 = horntipColorRow:AddCell():AddButton("X")
@@ -479,12 +483,13 @@ CCHorns:AddDummy(0,5)
 
 CCTails:AddDummy(0,5)
 ----- Tail Style
-tailsHeader = CCTails:AddCollapsingHeader("Tails")
-tailsTable = tailsHeader:AddTable("", 4)
-tailsRow = tailsTable:AddRow()
-tailsButton1 = tailsRow:AddCell():AddButton("X")
-tailsButton2 = tailsRow:AddCell():AddButton("X")
-tailsButton3 = tailsRow:AddCell():AddButton("X")
+-- tailHeader = CCTails:AddCollapsingHeader("Tails")
+-- tailTable = tailHeader:AddTable("", 4)
+-- tailRow = tailTable:AddRow()
+-- tailButton1 = tailRow:AddCell():AddButton("X")
+-- tailButton2 = tailRow:AddCell():AddButton("X")
+-- tailButton3 = tailRow:AddCell():AddButton("X")
+tailSelector = CCTails:AddCombo("Tail Types")
 -----
 CCTails:AddDummy(0,5)
 
@@ -497,7 +502,7 @@ CCTails:AddDummy(0,5)
 CCWings:AddDummy(0,5)
 ----- Wing Style
 -- wingsHeader = CCWings:AddCollapsingHeader("Wings")
-wingsSelector = CCWings:AddCombo("Wings")
+wingsSelector = CCWings:AddCombo("Wing Types")
 -- wingsTable = wingsHeader:AddTable("", 4)
 -- wingsRow = wingsTable:AddRow()
 -- wingsButton1 = wingsRow:AddCell():AddButton("X")

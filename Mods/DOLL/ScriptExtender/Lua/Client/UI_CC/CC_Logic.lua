@@ -4,38 +4,38 @@
 --                                                        --
 ------------------------------------------------------------ 
 
-TESTBUTTON.OnClick = function ()
-    local materialBank = Ext.Resource.Get("5e5b7f76-8fa5-16ff-0cf3-33d94f5ea041", "Material")
-    _P("[CLIENT] Wing Colors:")
-    _D(materialBank.Instance.Parameters.Vector3Parameters[1].Value)
-    local wingColors = materialBank.Instance.Parameters.Vector3Parameters[1].Value
-    local wingColorRed = wingColors[1]
-    local wingColorGreen = wingColors[2]
-    local wingColorBlue = wingColors[3]
+-- TESTBUTTON.OnClick = function ()
+--     local materialBank = Ext.Resource.Get("5e5b7f76-8fa5-16ff-0cf3-33d94f5ea041", "Material")
+--     _P("[CLIENT] Wing Colors:")
+--     _D(materialBank.Instance.Parameters.Vector3Parameters[1].Value)
+--     local wingColors = materialBank.Instance.Parameters.Vector3Parameters[1].Value
+--     local wingColorRed = wingColors[1]
+--     local wingColorGreen = wingColors[2]
+--     local wingColorBlue = wingColors[3]
 
-    print("[CLIENT] Red: ", wingColorRed)
-    print("[CLIENT] Green: ", wingColorGreen)
-    print("[CLIENT] Blue: ", wingColorBlue)
+--     print("[CLIENT] Red: ", wingColorRed)
+--     print("[CLIENT] Green: ", wingColorGreen)
+--     print("[CLIENT] Blue: ", wingColorBlue)
 
-    wingColorRed = 0.75
+--     wingColorRed = 0.75
 
-    newWingColors = {
-        wingColorRed,
-        wingColorGreen,
-        wingColorBlue
-    }
-    print("[CLIENT] Wing Color Red after change = ", wingColorRed)
+--     newWingColors = {
+--         wingColorRed,
+--         wingColorGreen,
+--         wingColorBlue
+--     }
+--     print("[CLIENT] Wing Color Red after change = ", wingColorRed)
 
-    wingColors = newWingColors
-    _P("[CLIENT] wingColors:")
-    _D(wingColors)
-    _P("[CLIENT] materialbank value:")
-    _D(materialBank.Instance.Parameters.Vector3Parameters[1].Value)
-    materialBank.Instance.Parameters.Vector3Parameters[1].Value = wingColors
-    _P("[CLIENT] materialbank value 2:")
-    _D(materialBank.Instance.Parameters.Vector3Parameters[1].Value)
-    Ext.Net.PostMessageToServer("UpdateWingColor", Ext.Json.Stringify(newWingColors))
-end
+--     wingColors = newWingColors
+--     _P("[CLIENT] wingColors:")
+--     _D(wingColors)
+--     _P("[CLIENT] materialbank value:")
+--     _D(materialBank.Instance.Parameters.Vector3Parameters[1].Value)
+--     materialBank.Instance.Parameters.Vector3Parameters[1].Value = wingColors
+--     _P("[CLIENT] materialbank value 2:")
+--     _D(materialBank.Instance.Parameters.Vector3Parameters[1].Value)
+--     Ext.Net.PostMessageToServer("UpdateWingColor", Ext.Json.Stringify(newWingColors))
+-- end
 
 
 
@@ -57,6 +57,22 @@ end
 --getHeadCount
 --populate in steps of 4, then create new line with headsTable:AddRow()
 --each row needs to recieve 4x :AddCell():AddButton()
+
+local previousHead = headSelector.SelectedIndex
+headSelector.OnChange = function()
+    if headSelector.SelectedIndex ~= previousHead then
+        print("-----------------------------")
+        print("New Head Chosen")
+
+        local newHead = headSelector.Options[headSelector.SelectedIndex+1]
+        print("Sending Remove Request for: ", previousHead, " to add ", newHead)
+        Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newHead))
+
+        previousHead = newHead
+        headSelector.Options[0] = previousHead
+        print("Setting previousHead to", previousHead, " until next choice.")
+    end
+end
 
 ---- Skincolor
 --same as heads, but with colors instead and new rows after 10 items
@@ -95,12 +111,12 @@ genitalSelector.OnChange = function()
         print("New Genital Chosen")
 
         local newGenital = genitalSelector.Options[genitalSelector.SelectedIndex+1]
-        print("Removing ", previousGenital, " and adding ", newGenital)
+        print("Sending Remove Request for: ", previousGenital, " to add ", newGenital)
         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newGenital))
 
         previousGenital = newGenital
         genitalSelector.Options[0] = previousGenital
-        print("Previous Genital set to: ", previousGenital, " until next choice.")
+        print("Setting previousGenital to", previousGenital, " until next choice.")
     end
 end
 
@@ -139,12 +155,12 @@ piercingSelector.OnChange = function()
         print("New Piercing Chosen")
 
         local newPiercing = piercingSelector.Options[piercingSelector.SelectedIndex+1]
-        print("Removing ", previousPiercing, " and adding ", newPiercing)
+        print("Sending Remove Request for: ", previousPiercing, " to add ", newPiercing)
         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newPiercing))
 
         previousPiercing = newPiercing
         piercingSelector.Options[0] = previousPiercing
-        print("Previous Piercing set to: ", previousPiercing, " until next choice.")
+        print("Setting previousPiercing to", previousPiercing, " until next choice.")
     end
 end
 
@@ -223,6 +239,23 @@ end
 
 ----- Hair Style
 --same as heads but with hair styles instead
+local previousHair = hairSelector.SelectedIndex
+hairSelector.OnChange = function()
+    print("Clicked")
+    if hairSelector.SelectedIndex ~= previousHair then
+        print("clicked")
+        print("-----------------------------")
+        print("New Hair Chosen")
+
+        local newHair = hairSelector.Options[hairSelector.SelectedIndex+1]
+        print("Sending Remove Request for: ", previousHair, " to add ", newHair)
+        Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newHair))
+
+        previousHair = newHair
+        hairSelector.Options[0] = previousHair
+        print("Setting previousHair to", previousHair, " until next choice.")
+    end
+end
 
 ----- Hair Color
 --same as skincolor but with available hair colors instead
@@ -249,6 +282,21 @@ end
 
 ----- Hair Style
 --same as heads but with facialhair styles instead
+local previousBeard = beardSelector.SelectedIndex
+beardSelector.OnChange = function()
+    if hairSelector.SelectedIndex ~= previousBeard then
+        print("-----------------------------")
+        print("New Beard Chosen")
+
+        local newBeard = beardSelector.Options[beardSelector.SelectedIndex+1]
+        print("Sending Remove Request for: ", previousBeard, " to add ", newBeard)
+        Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newBeard))
+
+        previousBeard = newBeard
+        beardSelector.Options[0] = previousBeard
+        print("Setting previousBeard to", previousBeard, " until next choice.")
+    end
+end
 
 ----- Hair Color
 --same as skincolor but with available facialhair colors instead
@@ -265,6 +313,21 @@ end
 
 ----- Horn Style
 --same as heads but with horns styles instead
+local previousHorn = hornSelector.SelectedIndex
+hornSelector.OnChange = function()
+    if hornSelector.SelectedIndex ~= previousHorn then
+        print("-----------------------------")
+        print("New Horns Chosen")
+
+        local newHorn = hornSelector.Options[hornSelector.SelectedIndex+1]
+        print("Sending Remove Request for: ", previousHorn, " to add ", newHorn)
+        Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newHorn))
+
+        previousHorn = newHorn
+        hornSelector.Options[0] = previousHorn
+        print("Setting previousHorn to", previousHorn, " until next choice.")
+    end
+end
 
 ----- Horn Color
 --same as skincolor but with available horn colors instead
@@ -280,6 +343,21 @@ end
 
 ----- Tail Style
 --same as heads but with tail styles instead
+local previousTail = tailSelector.SelectedIndex
+tailSelector.OnChange = function()
+    if tailSelector.SelectedIndex ~= previousTail then
+        print("-----------------------------")
+        print("New Tail Chosen")
+
+        local newTail = tailSelector.Options[tailSelector.SelectedIndex+1]
+        print("Sending Remove Request for: ", previousTail, " to add ", newTail)
+        Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newTail))
+
+        previousTail = newTail
+        tailSelector.Options[0] = previousTail
+        print("Setting previousTail to: ", previousTail, " until next choice.")
+    end
+end
 
 ------------------------------------------------------
 --                                                  --
@@ -296,11 +374,11 @@ wingsSelector.OnChange = function()
         print("New Wings Chosen")
 
         local newWings = wingsSelector.Options[wingsSelector.SelectedIndex+1]
-        print("Removing ", previousWings, " and adding ", newWings)
+        print("Sending Remove Request for: ", previousWings, " to add ", newWings)
         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newWings))
 
         previousWings = newWings
         wingsSelector.Options[0] = previousWings
-        print("Previous Wings set to: ", previousWings, " until next choice.")
+        print("Setting previousWings to: ", previousWings, " until next choice.")
     end
 end

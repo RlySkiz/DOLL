@@ -1,25 +1,18 @@
 -------------------------------------------------------------------------------------------------------
 -- 
--- 	                        All purpose CCSV maipualation
+-- 	                        All purpose CCAV maipualation
 -- 
 ---------------------------------------------------------------------------------------------------------
 
 
 
--- get type by slot nam
+Visual = {}
+Visual.__index = Visual
 
-
-CCSV = {}
-CCSV.__index = CCSV
-
-function CCSV:new()
-    local instance = setmetatable({}, CCSV)
+function Visual:new()
+    local instance = setmetatable({}, Visual)
     return instance
 end
-
-
--- TODO - MOVE CCAV AND CCSV / GENITALS IN ONE CLASS CALLED VISUALS
--- IF PRIVATE PARTS THEN: ADDITIONAL FILTERING
 
 
 ----------------------------------------------------------------------------------------------------
@@ -38,65 +31,69 @@ end
 ----------------------------------------------------------------------------------------------------
 
 -- Get all CharacterCreationAppearaceVisuals loaded in the game
----return 				- list of CharacterCreationAppearaceVisual IDs for all CCSV
-function CCSV:getAllCCSV()
-	local allCCSV = Ext.StaticData.GetAll("CharacterCreationSharedVisual")
-	return allCCSV
+--@param ccType         - ccav or ccsv
+---return 				- list of CharacterCreationAppearaceVisual IDs for all CCAV
+function Visual:getAllVisuals(ccType)
+    if ccType == ccav then
+    local allCCAV = Ext.StaticData.GetAll("CharacterCreationAppearanceVisual")
+    elseif ccs
+	return allCCAV
 end
 
 -- Get all CharacterCreationAppearaceVisuals of type x loaded in the game
----return 				- list of CharacterCreationAppearaceVisual IDs for all CCSV of type x
-function CCSV:getAllCCSVOfType(type)
-	local allCCSV = CCSV:getAllCCSV()
-    local CCSVOfType = {}
-	for i, CCSV in pairs(allCCSV)do
-		local contents = Ext.StaticData.Get(CCSV, "CharacterCreationSharedVisual")
+---return 				- list of CharacterCreationAppearaceVisual IDs for all CCAV of type x
+function CCAV:getAllCCAVOfType(type)
+	local allCCAV = CCAV:getAllCCAV()
+    local CCAVOfType = {}
+	for i, CCAV in pairs(allCCAV)do
+		local contents = Ext.StaticData.Get(CCAV, "CharacterCreationAppearanceVisual")
 		local slotName = contents.SlotName
 		if slotName and slotName == type then
-			table.insert(CCSVOfType, CCSV)
+			
+			table.insert(CCAVOfType, CCAV)
 		end
 	end
-	return CCSVOfType
+	return CCAVOfType
 end
 
--- Add the name of the CCSVs to the list
---@param				- list of CharacterCreationAppearaceVisual IDs for CCSV
+-- Add the name of the CCAVs to the list
+--@param				- list of CharacterCreationAppearaceVisual IDs for CCAV
 ---return 				- list of names and CharacterCreationAppearaceVisual IDs
-function CCSV:addName(listOfCCSV)
+function CCAV:addName(listOfCCAV)
 
-	local namesWithCCSV = {}
-    for _, item in pairs(listOfCCSV) do
-		local content = Ext.StaticData.Get(item,"CharacterCreationSharedVisual")
+	local namesWithCCAV = {}
+    for _, item in pairs(listOfCCAV) do
+		local content = Ext.StaticData.Get(item,"CharacterCreationAppearanceVisual")
         local handle = content.DisplayName.Handle.Handle
         local entry = {name = Ext.Loca.GetTranslatedString(handle), uuid = item}
-        table.insert(namesWithCCSV, entry)
+        table.insert(namesWithCCAV, entry)
 	end
 	
-	return namesWithCCSV
+	return namesWithCCAV
 end
 
 
 -- Get all CharacterCreationAppearaceVisuals in Gustav
 ---return 				- list of CharacterCreationAppearaceVisual IDs for Gustav
-function CCSV:getVanillaCCSV(TYPE, default)
+function CCAV:getVanillaCCAV(TYPE, default)
  -- TODO
 end
 
--- Get Mod Specific CCSV
+-- Get Mod Specific CCAV
 --@param            - ModName (FolderName)
----return           - list of CharacterCreationAppearaceVisual IDs CCSV
-function CCSV:getModCCSV(modName)
+---return           - list of CharacterCreationAppearaceVisual IDs CCAV
+function CCAV:getModCCAV(modName)
     -- TODO
 end
 
 
--- Get Mod that CCSV belongs to
---@param  			- CCSV ID
+-- Get Mod that CCAV belongs to
+--@param  			- CCAV ID
 ---return 			- Name of Mod (Folder Name)
 
--- local function getModByCCSV(CCSV)
+-- local function getModByCCAV(CCAV)
 
--- 	local visualResource = Ext.StaticData.Get(CCSV,"CharacterCreationSharedVisual").VisualResource
+-- 	local visualResource = Ext.StaticData.Get(CCAV,"CharacterCreationAppearanceVisual").VisualResource
 -- 	local sourceFile = Ext.Resource.Get(visualResource,"Visual").SourceFile
 
 -- 	-- Use string.match to capture the required part of the path
@@ -112,8 +109,8 @@ end
 --         for _, race in pairs(RACES) do
 -- 			if stringContains(modName, race) then
 --                 print("Error: Mod name matches a race name, which suggests improper directory structure.")
--- 				print("Error: Spell will be added to \"Other CCSV\"")
---                 return "Other_CCSV"
+-- 				print("Error: Spell will be added to \"Other CCAV\"")
+--                 return "Other_CCAV"
 --             end
 --         end
 --     end
@@ -122,7 +119,7 @@ end
 -- end
 ----------------------------------------------------------------------------------------------------
 -- 
--- 									CCSV
+-- 									CCAV
 -- 
 ----------------------------------------------------------------------------------------------------
 
@@ -131,7 +128,7 @@ end
 -- @param originalRace		- actual race of the entity
 ---return 					- raceOverride in case of unsupported modded race / race
 ---return           		- bodyshapeOverride in case of modded race / bodyshape
-function CCSV:getRaceAndBody(originalRace)
+function CCAV:getRaceAndBody(originalRace)
 
 	local bodyShapeOverride = false
 	local race = originalRace
@@ -148,13 +145,13 @@ function CCSV:getRaceAndBody(originalRace)
 			end
 
 			-- choose different bodyshape preset [for now has to be manually configured]
-			if (allowedRace.bs3) or allCCSV.bs4 then
+			if (allowedRace.bs3) or allCCAV.bs4 then
 				bodyShapeOverride = true
 				print("Using bodyshape override")
 			end
 
 		else
-			print(race, " is not supported using default human CCSV")
+			print(race, " is not supported using default human CCAV")
 			race = "0eb594cb-8820-4be6-a58d-8be7a1a98fba"
 		end
 	end
@@ -165,13 +162,13 @@ end
 
 -- TODO : test Githzerai again
 
--- Get all allowed CCSV for entity (Ex: all vulva for human)
--- @param list		- list of CCSV to be filtered
--- @param uuis 	    - uuid of entity that will receive the CCSV
+-- Get all allowed CCAV for entity (Ex: all vulva for human)
+-- @param list		- list of CCAV to be filtered
+-- @param uuis 	    - uuid of entity that will receive the CCAV
 ---return 			- List of IDs of CharacterCreationAppearaceVisuals
-function CCSV:getPermittedCCSV(uuid, allCCSV)
+function CCAV:getPermittedCCAV(uuid, allCCAV)
 
-    local permittedCCSV = {}
+    local permittedCCAV = {}
     
 	-- Get the properties for the character
 	local E = GetPropertyOrDefault(Ext.Entity.Get(uuid),"CharacterCreationStats", nil)
@@ -195,14 +192,14 @@ function CCSV:getPermittedCCSV(uuid, allCCSV)
 	end
 
 	-- failsafe for modded races - assign human race
-	-- TODO - add support for modded CCSV for modded races
+	-- TODO - add support for modded CCAV for modded races
 
 	local bodyShapeOverride = false
 
 	if not RACES[race] then
 		print(race, " is not Vanilla, checking for supported custom races")
 
-		race, bodyShapeOverride = CCSV:getRaceAndBody(originalRace)
+		race, bodyShapeOverride = CCAV:getRaceAndBody(originalRace)
 	end
 
 	-- Halsin is special boy
@@ -210,40 +207,35 @@ function CCSV:getPermittedCCSV(uuid, allCCSV)
 		race = "0eb594cb-8820-4be6-a58d-8be7a1a98fba"
 	end
 
-	-- get CCSV with same stats
-	for _, CCSV in pairs(allCCSV) do
+	-- get CCAV with same stats
+	for _, CCAV in pairs(allCCAV) do
 
-		local G = Ext.StaticData.Get(CCSV, "CharacterCreationSharedVisual")
+		local G = Ext.StaticData.Get(CCAV, "CharacterCreationAppearanceVisual")
 
 		-- bodyshape overrides for modded races - TODO: find a better way to do this
 		if bodyShapeOverride then
 			bs = 0
 		end
-
-		gbt = GetPropertyOrDefault(G, "BodyType", bt)	
-		gbs = GetPropertyOrDefault(G, "BodyShape", bs)
-		gru = GetPropertyOrDefault(G, "RaceUUID", race)
-
 		
-		if (bt == gbt) and (bs == gbs) and (race == gru) then
-			table.insert(permittedCCSV, CCSV)
+		if (bt == G.BodyType) and (bs == G.BodyShape) and (race == G.RaceUUID) then
+			table.insert(permittedCCAV, CCAV)
 		end
     end
     
 
     -- TODO - Clean up 
-    -- Some lazy filtering to filter out default CCSV
+    -- Some lazy filtering to filter out default CCAV
 
     local result = {}
 
-      for _, CCSV in ipairs(permittedCCSV) do
+      for _, CCAV in ipairs(permittedCCAV) do
 
-        local content = Ext.StaticData.Get(CCSV,"CharacterCreationSharedVisual")
+        local content = Ext.StaticData.Get(CCAV,"CharacterCreationAppearanceVisual")
         local handle = content.DisplayName.Handle.Handle
         local name = Ext.Loca.GetTranslatedString(handle)
 
         if name ~= "Default" then
-            table.insert(result, CCSV)
+            table.insert(result, CCAV)
         end
     end
 
@@ -251,35 +243,35 @@ function CCSV:getPermittedCCSV(uuid, allCCSV)
 end
 
 
--- TODO - Halsin is special, give him human CCSV
+-- TODO - Halsin is special, give him human CCAV
 
 -- TODO - currently resets on Saveload. Make into uservariable
--- allows to cycle through a list of CCSV instead of choosing a random one
-local CCSVChoice = {}
+-- allows to cycle through a list of CCAV instead of choosing a random one
+local CCAVChoice = {}
 
--- Choose random CCSV from selection (Ex: random vulva from vulva a - c)
--- @param spell		- Name of the spell by which the CCSV are filtered (vulva, penis, erection)
--- @param uuid 	    - uuid of entity that will receive the CCSV
+-- Choose random CCAV from selection (Ex: random vulva from vulva a - c)
+-- @param spell		- Name of the spell by which the CCAV are filtered (vulva, penis, erection)
+-- @param uuid 	    - uuid of entity that will receive the CCAV
 ---return 			- ID of CharacterCreationAppearaceVisual
-function CCSV:getNextCCSV(spell, uuid)
+function CCAV:getNextCCAV(spell, uuid)
 
 	-- TODO - Shart only has 2 vulvas to choose from instead of 3 after filtering for defailts: issue in the lib? 
-    local permittedCCSV = CCSV:getPermittedCCSV(uuid)
-    local filteredCCSV = CCSV:getFilteredCCSV(spell, permittedCCSV)
+    local permittedCCAV = CCAV:getPermittedCCAV(uuid)
+    local filteredCCAV = CCAV:getFilteredCCAV(spell, permittedCCAV)
 
-    if CCSVChoice.uuid == uuid and CCSVChoice.spell == spell then
+    if CCAVChoice.uuid == uuid and CCAVChoice.spell == spell then
         -- Increment the index, wrap around if necessary
-        CCSVChoice.index = (CCSVChoice.index % #filteredCCSV) + 1
+        CCAVChoice.index = (CCAVChoice.index % #filteredCCAV) + 1
     else
-        CCSVChoice = {uuid = uuid, spell = spell, index = 1}
+        CCAVChoice = {uuid = uuid, spell = spell, index = 1}
     end
 
-    if #filteredCCSV == 0 then
-        print("[BG3SX] No " , spell , " CCSV available after filtering for this entity.")
+    if #filteredCCAV == 0 then
+        print("[BG3SX] No " , spell , " CCAV available after filtering for this entity.")
         return nil
     else
-        local selectedCCSV = filteredCCSV[CCSVChoice.index]
-        return selectedCCSV
+        local selectedCCAV = filteredCCAV[CCAVChoice.index]
+        return selectedCCAV
     end
 end
 
@@ -289,68 +281,66 @@ end
 -- 
 ----------------------------------------------------------------------------------------------------
 
--- Get the current CCSV of the entity
--- @param uuid 	    - uuid of entity that has a CCSV
--- @param type 	    - type of teh CCSV
+-- Get the current CCAV of the entity
+-- @param uuid 	    - uuid of entity that has a CCAV
 ---return 			- tale of IDs of CharacterCreationAppearaceVisual
-function CCSV:getCurrentCCSV(uuid, type)
-	local allCCSV = CCSV:getAllCCSV()
+function CCAV:getCurrentCCAV(uuid)
 	local characterVisuals =  Ext.Entity.Get(uuid):GetAllComponents().CharacterCreationAppearance.Visuals
-
-    local visualsOfType = {}
-	
-	for _, visual in pairs(characterVisuals)do
-        if contains(allCCSV, visual) then
-            table.insert(visualsOfType, visual)	
-		end
-    end
-    
-    return visualsOfType
+    return characterVisuals
 end
 
 
-function CCSV:getCurrentCCSVOfType(uuid, type)
-	local currentCCSC = CCSV:getCurrentCCSV()
+-- Get the current CCAV of the entity
+-- @param uuid 	    - uuid of entity that has a CCAV
+-- @param type 	    - type of the CCAV
+---return 			- tale of IDs of CharacterCreationAppearaceVisual
+function CCAV:getCurrentCCAVOfType(uuid, type)
+	local currentCCAV = CCAV:getCurrentCCAV(uuid)
+	local CCAVOfType = CCAV:getAllCCAVOfType(type)
 
     local visualsOfType = {}
 	
-	for _, visual in pairs(currentCCSV)do
-        if visual == type then
+	for _, visual in pairs(currentCCAV)do
+        if contains(CCAVOfType, visual) then
             table.insert(visualsOfType, visual)	
 		end
     end
     return visualsOfType
 end
 
--- Override the current CCSV with the new one
--- @param newCCSV	- ID of CharacterCreationAppearaceVisual of type PrivateParts
--- @param uuid 	     	- uuid of entity that will receive the CCSV
-function CCSV:overrideCCSV(newCCSV, uuid, type)
-	local currentCCSV = CCSV:getCurrentCCSV(uuid, type)
-	_P("CURRENT CCSV OF TYPE ", type , " = ", newCCSV)
 
-    for _, CCSV in pairs(currentCCSV) do
-	    -- Origins don't have CCSV - We have to add one before we can remove it
-	    if not (CCSV == newCCSV) then
+
+-- Override the current CCAV with the new one
+-- @param newCCAV	- ID of CharacterCreationAppearaceVisual of type PrivateParts
+-- @param uuid 	     	- uuid of entity that will receive the CCAV
+function CCAV:overrideCCAV(newCCAV, uuid, type)
+	local currentCCAV = CCAV:getCurrentCCAVOfType(uuid, type)
+	_P("CURRENT CCAV OF ", type , " = ", newCCAV)
+	_P("All CCAV of type ", type , " on  entity:")
+	_D(currentCCAV)
+
+    for _, ccav in pairs(currentCCAV) do
+	    -- Origins don't have CCAV - We have to add one before we can remove it
+	    if not (ccav == newCCAV) then
 			-- Note: This is not a typo, It's actually called Ovirride
-			print("REMOVING " ,CCSV)
-		    Osi.RemoveCustomVisualOvirride(uuid, CCSV) 
+			print("REMOVING ", ccav)
+		    Osi.RemoveCustomVisualOvirride(uuid, ccav) 
 	    end
 	end
 	
-	if newCCSV then
-		Osi.AddCustomVisualOverride(uuid, newCCSV)
+	if newCCAV then
+		Osi.AddCustomVisualOverride(uuid, newCCAV)
 	end
 end
 
 
-function CCSV:addCCSV(uuid, CCSV)
-    Osi.AddCustomVisualOverride(uuid, CCSV)
+function CCAV:addVisual(uuid, ccav)
+    Osi.AddCustomVisualOverride(uuid, ccav)
 end
 
 
-function CCSV:removeCCSV(uuid, CCSV)
-     Osi.RemoveCustomVisualOvirride(uuid, CCSV)
+function CCAV:removeVisual(uuid, ccav)
+     Osi.RemoveCustomVisualOvirride(uuid, ccav)
 end
 
 

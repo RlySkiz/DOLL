@@ -37,7 +37,6 @@ end
 ---return 				- list of CharacterCreationAppearaceVisual IDs for all CCAV
 function CCAV:getAllCCAV()
 	local allCCAV = Ext.StaticData.GetAll("CharacterCreationAppearanceVisual")
-		_P("Length of list: ", #allCCAV)
 	return allCCAV
 end
 
@@ -50,7 +49,7 @@ function CCAV:getAllCCAVOfType(type)
 		local contents = Ext.StaticData.Get(CCAV, "CharacterCreationAppearanceVisual")
 		local slotName = contents.SlotName
 		if slotName and slotName == type then
-			_P("Added ", slotName)
+			
 			table.insert(CCAVOfType, CCAV)
 		end
 	end
@@ -284,35 +283,47 @@ end
 
 -- Get the current CCAV of the entity
 -- @param uuid 	    - uuid of entity that has a CCAV
--- @param type 	    - type of teh CCAV
 ---return 			- tale of IDs of CharacterCreationAppearaceVisual
-function CCAV:getCurrentCCAV(uuid, type)
-	local allCCAV = CCAV:getAllCCAV()
+function CCAV:getCurrentCCAV(uuid)
 	local characterVisuals =  Ext.Entity.Get(uuid):GetAllComponents().CharacterCreationAppearance.Visuals
+    return characterVisuals
+end
+
+
+-- Get the current CCAV of the entity
+-- @param uuid 	    - uuid of entity that has a CCAV
+-- @param type 	    - type of the CCAV
+---return 			- tale of IDs of CharacterCreationAppearaceVisual
+function CCAV:getCurrentCCAVOfType(uuid, type)
+	local currentCCAV = CCAV:getCurrentCCAV(uuid)
+	local CCAVOfType = CCAV:getAllCCAVOfType(type)
 
     local visualsOfType = {}
 	
-	for _, visual in pairs(characterVisuals)do
-        if contains(allCCAV, visual) then
+	for _, visual in pairs(currentCCAV)do
+        if contains(CCAVOfType, visual) then
             table.insert(visualsOfType, visual)	
 		end
     end
-    
     return visualsOfType
 end
+
 
 
 -- Override the current CCAV with the new one
 -- @param newCCAV	- ID of CharacterCreationAppearaceVisual of type PrivateParts
 -- @param uuid 	     	- uuid of entity that will receive the CCAV
-function CCAV:overrideCCAV(newCCAV, uuid)
-	local currentCCAV = CCAV:getCurrentCCAV(uuid, type)
-	_P("Current CCAV of type ", type , " = ", uuid)
+function CCAV:overrideCCAV(newCCAV, uuid, type)
+	local currentCCAV = CCAV:getCurrentCCAVOfType(uuid, type)
+	_P("CURRENT CCAV OF ", type , " = ", newCCAV)
+	_P("All CCAV of type ", type , " on  entity:")
+	_D(currentCCAV)
 
     for _, ccav in pairs(currentCCAV) do
 	    -- Origins don't have CCAV - We have to add one before we can remove it
 	    if not (ccav == newCCAV) then
-		    -- Note: This is not a typo, It's actually called Ovirride
+			-- Note: This is not a typo, It's actually called Ovirride
+			print("REMOVING ", ccav)
 		    Osi.RemoveCustomVisualOvirride(uuid, ccav) 
 	    end
 	end
