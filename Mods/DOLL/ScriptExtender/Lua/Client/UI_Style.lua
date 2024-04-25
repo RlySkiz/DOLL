@@ -3,8 +3,11 @@
 --                      UI Style                    --
 --                                                  --
 ------------------------------------------------------ 
+-- d.Closable = true
+-- d.Closed = false
+w.Closable = true
+-- w.Closed = true
 w.NoTitleBar = false
-w.Closeable = true
 -- w.MenuBar = true
 w:SetStyle("WindowMinSize", 200, 200)
 w:SetStyle("WindowRounding", 15)

@@ -223,22 +223,27 @@ end)
 
 
 -- Skiz wing coloring 
+-- Ext.Events.NetMessage:Subscribe(function(e)
+
+--      if (e.Channel == "UpdateWingColor") then
+--        local wingColorRed = Ext.Json.Parse(e.Payload)
+
+--        local materialBank = Ext.Resource.Get("5e5b7f76-8fa5-16ff-0cf3-33d94f5ea041", "Material")
+--         _P("[SERVER] Wing Colors:")
+--        _D(materialBank.Instance.Parameters.Vector3Parameters[1].Value)
+--        local wingColors = materialBank.Instance.Parameters.Vector3Parameters[1].Value
 
 
-     --if (e.Channel == "UpdateWingColor") then
-        --local wingColorRed = Ext.Json.Parse(e.Payload)
 
-       -- local materialBank = Ext.Resource.Get("5e5b7f76-8fa5-16ff-0cf3-33d94f5ea041", "Material")
-        --_P("[SERVER] Wing Colors:")
-       -- _D(materialBank.Instance.Parameters.Vector3Parameters[1].Value)
-       -- local wingColors = materialBank.Instance.Parameters.Vector3Parameters[1].Value
-       -- print("[SERVER] Color Red before payload input: ", wingColors[1])
-       -- local wingColorRed = wingColorRed
-       -- local wingColorGreen = wingColors[2]
-       -- local wingColorBlue = wingColors[3]
+    --leave these as comments
+    --    print("[SERVER] Color Red before payload input: ", wingColors[1])
+    --    local wingColorRed = wingColorRed
+    --    local wingColorGreen = wingColors[2]
+    --    local wingColorBlue = wingColors[3]
         
-       -- print("[SERVER] Red: ", wingColorRed)
-       -- print("[SERVER] Green: ", wingColorGreen)
-       -- print("[SERVER] Blue: ", wingColorBlue)
+    --    print("[SERVER] Red: ", wingColorRed)
+    --    print("[SERVER] Green: ", wingColorGreen)
+    --    print("[SERVER] Blue: ", wingColorBlue)
         
-     --end
+--      end
+-- end)

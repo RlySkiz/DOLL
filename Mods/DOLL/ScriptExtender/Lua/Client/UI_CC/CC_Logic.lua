@@ -4,10 +4,14 @@
 --                                                        --
 ------------------------------------------------------------ 
 
+------ Skiz Wing Coloring
+
 -- TESTBUTTON.OnClick = function ()
 --     local materialBank = Ext.Resource.Get("5e5b7f76-8fa5-16ff-0cf3-33d94f5ea041", "Material")
---     _P("[CLIENT] Wing Colors:")
+--     _P("[CLIENT] Material bank parameter values:")
 --     _D(materialBank.Instance.Parameters.Vector3Parameters[1].Value)
+
+--     _P("[CLIENT] wingColors[] = those values")
 --     local wingColors = materialBank.Instance.Parameters.Vector3Parameters[1].Value
 --     local wingColorRed = wingColors[1]
 --     local wingColorGreen = wingColors[2]
@@ -18,25 +22,33 @@
 --     print("[CLIENT] Blue: ", wingColorBlue)
 
 --     wingColorRed = 0.75
+--     print("[CLIENT] set Red to: ", wingColorRed)
 
---     newWingColors = {
+--     print("[CLIENT] create new list newWingColors with all previous colors but changed red to ", wingColorRed)
+--     local newWingColors = {
 --         wingColorRed,
 --         wingColorGreen,
 --         wingColorBlue
 --     }
---     print("[CLIENT] Wing Color Red after change = ", wingColorRed)
+--     _D(newWingColors)
 
+--     print("[CLIENT] Wing Color Red is therefore = ", wingColorRed)
+
+--     print("[CLIENT] Set wingColors[] = newWingColors[]")
 --     wingColors = newWingColors
---     _P("[CLIENT] wingColors:")
+
+--     _P("[CLIENT] Dump wingColors:")
 --     _D(wingColors)
---     _P("[CLIENT] materialbank value:")
+    
+--     _P("[CLIENT] Now dump materialBank values again: ")
 --     _D(materialBank.Instance.Parameters.Vector3Parameters[1].Value)
+--     _P("[CLIENT] Now input wingColors[] into that those materialBank parameters[]")
 --     materialBank.Instance.Parameters.Vector3Parameters[1].Value = wingColors
---     _P("[CLIENT] materialbank value 2:")
+
+--     _P("[CLIENT] materialBanks new parameter values:")
 --     _D(materialBank.Instance.Parameters.Vector3Parameters[1].Value)
 --     Ext.Net.PostMessageToServer("UpdateWingColor", Ext.Json.Stringify(newWingColors))
 -- end
-
 
 
 --------------- Event Sender---------------

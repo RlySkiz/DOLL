@@ -6,6 +6,7 @@
 ------------------------------------------------------
 tCC:AddDummy(0,5)
 
+-- TESTBUTTON = tCC:AddButton("BUMP ME")
 ----- Race
 -- raceHeader = CCBody:AddSeparatorText("Race")
 -- racePrevious = CCBody:AddButton("<")
@@ -51,7 +52,6 @@ CCWings.Visible = true
 ------------------------------------------------------
 
 CCBody:AddDummy(0,5)
--- TESTBUTTON = CCBody:AddButton("BUMP ME")
 -----
 CCBody:AddDummy(0,5) -- Dummies are used for spacing until i figure it out in UI_Style
 ----- Heads

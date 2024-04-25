@@ -6,13 +6,13 @@
 ------------------------------------------------------
 --- Windows
 d = Ext.IMGUI.EnableDemo(true)
-w = Ext.IMGUI.NewWindow("BG3 REDACTEDtender")
+w = Ext.IMGUI.NewWindow("DOLL Character Editor")
 
 -- w:AddText("Test") -- test if you can add above tab bar (works)
 --- Tab Bar
 tBar = w:AddTabBar("")
 tCC = tBar:AddTabItem("Character Creation")
-tSET = tBar:AddTabItem("Settings")
+-- tSET = tBar:AddTabItem("Settings")
 tABO = tBar:AddTabItem("About")
 
 ------------------------------------------------------
@@ -21,10 +21,10 @@ tABO = tBar:AddTabItem("About")
 --                                                  --
 ------------------------------------------------------
 
-tSET:AddDummy(0,5)
-tSET:AddSeparatorText("REDACTED Settings")
-stripCheckBox = tSET:AddCheckbox("Block REDACTED?", true)
-erectionCheckBox = tSET:AddCheckbox("Would you like to get REDACTED?", true)
+-- tSET:AddDummy(0,5)
+-- tSET:AddSeparatorText("REDACTED Settings")
+-- stripCheckBox = tSET:AddCheckbox("Block REDACTED?", true)
+-- erectionCheckBox = tSET:AddCheckbox("Would you like to get REDACTED?", true)
 
 ------------------------------------------------------
 --                                                  --
