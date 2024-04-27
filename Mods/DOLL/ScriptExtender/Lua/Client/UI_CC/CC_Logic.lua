@@ -71,7 +71,9 @@
 --each row needs to recieve 4x :AddCell():AddButton()
 
 local previousHead = headSelector.SelectedIndex
+-- TODO doesn't fire when selecting an item avobe the previously selected index 
 headSelector.OnChange = function()
+    _D(previousHead)
     if headSelector.SelectedIndex ~= previousHead then
         print("-----------------------------")
         print("New Head Chosen")
@@ -80,9 +82,9 @@ headSelector.OnChange = function()
         print("Sending Remove Request for: ", previousHead, " to add ", newHead)
         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newHead))
 
-        previousHead = newHead
-        headSelector.Options[0] = previousHead
-        print("Setting previousHead to", previousHead, " until next choice.")
+       previousHead = newHead
+       headSelector.Options[0] = previousHead
+       print("Setting previousHead to", previousHead, " until next choice.")
     end
 end
 

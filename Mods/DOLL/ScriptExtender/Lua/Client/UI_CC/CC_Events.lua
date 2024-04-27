@@ -17,11 +17,11 @@ wingsCCAV = {}
                 local name = entry.name
                 local uuid = entry.uuid
 
-                print("[CC_Events.lua] - Entry: ", entry, " with name: ", name, " and UUID: ", uuid)
+                --print("[CC_Events.lua] - Entry: ", entry, " with name: ", name, " and UUID: ", uuid)
 
                 selector.Options[i] = name .. "_" .. uuid
 
-                print("[CC_Events.lua] - Set Selector.Option: ", selector.Options[i])
+                --print("[CC_Events.lua] - Set Selector.Option: ", selector.Options[i])
             end
         end
 
@@ -58,12 +58,12 @@ Ext.Events.NetMessage:Subscribe(function(e)
     end
 
     -- Recieves available CCAVs based on requested type and controlled character race
-    if (e.Channel == "SendCCAV") then
+    if (e.Channel == "SendVisual") then
         local payload = Ext.Json.Parse(e.Payload)
 
         print("------------------------------------------------")
         local type = payload[1]
-        print("[CC_Events.lua] - SendCCAV recieved of Type: ")
+        print("[CC_Events.lua] - SendVisual recieved of Type: ")
         print("[CC_Events.lua] - ", type)
         local listOfUUIDs = payload[2]
 

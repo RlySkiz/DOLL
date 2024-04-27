@@ -1,9 +1,9 @@
 -------------------------------------------------------------------------------------------------------
 -- 
--- 	                        All purpose CCAV maipualation
+-- 	                        All purpose Visual maipualation
+--
 -- 
 ---------------------------------------------------------------------------------------------------------
-
 
 
 Visual = {}
@@ -15,13 +15,67 @@ function Visual:new()
 end
 
 
+-- TODO - I think items can be either CCAV or CCSV 
+-- SO we scan for both (they need different methods since
+-- CCAV are filtered by bodytype while CCSV are onyl filtered by race)
+-- TODO: check what happens when we add the wrong races CCSV
+
+
+
 ----------------------------------------------------------------------------------------------------
 -- 
--- 									Shorthands and Helpers
+-- 									Visual Type Identification
 -- 
 ----------------------------------------------------------------------------------------------------
 
+-- get type of uuid
+--@param visual	        - uuid of visual
+---return String  	    - "CharacterCreationAppearanceVisual" or CharacterCreationSharedVisual"
+function Visual:getType(uuid)
 
+    local ccav = Ext.StaticData.Get(uuid,"CharacterCreationAppearanceVisual")
+    local ccsv = Ext.StaticData.Get(uuid,"CharacterCreationSharedVisual")
+
+    if ccav then
+        return "CharacterCreationAppearanceVisual", ccav.SlotName
+    elseif ccsv then
+        return "CharacterCreationSharedVisual", ccsv.SlotName
+    end
+end
+
+----------------------------------------------------------------------------------------------------
+-- 
+-- 									Get the cumulated information
+-- 
+----------------------------------------------------------------------------------------------------
+
+-- Get all visuals of one type for an entity with their names
+--@param type         - The visual type (ex: Private Parts)
+--@param uuid         - The uuid of the entity for who the list is being filtered
+--@param visualType   - "CharacterCreationAppearanceVisual" or "CharacterCreationSharedVisual"
+--return 			  - list of CharacterCreationAppearaceVisual IDs for all Visual
+function Visual:getVisualsWithName(type, uuid, visualType)
+    local allVisualsOfType = Visual:getAllVisualsOfType(type, visualType)
+    local permittedVisuals = Visual:getPermittedVisual(uuid, allVisualsOfType, visualType)
+    local visualsWithName = Visual:addName(permittedVisuals, visualType)
+    return visualsWithName
+end
+
+
+-- returns all visuals of a type for an entity : both CCAV and CCSV
+--@param type	        - type of the visual (ex: Private Parts)
+--@param uuid   	    - uuid of entity who will receive visual
+---return 			    - List of IDs of CCAV and CCSV
+function Visual:getAllVisualsWithName(type,uuid)
+    local allCCAV = Visual:getVisualsWithName(type, uuid,"CharacterCreationAppearanceVisual")
+    local allCCSV = Visual:getVisualsWithName(type,uuid, "CharacterCreationSharedVisual")
+
+    -- Append 
+    for i, v in ipairs(allCCSV) do
+        table.insert(allCCAV, v)
+    end
+    return allCCAV
+end
 
 ----------------------------------------------------------------------------------------------------
 -- 
@@ -30,145 +84,91 @@ end
 -- 
 ----------------------------------------------------------------------------------------------------
 
+
 -- Get all CharacterCreationAppearaceVisuals loaded in the game
---@param ccType         - ccav or ccsv
----return 				- list of CharacterCreationAppearaceVisual IDs for all CCAV
-function Visual:getAllVisuals(ccType)
-    if ccType == ccav then
-    local allCCAV = Ext.StaticData.GetAll("CharacterCreationAppearanceVisual")
-    elseif ccs
-	return allCCAV
+--@param visualType     - "CharacterCreationAppearanceVisual" or "CharacterCreationSharedVisual"
+---return 				- list of CharacterCreationAppearaceVisual IDs for all Visual
+function Visual:getAllVisuals(visualType)
+    local allVisuals = Ext.StaticData.GetAll(visualType)
+	return allVisuals
 end
 
 -- Get all CharacterCreationAppearaceVisuals of type x loaded in the game
----return 				- list of CharacterCreationAppearaceVisual IDs for all CCAV of type x
-function CCAV:getAllCCAVOfType(type)
-	local allCCAV = CCAV:getAllCCAV()
-    local CCAVOfType = {}
-	for i, CCAV in pairs(allCCAV)do
-		local contents = Ext.StaticData.Get(CCAV, "CharacterCreationAppearanceVisual")
+--@param type           - The visual type (ex: Private Parts)
+--@param visualType     - "CharacterCreationAppearanceVisual" or "CharacterCreationSharedVisual"
+---return 				- list of CharacterCreationAppearaceVisual IDs for all Visual of type x
+function Visual:getAllVisualsOfType(type, visualType)
+	local allVisuals = Visual:getAllVisuals(visualType)
+    local visualOfType = {}
+	for i, visual in pairs(allVisuals)do
+		local contents = Ext.StaticData.Get(visual, visualType)
 		local slotName = contents.SlotName
 		if slotName and slotName == type then
-			
-			table.insert(CCAVOfType, CCAV)
+			table.insert(visualOfType, visual)
 		end
 	end
-	return CCAVOfType
+	return visualOfType
 end
 
--- Add the name of the CCAVs to the list
---@param				- list of CharacterCreationAppearaceVisual IDs for CCAV
----return 				- list of names and CharacterCreationAppearaceVisual IDs
-function CCAV:addName(listOfCCAV)
 
-	local namesWithCCAV = {}
-    for _, item in pairs(listOfCCAV) do
-		local content = Ext.StaticData.Get(item,"CharacterCreationAppearanceVisual")
+-- Add the name of the Visuals to the list
+--@param listOfVisual	- list of CharacterCreationAppearaceVisual IDs for Visual
+--@param visualType     - "CharacterCreationAppearanceVisual" or "CharacterCreationSharedVisual"
+---return 				- list of names and CharacterCreationAppearaceVisual IDs
+function Visual:addName(listOfVisual, visualType)
+
+	local namesWithVisual = {}
+    for _, item in pairs(listOfVisual) do
+		local content = Ext.StaticData.Get(item,visualType)
         local handle = content.DisplayName.Handle.Handle
         local entry = {name = Ext.Loca.GetTranslatedString(handle), uuid = item}
-        table.insert(namesWithCCAV, entry)
+        table.insert(namesWithVisual, entry)
 	end
-	
-	return namesWithCCAV
+	return namesWithVisual
 end
 
 
--- Get all CharacterCreationAppearaceVisuals in Gustav
+-- Get all Visuals in Gustav
 ---return 				- list of CharacterCreationAppearaceVisual IDs for Gustav
-function CCAV:getVanillaCCAV(TYPE, default)
+function Visual:getVanillaVisual()
  -- TODO
 end
 
--- Get Mod Specific CCAV
+-- Get Mod Specific Visual
+-- TODO - use tagging system 
 --@param            - ModName (FolderName)
----return           - list of CharacterCreationAppearaceVisual IDs CCAV
-function CCAV:getModCCAV(modName)
+---return           - list of CharacterCreationAppearaceVisual IDs Visual
+function Visual:getModVisual(modName)
     -- TODO
 end
 
 
--- Get Mod that CCAV belongs to
---@param  			- CCAV ID
+-- Get Mod that Visual belongs to
+-- TODO - use tagging system 
+--@param  			- Visual ID
 ---return 			- Name of Mod (Folder Name)
 
--- local function getModByCCAV(CCAV)
-
--- 	local visualResource = Ext.StaticData.Get(CCAV,"CharacterCreationAppearanceVisual").VisualResource
--- 	local sourceFile = Ext.Resource.Get(visualResource,"Visual").SourceFile
-
--- 	-- Use string.match to capture the required part of the path
--- 	-- Pattern explanation:
--- 	-- [^/]+ captures one or more characters that are not a slash (greedily matching as much as possible).
--- 	-- The pattern captures the fourth folder from the end by skipping three sets of "anything followed by a slash" sequences.
--- 	local modName = string.match(sourceFile, ".-([^/]+)/[^/]+/[^/]+/[^/]+$")
-
--- 	-- Quick error handling in case author places modfile too low
--- 	-- Check if value from RACES is contained within modName
-
--- 	if modName then
---         for _, race in pairs(RACES) do
--- 			if stringContains(modName, race) then
---                 print("Error: Mod name matches a race name, which suggests improper directory structure.")
--- 				print("Error: Spell will be added to \"Other CCAV\"")
---                 return "Other_CCAV"
---             end
---         end
---     end
-
--- 	return modName
--- end
-----------------------------------------------------------------------------------------------------
--- 
--- 									CCAV
--- 
-----------------------------------------------------------------------------------------------------
-
-
--- Get allowed race based on input race (modded races support)
--- @param originalRace		- actual race of the entity
----return 					- raceOverride in case of unsupported modded race / race
----return           		- bodyshapeOverride in case of modded race / bodyshape
-function CCAV:getRaceAndBody(originalRace)
-
-	local bodyShapeOverride = false
-	local race = originalRace
-	
-	-- Check for supported modded races
-	for _, allowedRace in ipairs(MODDED_RACES) do
-		if allowedRace.uuid == race then
-
-			print(allowedRace.name, " is a supported race")
-			-- if modded race uses the body of vanilla, choose that
-			if allowedRace.useDefault then
-				race = allowedRace.default
-				print(allowedRace.name, " will use ", allowedRace.defaultName ," presets ")
-			end
-
-			-- choose different bodyshape preset [for now has to be manually configured]
-			if (allowedRace.bs3) or allCCAV.bs4 then
-				bodyShapeOverride = true
-				print("Using bodyshape override")
-			end
-
-		else
-			print(race, " is not supported using default human CCAV")
-			race = "0eb594cb-8820-4be6-a58d-8be7a1a98fba"
-		end
-	end
-
-	return race, bodyShapeOverride
+function Visual:getModByVisual(Visual)
+-- TODO
 end
+----------------------------------------------------------------------------------------------------
+-- 
+-- 									Visual
+-- 
+----------------------------------------------------------------------------------------------------
 
+-- TODO - split this up a bit
 
--- TODO : test Githzerai again
+-- Get all allowed Visual for entity (Ex: all vulva for human)
+-- @param list	     	- list of Visual to be filtered
+-- @param uuis 	        - uuid of entity that will receive the Visual
+--@param visualType     - "CharacterCreationAppearanceVisual" or "CharacterCreationSharedVisual"
+---return 			    - List of IDs of CharacterCreationAppearaceVisuals
+function Visual:getPermittedVisual(uuid, allVisual, visualType)
 
--- Get all allowed CCAV for entity (Ex: all vulva for human)
--- @param list		- list of CCAV to be filtered
--- @param uuis 	    - uuid of entity that will receive the CCAV
----return 			- List of IDs of CharacterCreationAppearaceVisuals
-function CCAV:getPermittedCCAV(uuid, allCCAV)
+	_P("Visual:getPermittedVisual ", uuid, " ", visualType)
 
-    local permittedCCAV = {}
+    local permittedVisual = {}
     
 	-- Get the properties for the character
 	local E = GetPropertyOrDefault(Ext.Entity.Get(uuid),"CharacterCreationStats", nil)
@@ -192,14 +192,24 @@ function CCAV:getPermittedCCAV(uuid, allCCAV)
 	end
 
 	-- failsafe for modded races - assign human race
-	-- TODO - add support for modded CCAV for modded races
+	-- TODO - add support for modded Visual for modded races
 
 	local bodyShapeOverride = false
 
 	if not RACES[race] then
-		print(race, " is not Vanilla, checking for supported custom races")
+		print(race, " is not Vanilla and does not have a Vanilla parent, " ..  
+		" these custom races are currently not supported")
+		print("using default human genitals")
+		race = "0eb594cb-8820-4be6-a58d-8be7a1a98fba"
+	end
 
-		race, bodyShapeOverride = CCAV:getRaceAndBody(originalRace)
+	-- Special Cases
+
+	-- specific Githzerai feature (T3 and T4 are not strong, but normal)
+	local bodyShapeOverride = false
+
+	if Contains(raceTags, "7fa93b80-8ba5-4c1d-9b00-5dd20ced7f67") then
+		bodyShapeOverride = true
 	end
 
 	-- Halsin is special boy
@@ -207,35 +217,42 @@ function CCAV:getPermittedCCAV(uuid, allCCAV)
 		race = "0eb594cb-8820-4be6-a58d-8be7a1a98fba"
 	end
 
-	-- get CCAV with same stats
-	for _, CCAV in pairs(allCCAV) do
+	-- get Visual with same stats
+	for _, visual in pairs(allVisual) do
 
-		local G = Ext.StaticData.Get(CCAV, "CharacterCreationAppearanceVisual")
+		local G = Ext.StaticData.Get(visual, visualType)
 
 		-- bodyshape overrides for modded races - TODO: find a better way to do this
 		if bodyShapeOverride then
 			bs = 0
 		end
+
+		gbt = GetPropertyOrDefault(G, "BodyType", bt)	
+		gbs = GetPropertyOrDefault(G, "BodyShape", bs)
+		gru = GetPropertyOrDefault(G, "RaceUUID", race)
+
 		
-		if (bt == G.BodyType) and (bs == G.BodyShape) and (race == G.RaceUUID) then
-			table.insert(permittedCCAV, CCAV)
+		if (bt == gbt) and (bs == gbs) and (race == gru) then
+			table.insert(permittedVisual, visual)
 		end
+
     end
     
 
+	-- TODO - only for genitals
     -- TODO - Clean up 
-    -- Some lazy filtering to filter out default CCAV
+    -- Some lazy filtering to filter out default Visual (for genitals only)
 
     local result = {}
 
-      for _, CCAV in ipairs(permittedCCAV) do
+      for _, visual in ipairs(permittedVisual) do
 
-        local content = Ext.StaticData.Get(CCAV,"CharacterCreationAppearanceVisual")
+        local content = Ext.StaticData.Get(visual,visualType)
         local handle = content.DisplayName.Handle.Handle
         local name = Ext.Loca.GetTranslatedString(handle)
 
         if name ~= "Default" then
-            table.insert(result, CCAV)
+            table.insert(result, visual)
         end
     end
 
@@ -243,35 +260,27 @@ function CCAV:getPermittedCCAV(uuid, allCCAV)
 end
 
 
--- TODO - Halsin is special, give him human CCAV
-
--- TODO - currently resets on Saveload. Make into uservariable
--- allows to cycle through a list of CCAV instead of choosing a random one
-local CCAVChoice = {}
-
--- Choose random CCAV from selection (Ex: random vulva from vulva a - c)
--- @param spell		- Name of the spell by which the CCAV are filtered (vulva, penis, erection)
--- @param uuid 	    - uuid of entity that will receive the CCAV
+-- Choose Visual from selection (Ex:  vulva from vulva a - c)
+-- @param spell		- Name of the spell by which the Visual are filtered (vulva, penis, erection)
+-- @param uuid 	    - uuid of entity that will receive the Visual
 ---return 			- ID of CharacterCreationAppearaceVisual
-function CCAV:getNextCCAV(spell, uuid)
+function Visual:getNextVisual(spell, uuid)
 
-	-- TODO - Shart only has 2 vulvas to choose from instead of 3 after filtering for defailts: issue in the lib? 
-    local permittedCCAV = CCAV:getPermittedCCAV(uuid)
-    local filteredCCAV = CCAV:getFilteredCCAV(spell, permittedCCAV)
+    local permittedVisual = Visual:getPermittedVisual(uuid)
+    local filteredVisual = Visual:getFilteredVisual(spell, permittedVisual)
 
-    if CCAVChoice.uuid == uuid and CCAVChoice.spell == spell then
-        -- Increment the index, wrap around if necessary
-        CCAVChoice.index = (CCAVChoice.index % #filteredCCAV) + 1
+    if VisualChoice.uuid == uuid and VisualChoice.spell == spell then
+        VisualChoice.index = (VisualChoice.index % #filteredVisual) + 1
     else
-        CCAVChoice = {uuid = uuid, spell = spell, index = 1}
+        VisualChoice = {uuid = uuid, spell = spell, index = 1}
     end
 
-    if #filteredCCAV == 0 then
-        print("[BG3SX] No " , spell , " CCAV available after filtering for this entity.")
+    if #filteredVisual == 0 then
+        print("[BG3SX] No " , spell , " Visual available after filtering for this entity.")
         return nil
     else
-        local selectedCCAV = filteredCCAV[CCAVChoice.index]
-        return selectedCCAV
+        local selectedVisual = filteredVisual[VisualChoice.index]
+        return selectedVisual
     end
 end
 
@@ -281,27 +290,28 @@ end
 -- 
 ----------------------------------------------------------------------------------------------------
 
--- Get the current CCAV of the entity
--- @param uuid 	    - uuid of entity that has a CCAV
+-- Get the current Visual of the entity
+-- @param uuid 	    - uuid of entity that has a Visual
 ---return 			- tale of IDs of CharacterCreationAppearaceVisual
-function CCAV:getCurrentCCAV(uuid)
+function Visual:getCurrentVisual(uuid)
 	local characterVisuals =  Ext.Entity.Get(uuid):GetAllComponents().CharacterCreationAppearance.Visuals
     return characterVisuals
 end
 
 
--- Get the current CCAV of the entity
--- @param uuid 	    - uuid of entity that has a CCAV
--- @param type 	    - type of the CCAV
----return 			- tale of IDs of CharacterCreationAppearaceVisual
-function CCAV:getCurrentCCAVOfType(uuid, type)
-	local currentCCAV = CCAV:getCurrentCCAV(uuid)
-	local CCAVOfType = CCAV:getAllCCAVOfType(type)
+-- Get the current Visual of the entity of a specific type
+-- @param uuid 	   		 - uuid of entity that has a Visual
+-- @param type 	   		 - type of the Visual
+-- @param visualType     - "CharacterCreationAppearanceVisual" or "CharacterCreationSharedVisual"
+---return 			     - tale of IDs of CharacterCreationAppearaceVisual
+function Visual:getCurrentVisualOfType(uuid, type, visualType)
+	local currentVisual = Visual:getCurrentVisual(uuid)
+	local VisualOfType = Visual:getAllVisualsOfType(type, visualType)
 
     local visualsOfType = {}
 	
-	for _, visual in pairs(currentCCAV)do
-        if contains(CCAVOfType, visual) then
+	for _, visual in pairs(currentVisual)do
+        if Contains(VisualOfType, visual) then
             table.insert(visualsOfType, visual)	
 		end
     end
@@ -310,37 +320,34 @@ end
 
 
 
--- Override the current CCAV with the new one
--- @param newCCAV	- ID of CharacterCreationAppearaceVisual of type PrivateParts
--- @param uuid 	     	- uuid of entity that will receive the CCAV
-function CCAV:overrideCCAV(newCCAV, uuid, type)
-	local currentCCAV = CCAV:getCurrentCCAVOfType(uuid, type)
-	_P("CURRENT CCAV OF ", type , " = ", newCCAV)
-	_P("All CCAV of type ", type , " on  entity:")
-	_D(currentCCAV)
+-- Override the current Visual with the new one
+-- @param newVisual	    - ID of CharacterCreationAppearaceVisual of type PrivateParts
+-- @param uuid 	     	- uuid of entity that will receive the Visual
+function Visual:overrideVisual(newVisual, uuid, type)
+	local visualType = Visual:getType(newVisual)
+	local currentVisual = Visual:getCurrentVisualOfType(uuid, type, visualType)
 
-    for _, ccav in pairs(currentCCAV) do
-	    -- Origins don't have CCAV - We have to add one before we can remove it
-	    if not (ccav == newCCAV) then
+    for _, visual in pairs(currentVisual) do
+	    if not (visual == newVisual) then
 			-- Note: This is not a typo, It's actually called Ovirride
-			print("REMOVING ", ccav)
-		    Osi.RemoveCustomVisualOvirride(uuid, ccav) 
+		    Osi.RemoveCustomVisualOvirride(uuid, visual) 
 	    end
 	end
 	
-	if newCCAV then
-		Osi.AddCustomVisualOverride(uuid, newCCAV)
+	if newVisual then
+		Osi.AddCustomVisualOverride(uuid, newVisual)
 	end
 end
 
 
-function CCAV:addVisual(uuid, ccav)
-    Osi.AddCustomVisualOverride(uuid, ccav)
+
+function Visual:addVisual(uuid, visual)
+    Osi.AddCustomVisualOverride(uuid, visual)
 end
 
 
-function CCAV:removeVisual(uuid, ccav)
-     Osi.RemoveCustomVisualOvirride(uuid, ccav)
+function Visual:removeVisual(uuid, visual)
+     Osi.RemoveCustomVisualOvirride(uuid, visual)
 end
 
 

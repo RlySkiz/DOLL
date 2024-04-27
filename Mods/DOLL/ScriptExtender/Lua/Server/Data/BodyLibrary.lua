@@ -59,16 +59,10 @@ RACETAGS = {
 }
 
 
---TODO: overhaul modded races support with new race and bodytype system 
-
--- bt3 / bt4 are bodyshape overrdes - TODO - check if this can be automated
 MODDED_RACES = {
-    { uuid = "ca1c9216-a0cf-44e7-811a-2f9081c536ed", name = "GITHZERAI", useDefault = true, defaultName = "GITHYANKI",
-    default = "bdf9b779-002c-4077-b377-8ea7c1faa795", bs3 = 0 , bs4 = 0 }
+    {name = "GITHZERAI", raceUuid = "ca1c9216-a0cf-44e7-811a-2f9081c536ed",
+    racetag = "7fa93b80-8ba5-4c1d-9b00-5dd20ced7f67", bs3 = 0, bs4 = 0}
 }
-
--- index, name, race, body are human readable contents
--- genitalID, raceID, bodyID are machine readable
 
 ---------------------------------------------------------------------------------------------------------
 
