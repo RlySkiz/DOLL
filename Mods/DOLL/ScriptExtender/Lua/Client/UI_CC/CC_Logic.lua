@@ -265,8 +265,9 @@ end
 
 ----- Hair Style
 --same as heads but with hair styles instead
-local previousHair = hairSelector.SelectedIndex
+local previousHair = hairSelector.Options[hairSelector.SelectedIndex]
 hairSelector.OnChange = function()
+   
     print("Clicked")
     if hairSelector.SelectedIndex ~= previousHair then
         print("clicked")
@@ -308,13 +309,15 @@ end
 
 ----- Hair Style
 --same as heads but with facialhair styles instead
-local previousBeard = beardSelector.SelectedIndex
+local previousBeard = beardSelector.Options[beardSelector.SelectedIndex]
 beardSelector.OnChange = function()
+    _P("previousbeard : ", previousBeard )
     if hairSelector.SelectedIndex ~= previousBeard then
         print("-----------------------------")
         print("New Beard Chosen")
 
         local newBeard = beardSelector.Options[beardSelector.SelectedIndex+1]
+        _P("new beard : ", newBeard )
         print("Sending Remove Request for: ", previousBeard, " to add ", newBeard)
         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newBeard))
 

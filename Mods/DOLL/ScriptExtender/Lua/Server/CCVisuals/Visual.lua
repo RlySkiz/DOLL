@@ -53,10 +53,13 @@ end
 --@param type         - The visual type (ex: Private Parts)
 --@param uuid         - The uuid of the entity for who the list is being filtered
 --@param visualType   - "CharacterCreationAppearanceVisual" or "CharacterCreationSharedVisual"
+--@param filter   	  - whether to filter for bodytype, bodyshape, race
 --return 			  - list of CharacterCreationAppearaceVisual IDs for all Visual
-function Visual:getVisualsWithName(type, uuid, visualType)
+function Visual:getVisualsWithName(type, uuid, visualType, filter)
+
+	local permittedVisuals = {}
     local allVisualsOfType = Visual:getAllVisualsOfType(type, visualType)
-    local permittedVisuals = Visual:getPermittedVisual(uuid, allVisualsOfType, visualType)
+    permittedVisuals = Visual:getPermittedVisual(uuid, allVisualsOfType, visualType, filter)
     local visualsWithName = Visual:addName(permittedVisuals, visualType)
     return visualsWithName
 end
@@ -65,10 +68,11 @@ end
 -- returns all visuals of a type for an entity : both CCAV and CCSV
 --@param type	        - type of the visual (ex: Private Parts)
 --@param uuid   	    - uuid of entity who will receive visual
+--@param filter   	    - whether to filter for bodytype, bodyshape, race
 ---return 			    - List of IDs of CCAV and CCSV
-function Visual:getAllVisualsWithName(type,uuid)
-    local allCCAV = Visual:getVisualsWithName(type, uuid,"CharacterCreationAppearanceVisual")
-    local allCCSV = Visual:getVisualsWithName(type,uuid, "CharacterCreationSharedVisual")
+function Visual:getAllVisualsWithName(type,uuid, filter)
+    local allCCAV = Visual:getVisualsWithName(type, uuid,"CharacterCreationAppearanceVisual", filter)
+    local allCCSV = Visual:getVisualsWithName(type,uuid, "CharacterCreationSharedVisual", filter)
 
     -- Append 
     for i, v in ipairs(allCCSV) do
@@ -157,65 +161,78 @@ end
 -- 
 ----------------------------------------------------------------------------------------------------
 
+
+
 -- TODO - split this up a bit
+
+-- Get all allowed Visual for entity (Ex: all vulva for human)
+-- @param uuid 	        - uuid of entity
+---return 			    - bodytype, bodyshape, race
+function Visual:getCharacterProperties(uuid)
+
+		-- Get the properties for the character
+		local E = GetPropertyOrDefault(Ext.Entity.Get(uuid),"CharacterCreationStats", nil)
+		local bt =  Ext.Entity.Get(uuid).BodyType.BodyType
+		local bs = 0
+	
+		if E then
+			bs = E.BodyShape
+		end
+	
+		-- NPCs only have race tags
+		local raceTags = Ext.Entity.Get(uuid):GetAllComponents().ServerRaceTag.Tags
+	
+		local race
+		for _, tag in pairs(raceTags) do
+			if RACETAGS[tag] then
+				race = GetKey(RACES, RACETAGS[tag])
+				break
+			end
+		end
+	
+		-- failsafe for modded races - assign human race
+		-- TODO - add support for modded Visual for modded races
+	
+		local bodyShapeOverride = false
+	
+		if not RACES[race] then
+			print(race, " is not Vanilla and does not have a Vanilla parent, " ..  
+			" these custom races are currently not supported")
+			print("using default human genitals")
+			race = "0eb594cb-8820-4be6-a58d-8be7a1a98fba"
+		end
+	
+		-- Special Cases
+	
+		-- specific Githzerai feature (T3 and T4 are not strong, but normal)
+		local bodyShapeOverride = false
+	
+		if Contains(raceTags, "7fa93b80-8ba5-4c1d-9b00-5dd20ced7f67") then
+			bodyShapeOverride = true
+		end
+	
+		-- Halsin is special boy
+		if uuid == "S_GLO_Halsin_7628bc0e-52b8-42a7-856a-13a6fd413323" then
+			race = "0eb594cb-8820-4be6-a58d-8be7a1a98fba"
+		end
+
+		return bt, bs, race
+end
+
 
 -- Get all allowed Visual for entity (Ex: all vulva for human)
 -- @param list	     	- list of Visual to be filtered
 -- @param uuis 	        - uuid of entity that will receive the Visual
 --@param visualType     - "CharacterCreationAppearanceVisual" or "CharacterCreationSharedVisual"
+--@param filter   	    - whether to filter for bodytype, bodyshape, race - false disables race filter
 ---return 			    - List of IDs of CharacterCreationAppearaceVisuals
-function Visual:getPermittedVisual(uuid, allVisual, visualType)
-
-	_P("Visual:getPermittedVisual ", uuid, " ", visualType)
+function Visual:getPermittedVisual(uuid, allVisual, visualType, filter)
 
     local permittedVisual = {}
     
-	-- Get the properties for the character
-	local E = GetPropertyOrDefault(Ext.Entity.Get(uuid),"CharacterCreationStats", nil)
-	local bt =  Ext.Entity.Get(uuid).BodyType.BodyType
-	local bs = 0
+	-- bodytype, bodyshape, race
+	bt,bs,race = Visual:getCharacterProperties(uuid)
 
-	if E then
-		bs = E.BodyShape
-	end
-
-
-	-- NPCs only have race tags
-	local raceTags = Ext.Entity.Get(uuid):GetAllComponents().ServerRaceTag.Tags
-
-	local race
-	for _, tag in pairs(raceTags) do
-		if RACETAGS[tag] then
-			race = GetKey(RACES, RACETAGS[tag])
-			break
-		end
-	end
-
-	-- failsafe for modded races - assign human race
-	-- TODO - add support for modded Visual for modded races
-
-	local bodyShapeOverride = false
-
-	if not RACES[race] then
-		print(race, " is not Vanilla and does not have a Vanilla parent, " ..  
-		" these custom races are currently not supported")
-		print("using default human genitals")
-		race = "0eb594cb-8820-4be6-a58d-8be7a1a98fba"
-	end
-
-	-- Special Cases
-
-	-- specific Githzerai feature (T3 and T4 are not strong, but normal)
-	local bodyShapeOverride = false
-
-	if Contains(raceTags, "7fa93b80-8ba5-4c1d-9b00-5dd20ced7f67") then
-		bodyShapeOverride = true
-	end
-
-	-- Halsin is special boy
-	if uuid == "S_GLO_Halsin_7628bc0e-52b8-42a7-856a-13a6fd413323" then
-		race = "0eb594cb-8820-4be6-a58d-8be7a1a98fba"
-	end
 
 	-- get Visual with same stats
 	for _, visual in pairs(allVisual) do
@@ -231,6 +248,9 @@ function Visual:getPermittedVisual(uuid, allVisual, visualType)
 		gbs = GetPropertyOrDefault(G, "BodyShape", bs)
 		gru = GetPropertyOrDefault(G, "RaceUUID", race)
 
+		if not filter then
+			gru = race
+		end
 		
 		if (bt == gbt) and (bs == gbs) and (race == gru) then
 			table.insert(permittedVisual, visual)
@@ -238,7 +258,6 @@ function Visual:getPermittedVisual(uuid, allVisual, visualType)
 
     end
     
-
 	-- TODO - only for genitals
     -- TODO - Clean up 
     -- Some lazy filtering to filter out default Visual (for genitals only)
@@ -259,30 +278,6 @@ function Visual:getPermittedVisual(uuid, allVisual, visualType)
 	return result
 end
 
-
--- Choose Visual from selection (Ex:  vulva from vulva a - c)
--- @param spell		- Name of the spell by which the Visual are filtered (vulva, penis, erection)
--- @param uuid 	    - uuid of entity that will receive the Visual
----return 			- ID of CharacterCreationAppearaceVisual
-function Visual:getNextVisual(spell, uuid)
-
-    local permittedVisual = Visual:getPermittedVisual(uuid)
-    local filteredVisual = Visual:getFilteredVisual(spell, permittedVisual)
-
-    if VisualChoice.uuid == uuid and VisualChoice.spell == spell then
-        VisualChoice.index = (VisualChoice.index % #filteredVisual) + 1
-    else
-        VisualChoice = {uuid = uuid, spell = spell, index = 1}
-    end
-
-    if #filteredVisual == 0 then
-        print("[BG3SX] No " , spell , " Visual available after filtering for this entity.")
-        return nil
-    else
-        local selectedVisual = filteredVisual[VisualChoice.index]
-        return selectedVisual
-    end
-end
 
 ----------------------------------------------------------------------------------------------------
 -- 

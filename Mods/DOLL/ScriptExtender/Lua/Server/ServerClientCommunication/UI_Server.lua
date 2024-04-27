@@ -14,9 +14,14 @@
 -- RequestCCVisuals, Type        - Client requests list of all Visual of one type (ex: private parts)     
 -- ChangeVisual,uuidNewItem      - Client requests removal of Visual of type and addition of certain Visual uuid
 -- addVisual, uuidNewItem        - Client requests addition of certain Visual uuid
--- removeVisual, uuidVisual        - Client requests removal of Visual
+-- removeVisual, uuidVisual      - Client requests removal of Visual
 
 -- RequestCCVisualsOfType, type  - Client request lists of Visuals of certian type (ex: "Private Parts")
+
+
+-- "DisableFilter"              - Client requests to disable race filter
+-- "EnableFilter"               - Client requests to filter all options by bodytype, bodyshape and race
+
 -------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -26,7 +31,7 @@
 -- Events to be sent:
 
 -- SendHost              - Server sends Osi.GetHostCharacter()
--- SendVisual, items       - Server sends table of all Visual of one type
+-- SendVisual, items      - Server sends table of all Visual of one type
 
 -- InitialPopulate       - Server sends message on LevelGameplayStarted
 --------------------------------------------------------------------------------------------------------------------------------------
@@ -40,6 +45,13 @@ local vis = Visual:new()
 
 ---------------------------------------------------------------------------------
 
+-- Variables
+
+
+local filter = true
+
+
+--------------------------------------------------------------------------------
 
 -- Send Host Character on Request
 Ext.Events.NetMessage:Subscribe(function(e)
@@ -56,7 +68,25 @@ end)
 
 
 Ext.Events.NetMessage:Subscribe(function(e)
-    
+
+
+    ----------------------------------------------------
+    --                                                --
+    --   Client request to enable or disable filter   --
+    --                                                --
+    -----------------------------------------------------
+
+    -- TODO - Categories don't seem to populate that is
+    -- disabling filter as human doesnt give tails until one dragonborn has been selected
+    if (e.Channel == "DisableFilter") then
+        filter = false
+        Ext.Net.BroadcastMessage("PopulateRefresh", "LevelGameplayStarted")
+    end
+
+    if (e.Channel == "EnableFilter") then
+        filter = true
+        Ext.Net.BroadcastMessage("PopulateRefresh", "LevelGameplayStarted")
+    end
 
     -------------------------------------------------
     --                                             --
@@ -64,23 +94,13 @@ Ext.Events.NetMessage:Subscribe(function(e)
     --                                             --
     -------------------------------------------------
 
+    -- TODO - hair might not get removed correctly, maybe handle differently? 
     if (e.Channel == "RequestCCVisualsOfType") then
         local type = Ext.Json.Parse(e.Payload)
         -- TODO - instead of hostCharacter, take clicked character 
         local doll = Osi.GetHostCharacter()
-
-        -- Special case for genitals since there are double entries in vanilla
-        -- TODO - make child
-        -- if type == "Private Parts" then
-        --     local genital = Genitals:new()
-        --     local permittedGenitals = genital:getPermittedGenitals(doll)
-        --     local genitalsWithName = Genitals:addName(permittedGenitals)
-        --     local payload = {"Private Parts", genitalsWithName}
-        --     Ext.Net.BroadcastMessage("SendVisual",Ext.Json.Stringify(payload)) 
-        -- else
-            -- TODO - instead of hostCharacter, take clicked character 
         local character = Osi.GetHostCharacter()       
-        local visuals = vis:getAllVisualsWithName(type,character)
+        local visuals = vis:getAllVisualsWithName(type,character, filter)
         local payload = {type, visuals}
         Ext.Net.BroadcastMessage("SendVisual",Ext.Json.Stringify(payload)) 
     end
