@@ -55,6 +55,18 @@
 -- Ext.Net.PostMessageToServer("Teleport", _)
 -------------------------------------------
 
+showAllOptionsCheck.OnChange = function()
+    print("OnChange")
+    if showAllOptionsCheck.Checked == true then
+        print("Show All Options = Checked")
+        Ext.Net.PostMessageToServer("DisableFilter", "")
+    else
+        print("Show All Options = Unchecked")
+        Ext.Net.PostMessageToServer("EnableFilter", "")
+    end
+end
+
+
 ------------------------------------------------------
 --                                                  --
 --                      Body                        --

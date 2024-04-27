@@ -12,8 +12,9 @@ tCC:AddDummy(0,5)
 -- racePrevious = CCBody:AddButton("<")
 TestText = tCC:AddText("No CCAVs/CCSVs Recieved")
 raceSelector = tCC:AddCombo("Race")
-showAllOptionsButton = tCC:AddButton("Show All Options")
-showAllOptionsButton.SameLine = true
+showAllOptionsCheck = tCC:AddCheckbox("Show All Options")
+showAllOptionsCheck.SameLine = true
+showAllOptionsCheck.Checked = false
 -- raceSelector.SameLine = true
 -- raceNext = CCBody:AddButton(">")
 -- raceNext.SameLine = true
