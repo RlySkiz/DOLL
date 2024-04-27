@@ -510,3 +510,4 @@ wingsSelector = CCWings:AddCombo("Wing Types")
 -- wingsButton3 = wingsRow:AddCell():AddButton("X")
 -----
 CCTails:AddDummy(0,5)
+

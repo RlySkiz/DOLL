@@ -8,7 +8,6 @@
 d = Ext.IMGUI.EnableDemo(true)
 w = Ext.IMGUI.NewWindow("DOLL Character Editor")
 
--- w:AddText("Test") -- test if you can add above tab bar (works)
 --- Tab Bar
 tBar = w:AddTabBar("")
 tCC = tBar:AddTabItem("Character Creation")
