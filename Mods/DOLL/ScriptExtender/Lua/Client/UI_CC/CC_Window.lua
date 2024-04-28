@@ -4,10 +4,15 @@
 --                 Character Creator                --
 --                                                  --
 ------------------------------------------------------
+
+--#region Header/Categories
 tCC:AddDummy(0,5)
 
+--#region WingColorTest
 -- TESTBUTTON = tCC:AddButton("BUMP ME")
------ Race
+--#endregion
+
+--#region Race/ShowAll
 -- raceHeader = CCBody:AddSeparatorText("Race")
 -- racePrevious = CCBody:AddButton("<")
 TestText = tCC:AddText("No CCAVs/CCSVs Recieved")
@@ -18,9 +23,11 @@ showAllOptionsCheck.Checked = false
 -- raceSelector.SameLine = true
 -- raceNext = CCBody:AddButton(">")
 -- raceNext.SameLine = true
+--#endregion
 
 tCC:AddSeparatorText("")
----- Base Headers
+
+--#region Categories
 CCBody = tCC:AddCollapsingHeader("Body")
 tCC:AddSeparatorText("")
 CCFace = tCC:AddCollapsingHeader("Face")
@@ -46,16 +53,21 @@ CCWingsSep = tCC:AddSeparatorText("")
 CCWingsSep.Visible = true
 CCWings = tCC:AddCollapsingHeader("Wings")
 CCWings.Visible = true
+--#endregion
+
+--#endregion
+
 ------------------------------------------------------
 --                                                  --
 --                      Body                        --
 --                                                  --
 ------------------------------------------------------
 
+--#region Body
+--Dummies are used for spacing until i figure it out in UI_Style
 CCBody:AddDummy(0,5)
------
-CCBody:AddDummy(0,5) -- Dummies are used for spacing until i figure it out in UI_Style
------ Heads
+
+--#region Heads
 -- headsHeader = CCBody:AddCollapsingHeader("Heads")
 -- headsAdder = headsHeader:AddButton("Add Head")
 -- headsTable = headsHeader:AddTable("", 4)
@@ -64,10 +76,11 @@ CCBody:AddDummy(0,5) -- Dummies are used for spacing until i figure it out in UI
 -- headButton2 = headsRow:AddCell():AddButton("X")
 -- headButton3 = headsRow:AddCell():AddButton("X")
 headSelector = CCBody:AddCombo("Heads")
+--#endregion
 
------
 CCBody:AddDummy(0,5)
---- Skincolor
+
+--#region Skincolor
 skinColorHeader = CCBody:AddCollapsingHeader("Skincolor")
 skinColorTable = skinColorHeader:AddTable("", 10)
 skinColorRow = skinColorTable:AddRow()
@@ -81,9 +94,11 @@ skinColorButton7 = skinColorRow:AddCell():AddButton("X")
 skinColorButton8 = skinColorRow:AddCell():AddButton("X")
 skinColorButton9 = skinColorRow:AddCell():AddButton("X")
 skinColorButton10 = skinColorRow:AddCell():AddButton("X")
------
+--#endregion
+
 CCBody:AddDummy(0,5)
------ Scars
+
+--#region Scars
 scarsHeader = CCBody:AddCollapsingHeader("Scars")
 scarsTable = scarsHeader:AddTable("", 4)
 scarsRow = scarsTable:AddRow()
@@ -91,53 +106,66 @@ scarsButton1 = scarsRow:AddCell():AddButton("X")
 scarsButton2 = scarsRow:AddCell():AddButton("X")
 scarsButton3 = scarsRow:AddCell():AddButton("X")
 scarsButton4 = scarsRow:AddCell():AddButton("X")
------
+--#endregion
+
 CCBody:AddDummy(0,5)
------ Maturity
+
+--#region Maturity
 -- ageHeader = CCBody:AddSeparatorText("Maturity")
 -- agePrevious = CCBody:AddButton("<")
 ageSelector = CCBody:AddSliderInt("Maturity", 0, 0, 100)
 -- ageSelector.SameLine = true
 -- ageNext = CCBody:AddButton(">")
 -- ageNext.SameLine = true
------
+--#endregion
+
 CCBody:AddDummy(0,5)
------ Freckle Quantity
+
+--#region Freckle Quantity
 -- freckleQHeader = CCBody:AddSeparatorText("Freckle Quantity")
 -- freckleQPrevious = CCBody:AddButton("<")
 freckleQSelector = CCBody:AddSliderInt("Freckle Quantity", 0, 0, 100)
 -- freckleQSelector.SameLine = true
 -- freckleQNext = CCBody:AddButton(">")
 -- freckleQNext.SameLine = true
------
+--#endregion
+
 CCBody:AddDummy(0,5)
------ Freckle Intensity
+
+--#region Freckle Intensity
 -- freckleIHeader = CCBody:AddSeparatorText("Freckle Intensity")
 -- freckleIPrevious = CCBody:AddButton("<")
 freckleISelector = CCBody:AddSliderInt("Freckle Intensity", 0, 0, 100)
 -- freckleISelector.SameLine = true
 -- freckleINext = CCBody:AddButton(">")
 -- freckleINext.SameLine = true
------
+--#endregion
+
 CCBody:AddDummy(0,5)
------ Vitiligo Pigmentation
+
+--#region Vitiligo Pigmentation
 -- vitiligoHeader = CCBody:AddSeparatorText("Vitiligo Pigmentation")
 -- vitiligoPrevious = CCBody:AddButton("<")
 vitiligoSelector = CCBody:AddSliderInt("Vitiligo Pigmentation", 0, 0, 100)
 -- vitiligoSelector.SameLine = true
 -- vitiligoNext = CCBody:AddButton(">")
 -- vitiligoNext.SameLine = true
------
+--#endregion
+
 CCBody:AddDummy(0,5)
------ Genital
+
+--#region Genital
 -- genitalHeader = CCBody:AddSeparatorText("Genital")
 -- genitalPrevious = CCBody:AddButton("<")
 genitalSelector = CCBody:AddCombo("Genital")
 -- genitalSelector.SameLine = true
 -- genitalNext = CCBody:AddButton(">")
 -- genitalNext.SameLine = true
------
+--#endregion
+
 CCBody:AddDummy(0,5)
+
+--#endregion
 
 ------------------------------------------------------
 --                                                  --
@@ -145,8 +173,10 @@ CCBody:AddDummy(0,5)
 --                                                  --
 ------------------------------------------------------
 
+--#region Face
 CCFace:AddDummy(0,5)
------ Tattoos
+
+--#region Tattoos
 tattooHeader = CCFace:AddCollapsingHeader("Tattos")
 tattooTable = tattooHeader:AddTable("", 4)
 tattooRow = tattooTable:AddRow()
@@ -154,17 +184,22 @@ tattooButton1 = tattooRow:AddCell():AddButton("X")
 tattooButton2 = tattooRow:AddCell():AddButton("X")
 tattooButton3 = tattooRow:AddCell():AddButton("X")
 tattooButton4 = tattooRow:AddCell():AddButton("X")
------
+--#endregion
+
 CCFace:AddDummy(0,5)
------ Piercing
+
+--#region Piercing
 -- piercingHeader = CCFace:AddCollapsingHeader("Piercing")
 -- piercingPrevious = piercingHeader:AddButton("<")
 piercingSelector = CCFace:AddCombo("Piercing")
 -- piercingSelector.SameLine = true
 -- piercingNext = piercingHeader:AddButton(">")
 -- piercingNext.SameLine = true
------
+--#endregion
+
 CCFace:AddDummy(0,5)
+
+--#endregion
 
 ------------------------------------------------------
 --                                                  --
@@ -172,12 +207,16 @@ CCFace:AddDummy(0,5)
 --                                                  --
 ------------------------------------------------------
 
+--#region Eyes
 CCEyes:AddDummy(0,5)
------ Heterochromia
+
+--#region Heterochromia
 heterochromiaButton = CCEyes:AddCheckbox("Heterochromia")
------
+--#endregion
+
 CCEyes:AddDummy(0,5)
------ Eyecolor
+
+--#region Eyecolor
 eyecolorHeader = CCEyes:AddCollapsingHeader("Eyecolor")
 eyecolorTable = eyecolorHeader:AddTable("", 10)
 eyecolorRow = eyecolorTable:AddRow()
@@ -200,8 +239,11 @@ eyecolorRRow = eyecolorRTable:AddRow()
 eyecolorRPrevious = eyecolorRRow:AddCell():AddButton("<")
 eyecolorRSelector = eyecolorRRow:AddCell():AddCombo("")
 eyecolorRNext = eyecolorRRow:AddCell():AddButton(">")
------
+--#endregion
+
 CCEyes:AddDummy(0,5)
+
+--#endregion
 
 ------------------------------------------------------
 --                                                  --
@@ -209,78 +251,94 @@ CCEyes:AddDummy(0,5)
 --                                                  --
 ------------------------------------------------------
 
+--#region Makeup
 CCMakeup:AddDummy(0,5)
------ Eye Makeup Style
+
+--#region Eye Makeup Style
 makeupStyleHeader = CCMakeup:AddCollapsingHeader("Eye Makeup Style")
 makeupStyleTable = makeupStyleHeader:AddTable("", 4)
 makeupStyleRow = makeupStyleTable:AddRow()
 makeupStylePrevious = makeupStyleRow:AddCell():AddButton("<")
 makeupStyleSelector = makeupStyleRow:AddCell():AddCombo("")
 makeupStyleNext = makeupStyleRow:AddCell():AddButton(">")
------
+--#endregion
+
 CCMakeup:AddDummy(0,5)
------ Eye Makeup Color
+
+--#region Eye Makeup Color
 makeupHeaderContainer = CCMakeup:AddCollapsingHeader("Eye Makeup Color")
---- Intensity
+
+--#region Intensity
 -- makeupIntHeader = makeupHeaderContainer:AddSeparatorText("Intensity")
 -- makeupIntPrevious = makeupHeaderContainer:AddButton("<")
 makeupIntSelector = makeupHeaderContainer:AddSliderInt("Makeup Intensity", 0, 0, 100)
 -- makeupIntSelector.SameLine = true
 -- makeupIntNext = makeupHeaderContainer:AddButton(">")
 -- makeupIntNext.SameLine = true
+--#endregion
 
---- Metallic Tint
+--#region Metallic Tint
 -- makeupMetalHeader = makeupHeaderContainer:AddSeparatorText("Metallic Tint")
 -- makeupMetalPrevious = makeupHeaderContainer:AddButton("<")
 makeupMetalSelector = makeupHeaderContainer:AddSliderInt("Makeup Metallic Tint", 0, 0, 100)
 -- makeupMetalSelector.SameLine = true
 -- makeupMetalNext = makeupHeaderContainer:AddButton(">")
 -- makeupMetalNext.SameLine = true
+--#endregion
 
---- Glossy Tint
+--#region Glossy Tint
 -- makeupGlossHeader = makeupHeaderContainer:AddSeparatorText("Glossy Tint")
 -- makeupGlossPrevious = makeupHeaderContainer:AddButton("<")
 makeupGlossSelector = makeupHeaderContainer:AddSliderInt("Makeup Glossy Tint", 0, 0, 100)
 -- makeupGlossSelector.SameLine = true
 -- makeupGlossNext = makeupHeaderContainer:AddButton(">")
 -- makeupGlossNext.SameLine = true
+--#endregion
 
---- Color
+--#region Color
 makeupColorHeader = makeupHeaderContainer:AddCollapsingHeader("Color")
 makeupColorTable = makeupColorHeader:AddTable("", 10)
 makeupColorRow = makeupColorTable:AddRow()
 makeupColorPrevious = makeupColorRow:AddCell():AddButton("<")
 makeupColorSelector = makeupColorRow:AddCell():AddSliderInt("", 0, 0, 100)
 makeupColorNext = makeupColorRow:AddCell():AddButton(">")
------
+--#endregion
+
+--#endregion
+
 CCMakeup:AddDummy(0,5)
------ Lips Makeup Color
+
+--#region Lips Makeup Color
 lipsHeaderContainer = CCMakeup:AddCollapsingHeader("Lips Makeup Color")
---- Intensity
+
+--#region Intensity
 -- lipsIntHeader = lipsHeaderContainer:AddSeparatorText("Intensity")
 -- lipsIntPrevious = lipsHeaderContainer:AddButton("<")
 lipsIntSelector = lipsHeaderContainer:AddSliderInt("Lips Color Intensity", 0, 0, 100)
 -- lipsIntSelector.SameLine = true
 -- lipsIntNext = lipsHeaderContainer:AddButton(">")
 -- lipsIntNext.SameLine = true
+--#endregion
 
---- Metallic Tint
+--#region Metallic Tint
 -- lipsMetalHeader = lipsHeaderContainer:AddSeparatorText("Metallic Tint")
 -- lipsMetalPrevious = lipsHeaderContainer:AddButton("<")
 lipsMetalSelector = lipsHeaderContainer:AddSliderInt("Lips Metallic Tint", 0, 0, 100)
 -- lipsMetalSelector.SameLine = true
 -- lipsMetalNext = lipsHeaderContainer:AddButton(">")
 -- lipsMetalNext.SameLine = true
+--#endregion
 
---- Glossy Tint
+--#region Glossy Tint
 -- lipsGlossHeader = lipsHeaderContainer:AddSeparatorText("Glossy Tint")
 -- lipsGlossPrevious = lipsHeaderContainer:AddButton("<")
 lipsGlossSelector = lipsHeaderContainer:AddSliderInt("Lips Glossy Tint", 0, 0, 100)
 -- lipsGlossSelector.SameLine = true
 -- lipsGlossNext = lipsHeaderContainer:AddButton(">")
 -- lipsGlossNext.SameLine = true
+--#endregion
 
---- Color
+--#region Color
 lipsColorHeader = lipsHeaderContainer:AddCollapsingHeader("Color")
 lipsColorTable = lipsHeaderContainer:AddTable("", 10)
 lipsColorRow = lipsColorTable:AddRow()
@@ -294,8 +352,13 @@ lipsColorButton7 = lipsColorRow:AddCell():AddButton("X")
 lipsColorButton8 = lipsColorRow:AddCell():AddButton("X")
 lipsColorButton9 = lipsColorRow:AddCell():AddButton("X")
 lipsColorButton10 = lipsColorRow:AddCell():AddButton("X")
------
+--#endregion
+
+--#endregion
+
 CCMakeup:AddDummy(0,5)
+
+--#endregion
 
 ------------------------------------------------------
 --                                                  --
@@ -303,8 +366,10 @@ CCMakeup:AddDummy(0,5)
 --                                                  --
 ------------------------------------------------------
 
+--#region Hair
 CCHair:AddDummy(0,5)
------ Hair Style
+
+--#region Hair Style
 -- hairStyleHeader = CCHair:AddCollapsingHeader("Hair Style")
 -- hairStyleTable = hairStyleHeader:AddTable("", 4)
 -- hairStyleRow = hairStyleTable:AddRow()
@@ -312,9 +377,11 @@ CCHair:AddDummy(0,5)
 -- hairStyleSelector = hairStyleRow:AddCell():AddCombo("")
 -- hairStyleNext = hairStyleRow:AddCell():AddButton(">")
 hairSelector = CCHair:AddCombo("Hair Style")
------
+--#endregion
+
 CCHair:AddDummy(0,5)
------ Hair Color
+
+--#region Hair Color
 hairColorHeader = CCHair:AddCollapsingHeader("Hair Color")
 hairColorTable = hairColorHeader:AddTable("", 10)
 hairColorRow = hairColorTable:AddRow()
@@ -328,18 +395,23 @@ hairColorButton7 = hairColorRow:AddCell():AddButton("X")
 hairColorButton8 = hairColorRow:AddCell():AddButton("X")
 hairColorButton9 = hairColorRow:AddCell():AddButton("X")
 hairColorButton10 = hairColorRow:AddCell():AddButton("X")
------
+--#endregion
+
 CCHair:AddDummy(0,5)
------ Highlights
+
+--#region Highlights
 highlightsHeaderContainer = CCHair:AddCollapsingHeader("Highlights")
---- Intensity
+
+--#region Intensity
 -- highlightsIntHeader = highlightsHeaderContainer:AddSeparatorText("Highlight Intensity")
 -- highlightsIntPrevious = highlightsHeaderContainer:AddButton("<")
 highlightsIntSelector = highlightsHeaderContainer:AddSliderInt("Highlight Intensity", 0, 0, 100)
 -- highlightsIntSelector.SameLine = true
 -- highlightsIntNext = highlightsHeaderContainer:AddButton(">")
 -- highlightsIntNext.SameLine = true
---- Color
+--#endregion
+
+--#region Color
 highlightsColorHeader = highlightsHeaderContainer:AddCollapsingHeader("Highlight Color")
 highlightsColorTable = highlightsColorHeader:AddTable("", 10)
 highlightsColorRow = highlightsColorTable:AddRow()
@@ -353,18 +425,25 @@ highlightsColorButton7 = highlightsColorRow:AddCell():AddButton("X")
 highlightsColorButton8 = highlightsColorRow:AddCell():AddButton("X")
 highlightsColorButton9 = highlightsColorRow:AddCell():AddButton("X")
 highlightsColorButton10 = highlightsColorRow:AddCell():AddButton("X")
------
+--#endregion
+
+--#endregion
+
 CCHair:AddDummy(0,5)
------ Greying
+
+--#region Greying
 greyingHeaderContainer = CCHair:AddCollapsingHeader("Greying")
---- Intensity
+
+--#region Intensity
 -- greyingIntHeader = greyingHeaderContainer:AddSeparatorText("Greying Intensity")
 -- greyingIntPrevious = greyingHeaderContainer:AddButton("<")
 greyingIntSelector = greyingHeaderContainer:AddSliderInt("Greying Intensity", 0, 0, 100)
 -- greyingIntSelector.SameLine = true
 -- greyingIntNext = greyingHeaderContainer:AddButton(">")
 -- greyingIntNext.SameLine = true
---- Color
+--#endregion
+
+--#region Color
 greyingColorHeader = greyingHeaderContainer:AddCollapsingHeader("Greying Color")
 greyingColorTable = greyingColorHeader:AddTable("", 10)
 greyingColorRow = greyingColorTable:AddRow()
@@ -378,8 +457,13 @@ greyingColorButton7 = greyingColorRow:AddCell():AddButton("X")
 greyingColorButton8 = greyingColorRow:AddCell():AddButton("X")
 greyingColorButton9 = greyingColorRow:AddCell():AddButton("X")
 greyingColorButton10 = greyingColorRow:AddCell():AddButton("X")
------
+--#endregion
+
+--#endregion
+
 CCHair:AddDummy(0,5)
+
+--#endregion
 
 ------------------------------------------------------
 --                                                  --
@@ -387,8 +471,10 @@ CCHair:AddDummy(0,5)
 --                                                  --
 ------------------------------------------------------
 
+--#region Facial Hair
 CCBeard:AddDummy(0,5)
------ Hair Style
+
+--#region Hair Style
 -- beardstyleHeader = CCBeard:AddCollapsingHeader("Beard")
 -- beardstyleTable = beardstyleHeader:AddTable("", 4)
 -- beardstyleRow = beardstyleTable:AddRow()
@@ -396,9 +482,11 @@ CCBeard:AddDummy(0,5)
 -- beardstyleButton2 = beardstyleRow:AddCell():AddButton("X")
 -- beardstyleButton3 = beardstyleRow:AddCell():AddButton("X")
 beardSelector = CCBeard:AddCombo("Beard Types")
------
+--#endregion
+
 CCBeard:AddDummy(0,5)
------ Hair Color
+
+--#region Hair Color
 beardColorHeader = CCBeard:AddCollapsingHeader("Hair Color")
 beardColorTable = beardColorHeader:AddTable("", 10)
 beardColorRow = beardColorTable:AddRow()
@@ -412,19 +500,27 @@ beardColorButton7 = beardColorRow:AddCell():AddButton("X")
 beardColorButton8 = beardColorRow:AddCell():AddButton("X")
 beardColorButton9 = beardColorRow:AddCell():AddButton("X")
 beardColorButton10 = beardColorRow:AddCell():AddButton("X")
------
+--#endregion
+
 CCBeard:AddDummy(0,5)
------ Greying
+
+--#region Greying
 beardgreyingHeaderContainer = CCBeard:AddCollapsingHeader("Greying")
---- Intensity
+
+--#region Intensity
 -- greyingIntHeader = greyingHeaderContainer:AddSeparatorText("Greying Intensity")
 -- greyingIntPrevious = greyingHeaderContainer:AddButton("<")
 beardgreyingIntSelector = beardgreyingHeaderContainer:AddSliderInt("Greying Intensity", 0, 0, 100)
 -- greyingIntSelector.SameLine = true
 -- greyingIntNext = greyingHeaderContainer:AddButton(">")
 -- greyingIntNext.SameLine = true
------
+--#endregion
+
+--#endregion
+
 CCBeard:AddDummy(0,5)
+
+--#endregion
 
 ------------------------------------------------------
 --                                                  --
@@ -432,8 +528,10 @@ CCBeard:AddDummy(0,5)
 --                                                  --
 ------------------------------------------------------
 
+--#region Horns
 CCHorns:AddDummy(0,5)
------ Hair Style
+
+--#region Horn Style
 -- hornstyleHeader = CCHorns:AddCollapsingHeader("Horn Style")
 -- hornstyleTable = hornstyleHeader:AddTable("", 4)
 -- hornstyleRow = hornstyleTable:AddRow()
@@ -441,9 +539,11 @@ CCHorns:AddDummy(0,5)
 -- hornstyleButton2 = hornstyleRow:AddCell():AddButton("X")
 -- hornstyleButton3 = hornstyleRow:AddCell():AddButton("X")
 hornSelector = CCHorns:AddCombo("Horns Types")
------
+--#endregion
+
 CCHorns:AddDummy(0,5)
------ Horn Color
+
+--#region Horn Color
 hornColorHeader = CCHorns:AddCollapsingHeader("Horn Color")
 hornColorTable = hornColorHeader:AddTable("", 10)
 hornColorRow = hornColorTable:AddRow()
@@ -457,9 +557,11 @@ hornColorButton7 = hornColorRow:AddCell():AddButton("X")
 hornColorButton8 = hornColorRow:AddCell():AddButton("X")
 hornColorButton9 = hornColorRow:AddCell():AddButton("X")
 hornColorButton10 = hornColorRow:AddCell():AddButton("X")
------
+--#endregion
+
 CCHorns:AddDummy(0,5)
------ Horn Tip Color
+
+--#region Horn Tip Color
 horntipColorHeader = CCHorns:AddCollapsingHeader("Horn Tip Color")
 horntipColorTable = horntipColorHeader:AddTable("", 10)
 horntipColorRow = horntipColorTable:AddRow()
@@ -473,8 +575,11 @@ horntipColorButton7 = horntipColorRow:AddCell():AddButton("X")
 horntipColorButton8 = horntipColorRow:AddCell():AddButton("X")
 horntipColorButton9 = horntipColorRow:AddCell():AddButton("X")
 horntipColorButton10 = horntipColorRow:AddCell():AddButton("X")
------
+--#endregion
+
 CCHorns:AddDummy(0,5)
+
+--#endregion
 
 ------------------------------------------------------
 --                                                  --
@@ -482,8 +587,10 @@ CCHorns:AddDummy(0,5)
 --                                                  --
 ------------------------------------------------------
 
+--#region Tail
 CCTails:AddDummy(0,5)
------ Tail Style
+
+--#region Tail Style
 -- tailHeader = CCTails:AddCollapsingHeader("Tails")
 -- tailTable = tailHeader:AddTable("", 4)
 -- tailRow = tailTable:AddRow()
@@ -491,8 +598,11 @@ CCTails:AddDummy(0,5)
 -- tailButton2 = tailRow:AddCell():AddButton("X")
 -- tailButton3 = tailRow:AddCell():AddButton("X")
 tailSelector = CCTails:AddCombo("Tail Types")
------
+--#endregion
+
 CCTails:AddDummy(0,5)
+
+--#endregion
 
 ------------------------------------------------------
 --                                                  --
@@ -500,8 +610,10 @@ CCTails:AddDummy(0,5)
 --                                                  --
 ------------------------------------------------------
 
+--#region Wings
 CCWings:AddDummy(0,5)
------ Wing Style
+
+--#region Wing Style
 -- wingsHeader = CCWings:AddCollapsingHeader("Wings")
 wingsSelector = CCWings:AddCombo("Wing Types")
 -- wingsTable = wingsHeader:AddTable("", 4)
@@ -509,6 +621,8 @@ wingsSelector = CCWings:AddCombo("Wing Types")
 -- wingsButton1 = wingsRow:AddCell():AddButton("X")
 -- wingsButton2 = wingsRow:AddCell():AddButton("X")
 -- wingsButton3 = wingsRow:AddCell():AddButton("X")
------
+--#endregion
+
 CCTails:AddDummy(0,5)
 
+--#endregion
