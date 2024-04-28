@@ -4,8 +4,47 @@
 --                                                        --
 ------------------------------------------------------------ 
 
------- Skiz Wing Coloring
+--#region Key Input Event Listener - Open/Close mechanism
 
+Ext.Events.KeyInput:Subscribe(function (e)
+    
+    if e.Event == "KeyDown" then
+        _P("--------------------------")
+        _P("[KEYINPUT] Key Pressed: ", e.Key)
+        _P("[KEYINPUT] Modifiers pressed: ", e.Modifiers)
+        if e.Key == "GRAVE" then
+            if w.Open == true then
+                w.Open = false
+            else
+                w.Open = true
+            end
+        end
+    end
+end)
+
+--#endregion
+
+--#region Race Filter
+showAllOptionsCheck.OnChange = function()
+    print("OnChange")
+    if showAllOptionsCheck.Checked == true then
+        print("Show All Options = Checked")
+        Ext.Net.PostMessageToServer("DisableFilter", "")
+    else
+        print("Show All Options = Unchecked")
+        Ext.Net.PostMessageToServer("EnableFilter", "")
+    end
+end
+
+--#endregion
+
+--#region Race Selector
+--probably needs everything else set up first so we can reset those to base values whenever you change race
+
+--#endregion
+
+--[NYI] Wing Color Changing
+--#region Skiz Wing Coloring
 -- TESTBUTTON.OnClick = function ()
 --     local materialBank = Ext.Resource.Get("5e5b7f76-8fa5-16ff-0cf3-33d94f5ea041", "Material")
 --     _P("[CLIENT] Material bank parameter values:")
@@ -39,7 +78,7 @@
 
 --     _P("[CLIENT] Dump wingColors:")
 --     _D(wingColors)
-    
+
 --     _P("[CLIENT] Now dump materialBank values again: ")
 --     _D(materialBank.Instance.Parameters.Vector3Parameters[1].Value)
 --     _P("[CLIENT] Now input wingColors[] into that those materialBank parameters[]")
@@ -49,23 +88,11 @@
 --     _D(materialBank.Instance.Parameters.Vector3Parameters[1].Value)
 --     Ext.Net.PostMessageToServer("UpdateWingColor", Ext.Json.Stringify(newWingColors))
 -- end
-
+--#endregion
 
 --------------- Event Sender---------------
 -- Ext.Net.PostMessageToServer("Teleport", _)
 -------------------------------------------
-
-showAllOptionsCheck.OnChange = function()
-    print("OnChange")
-    if showAllOptionsCheck.Checked == true then
-        print("Show All Options = Checked")
-        Ext.Net.PostMessageToServer("DisableFilter", "")
-    else
-        print("Show All Options = Unchecked")
-        Ext.Net.PostMessageToServer("EnableFilter", "")
-    end
-end
-
 
 ------------------------------------------------------
 --                                                  --
@@ -73,10 +100,9 @@ end
 --                                                  --
 ------------------------------------------------------
 
------ Race
---probably needs everything else set up first so we can reset those to base values whenever you change race
+--#region Body
 
------ Heads
+--#region Heads
 --needs headsTable to be populated by all available heads
 --getHeadCount
 --populate in steps of 4, then create new line with headsTable:AddRow()
@@ -100,13 +126,19 @@ headSelector.OnChange = function()
     end
 end
 
----- Skincolor
+--#endregion
+
+--#region Skincolor
 --same as heads, but with colors instead and new rows after 10 items
 
------ Scars
+--#endregion
+
+--#region Scars
 --same as heads but with scars
 
------ Maturity
+--#endregion
+
+--region Maturity
 --if ageSelector.OnChange then
 --set these
 --"AdditionalChoices" :
@@ -120,16 +152,24 @@ end
 
 -----additional info -- AdditionalChoices Values are mapped in AdditionalChoices.txt
 
------ Freckle Quantity
+--#endregion
+
+--region Freckle Quantity
 --same as maturity but with freckleQSelector and the second value
 
------ Freckle Intensity
+--#endregion
+
+--region Freckle Intensity
 --same as maturity but with freckleISelector and the third value
 
------ Vitiligo Pigmentation
+--#endregion
+
+--region Vitiligo Pigmentation
 --same as maturity but with vitiligoSelector and the fourth value
 
------ Genital
+--#endregion
+
+--region Genital
 local previousGenital = genitalSelector.Options[genitalSelector.SelectedIndex]
 genitalSelector.OnChange = function()
     if genitalSelector.SelectedIndex ~= previousGenital then
@@ -164,16 +204,24 @@ end
 --     end
 -- end
 
+--#endregion
+
+--#endregion
+
 ------------------------------------------------------
 --                                                  --
 --                      Face                        --
 --                                                  --
 ------------------------------------------------------
 
------ Tattoos
+--#region Face
+
+--#region Tattoos
 --same as heads but with tattoos
 
------ Piercing
+--#endregion
+
+--#region Piercing
 local previousPiercing = piercingSelector.Options[piercingSelector.SelectedIndex]
 piercingSelector.OnChange = function()
     if piercingSelector.SelectedIndex ~= previousPiercing then
@@ -190,14 +238,19 @@ piercingSelector.OnChange = function()
     end
 end
 
+--#endregion
+
+--#endregion
+
 ------------------------------------------------------
 --                                                  --
 --                      Eyes                        --
 --                                                  --
 ------------------------------------------------------
 
------ Heterochromia
+--#region Eyes
 
+--#region Heterochromia
 heterochromiaButton.OnChange = function()
     print("OnChange")
     if heterochromiaButton.Checked == true then
@@ -213,14 +266,24 @@ heterochromiaButton.OnChange = function()
     end
 end
 
------ Eyecolor
+--#endregion
+
+--#region Eyecolor
 --same as skincolor but with available eyecolors
 
---- Left Eye
+--#endregion
+
+--#region Left Eye
 --same as skincolor but with available eyecolors
 
---- Right Eye
+--#endregion
+
+--#region Right Eye
 --same as skincolor but with available eyecolors
+
+--#endregion
+
+--#endregion
 
 ------------------------------------------------------
 --                                                  --
@@ -228,34 +291,62 @@ end
 --                                                  --
 ------------------------------------------------------
 
------ Eye Makeup Style
+--#region Makeup
+
+--#region Eye Makeup Style
 --same as heads but with makeup style instead
 
------ Eye Makeup Color
---- Intensity
+--#endregion
+
+--#region Eye Makeup Color
+
+--#region Intensity
 --slider like maturity but without that value nonsense, update color values instead
 
---- Metallic Tint
+--#endregion
+
+--#region Metallic Tint
 --slider like maturity but without that value nonsense, update color values instead
 
---- Glossy Tint
+--#endregion
+
+--#region Glossy Tint
 --slider like maturity but without that value nonsense, update color values instead
 
---- Color
+--#endregion
+
+--#region Color
 --same as skincolor but with available makeup colors
 
------ Lips Makeup Color
---- Intensity
+--#endregion
+
+--#endregion
+
+--#region Lips Makeup Color
+
+--#region Intensity
 --same as eye makeup intensity but for lips
 
---- Metallic Tint
+--#endregion
+
+--#region Metallic Tint
 --same as eye makeup metallic tint but for lips
 
---- Glossy Tint
+--#endregion
+
+--#region Glossy Tint
 --same as eye makeup glotty tint but for lips
 
---- Color
+--#endregion
+
+--#region Color
 --same as eye makeup color but for lips
+
+--#endregion
+
+--#endregion
+
+--#endregion
 
 ------------------------------------------------------
 --                                                  --
@@ -263,11 +354,13 @@ end
 --                                                  --
 ------------------------------------------------------
 
------ Hair Style
+--#region Hair
+
+--#region Hair Style
 --same as heads but with hair styles instead
 local previousHair = hairSelector.Options[hairSelector.SelectedIndex]
 hairSelector.OnChange = function()
-   
+
     print("Clicked")
     if hairSelector.SelectedIndex ~= previousHair then
         print("clicked")
@@ -284,22 +377,42 @@ hairSelector.OnChange = function()
     end
 end
 
------ Hair Color
+--#endregion
+
+--#region Hair Color
 --same as skincolor but with available hair colors instead
 
------ Highlights
---- Intensity
+--#endregion
+
+--#region Highlights
+
+--#region Intensity
 --same as makeup intensity but for the color we select below
 
---- Color
+--#endregion
+
+--#region Color
 --same as hair color but for the highlights instead
 
------ Greying
---- Intensity
+--#endregion
+
+--#endregion
+
+--#region Greying
+
+--#region Intensity
 --same procedure as with highlight intensity but for greying instead
 
---- Color
+--#endregion
+
+--#region Color
 --same procedure as with highlight colors but for greying instead
+
+--#endregion
+
+--#endregion
+
+--#endregion
 
 ------------------------------------------------------
 --                                                  --
@@ -307,7 +420,10 @@ end
 --                                                  --
 ------------------------------------------------------
 
------ Hair Style
+--#region Facial Hair
+
+--#region Hair Style
+
 --same as heads but with facialhair styles instead
 local previousBeard = beardSelector.Options[beardSelector.SelectedIndex]
 beardSelector.OnChange = function()
@@ -327,12 +443,28 @@ beardSelector.OnChange = function()
     end
 end
 
------ Hair Color
+--#endregion
+
+--#region Hair Color
 --same as skincolor but with available facialhair colors instead
 
------ Greying
---- Intensity
+--#endregion
+
+--#region Greying
+
+--#region Intensity
 --same procedure as with highlight intensity but for greying instead
+
+--#endregion
+
+--#region Color
+--greying color
+
+--#endregion
+
+--#endregion
+
+--#endregion
 
 ------------------------------------------------------
 --                                                  --
@@ -340,7 +472,10 @@ end
 --                                                  --
 ------------------------------------------------------
 
------ Horn Style
+--#region Horns
+
+--#region Horn Style
+
 --same as heads but with horns styles instead
 local previousHorn = hornSelector.Options[hornSelector.SelectedIndex]
 hornSelector.OnChange = function()
@@ -358,11 +493,19 @@ hornSelector.OnChange = function()
     end
 end
 
------ Horn Color
+--#endregion
+
+--#region Horn Color
 --same as skincolor but with available horn colors instead
 
------ Horn Tip Color
+--#endregion
+
+--#region Horn Tip Color
 --same as horn color but for the tips instead
+
+--#endregion
+
+--#endregion
 
 ------------------------------------------------------
 --                                                  --
@@ -370,7 +513,9 @@ end
 --                                                  --
 ------------------------------------------------------
 
------ Tail Style
+--#region Tail
+
+--#region Tail Style
 --same as heads but with tail styles instead
 local previousTail = tailSelector.Options[tailSelector.SelectedIndex]
 tailSelector.OnChange = function()
@@ -388,13 +533,19 @@ tailSelector.OnChange = function()
     end
 end
 
+--#endregion
+
+--#endregion
+
 ------------------------------------------------------
 --                                                  --
 --                      Wings                       --
 --                                                  --
 ------------------------------------------------------
 
------ Wing Style
+--#region Wings
+
+--#region Wing Style
 --same as heads but with wing styles instead
 local previousWings = wingsSelector.Options[wingsSelector.SelectedIndex]
 wingsSelector.OnChange = function()
@@ -411,3 +562,7 @@ wingsSelector.OnChange = function()
         print("Setting previousWings to: ", previousWings, " until next choice.")
     end
 end
+
+--#endregion
+
+--#endregion

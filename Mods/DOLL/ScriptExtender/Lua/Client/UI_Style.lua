@@ -3,7 +3,7 @@
 --                      UI Style                    --
 --                                                  --
 ------------------------------------------------------ 
--- d.Closable = true
+-- d.Closeable = true
 -- d.Closed = false
 w.Closeable = true
 -- w.Closed = true
@@ -192,7 +192,7 @@ w:SetColor("TableRowBg", {0.4824, 0.4078, 0.9333, 0.4})
 -- 	EV(NoInputs, (uint32_t)ImGuiWindowFlags_NoInputs)
 -- END_ENUM()
 
---------------------------------------------------
+-------------------------------------------------
 
 
 -- BEGIN_BITMASK(GuiTreeNodeFlags, uint32_t)
