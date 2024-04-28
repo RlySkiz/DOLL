@@ -82,7 +82,7 @@ end
 --populate in steps of 4, then create new line with headsTable:AddRow()
 --each row needs to recieve 4x :AddCell():AddButton()
 
-local previousHead = headSelector.SelectedIndex
+local previousHead = headSelector.Options[headSelector.SelectedIndex]
 -- TODO doesn't fire when selecting an item avobe the previously selected index 
 headSelector.OnChange = function()
     _D(previousHead)
@@ -91,7 +91,7 @@ headSelector.OnChange = function()
         print("New Head Chosen")
 
         local newHead = headSelector.Options[headSelector.SelectedIndex+1]
-        print("Sending Remove Request for: ", previousHead, " to add ", newHead)
+        print("Changing Visual ", previousHead, " to ", newHead)
         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newHead))
 
        previousHead = newHead
@@ -130,14 +130,14 @@ end
 --same as maturity but with vitiligoSelector and the fourth value
 
 ----- Genital
-local previousGenital = genitalSelector.SelectedIndex
+local previousGenital = genitalSelector.Options[genitalSelector.SelectedIndex]
 genitalSelector.OnChange = function()
     if genitalSelector.SelectedIndex ~= previousGenital then
         print("-----------------------------")
         print("New Genital Chosen")
 
         local newGenital = genitalSelector.Options[genitalSelector.SelectedIndex+1]
-        print("Sending Remove Request for: ", previousGenital, " to add ", newGenital)
+        print("Changing Visual ", previousGenital, " to ", newGenital)
         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newGenital))
 
         previousGenital = newGenital
@@ -174,14 +174,14 @@ end
 --same as heads but with tattoos
 
 ----- Piercing
-local previousPiercing = piercingSelector.SelectedIndex
+local previousPiercing = piercingSelector.Options[piercingSelector.SelectedIndex]
 piercingSelector.OnChange = function()
     if piercingSelector.SelectedIndex ~= previousPiercing then
         print("-----------------------------")
         print("New Piercing Chosen")
 
         local newPiercing = piercingSelector.Options[piercingSelector.SelectedIndex+1]
-        print("Sending Remove Request for: ", previousPiercing, " to add ", newPiercing)
+        print("Changing Visual ", previousPiercing, " to ", newPiercing)
         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newPiercing))
 
         previousPiercing = newPiercing
@@ -275,7 +275,7 @@ hairSelector.OnChange = function()
         print("New Hair Chosen")
 
         local newHair = hairSelector.Options[hairSelector.SelectedIndex+1]
-        print("Sending Remove Request for: ", previousHair, " to add ", newHair)
+        print("Changing Visual ", previousHair, " to ", newHair)
         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newHair))
 
         previousHair = newHair
@@ -318,7 +318,7 @@ beardSelector.OnChange = function()
 
         local newBeard = beardSelector.Options[beardSelector.SelectedIndex+1]
         _P("new beard : ", newBeard )
-        print("Sending Remove Request for: ", previousBeard, " to add ", newBeard)
+        print("Changing Visual ", previousBeard, " to ", newBeard)
         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newBeard))
 
         previousBeard = newBeard
@@ -342,14 +342,14 @@ end
 
 ----- Horn Style
 --same as heads but with horns styles instead
-local previousHorn = hornSelector.SelectedIndex
+local previousHorn = hornSelector.Options[hornSelector.SelectedIndex]
 hornSelector.OnChange = function()
     if hornSelector.SelectedIndex ~= previousHorn then
         print("-----------------------------")
         print("New Horns Chosen")
 
         local newHorn = hornSelector.Options[hornSelector.SelectedIndex+1]
-        print("Sending Remove Request for: ", previousHorn, " to add ", newHorn)
+        print("Changing Visual ", previousHorn, " to ", newHorn)
         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newHorn))
 
         previousHorn = newHorn
@@ -372,14 +372,14 @@ end
 
 ----- Tail Style
 --same as heads but with tail styles instead
-local previousTail = tailSelector.SelectedIndex
+local previousTail = tailSelector.Options[tailSelector.SelectedIndex]
 tailSelector.OnChange = function()
     if tailSelector.SelectedIndex ~= previousTail then
         print("-----------------------------")
         print("New Tail Chosen")
 
         local newTail = tailSelector.Options[tailSelector.SelectedIndex+1]
-        print("Sending Remove Request for: ", previousTail, " to add ", newTail)
+        print("Changing Visual ", previousTail, " to ", newTail)
         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newTail))
 
         previousTail = newTail
@@ -396,14 +396,14 @@ end
 
 ----- Wing Style
 --same as heads but with wing styles instead
-local previousWings = wingsSelector.SelectedIndex
+local previousWings = wingsSelector.Options[wingsSelector.SelectedIndex]
 wingsSelector.OnChange = function()
     if wingsSelector.SelectedIndex ~= previousWings then
         print("-----------------------------")
         print("New Wings Chosen")
 
         local newWings = wingsSelector.Options[wingsSelector.SelectedIndex+1]
-        print("Sending Remove Request for: ", previousWings, " to add ", newWings)
+        print("Changing Visual ", previousWings, " to ", newWings)
         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newWings))
 
         previousWings = newWings
