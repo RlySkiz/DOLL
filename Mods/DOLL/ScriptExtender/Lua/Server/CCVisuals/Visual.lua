@@ -74,11 +74,8 @@ function Visual:getAllVisualsWithName(type,uuid, filter)
     local allCCAV = Visual:getVisualsWithName(type, uuid,"CharacterCreationAppearanceVisual", filter)
     local allCCSV = Visual:getVisualsWithName(type,uuid, "CharacterCreationSharedVisual", filter)
 
-    -- Append 
-    for i, v in ipairs(allCCSV) do
-        table.insert(allCCAV, v)
-    end
-    return allCCAV
+	local allVisuals = ConcatenateTables(allCCAV, allCCSV)
+    return allVisuals
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -319,19 +316,31 @@ end
 -- @param newVisual	    - ID of CharacterCreationAppearaceVisual of type PrivateParts
 -- @param uuid 	     	- uuid of entity that will receive the Visual
 function Visual:overrideVisual(newVisual, uuid, type)
-	local visualType = Visual:getType(newVisual)
-	local currentVisual = Visual:getCurrentVisualOfType(uuid, type, visualType)
+	local currentCCAV = Visual:getCurrentVisualOfType(uuid, type, "CharacterCreationAppearanceVisual")
+	local currentCCSV = Visual:getCurrentVisualOfType(uuid, type, "CharacterCreationSharedVisual")
+	local currentVisuals = ConcatenateTables(currentCCAV, currentCCSV)
 
-    for _, visual in pairs(currentVisual) do
+	_P("------------------------------------------------------")
+	_P("SERVER")
+	_P("visual Type: ", visualType)
+	_P("current Visuals")
+	_D(currentVisuals)
+	
+    for _, visual in pairs(currentVisuals) do
 	    if not (visual == newVisual) then
 			-- Note: This is not a typo, It's actually called Ovirride
 		    Osi.RemoveCustomVisualOvirride(uuid, visual) 
+			_P("Removing ", visual)
 	    end
 	end
 	
 	if newVisual then
 		Osi.AddCustomVisualOverride(uuid, newVisual)
 	end
+
+
+	_P("-------------------------------------------------------")
+
 end
 
 
