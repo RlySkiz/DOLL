@@ -8,16 +8,32 @@
 
 Ext.Events.KeyInput:Subscribe(function (e)
     
-    if e.Event == "KeyDown" then
-        _P("--------------------------")
-        _P("[KEYINPUT] Key Pressed: ", e.Key)
-        _P("[KEYINPUT] Modifiers pressed: ", e.Modifiers)
+    if e.Event == "KeyDown" and e.Repeat == false then
+
         if e.Key == "GRAVE" then
+            w.Visible = true
             if w.Open == true then
                 w.Open = false
             else
                 w.Open = true
             end
+        end
+
+        -- Host Dump when pressing 1
+        -- if e.Key == "NUM_1" then
+        --     _D(Ext.Entity.Get(sessionHost):GetAllComponents())
+        -- end
+        if e.Key == "NUM_1" then
+            populateColors(skinColorTable, skinColorRows, skinColorButtons, skinColorNames)            
+        end
+        if e.Key == "NUM_2" then
+            table.insert(skinColorNames, "Testi")
+            skinColorButtons = {}
+            skinColorRows = {}
+            populateColors(skinColorTable, skinColorRows, skinColorButtons, skinColorNames)            
+        end
+        if e.Key == "NUM_3" then
+            _D(e)
         end
     end
 end)
@@ -130,6 +146,44 @@ end
 
 --#region Skincolor
 --same as heads, but with colors instead and new rows after 10 items
+
+function populateColors(tableToPopulate, rows, buttons, names)
+    table.insert(rows, tableToPopulate:AddRow())
+    rows[1].IDContext = "Row" .. 1
+    _P("---------------Initial Row Dump-----------------")
+    _D(rows)
+    _D(rows[1].IDContext)
+    _P("--------------------------------")
+    n = 1
+    for i = 1, #rows do
+        table.insert(rows, tableToPopulate:AddRow())
+        rows[i+1].IDContext = "Row" .. i+1
+        _P("---------------New Rows Dump-----------------")
+        _D(rows[i+1].IDContext)
+
+        for j = 1, 10 do
+            table.insert(buttons, rows[i]:AddCell():AddButton(names[n]))
+            buttons[j].Label = names[j] .. j
+            buttons[j].IDContext = names[j] .. n
+            n = n+1
+            _P("Button: " .. j .. " with Name " .. names[j] .. " and ID " .. buttons[j].IDContext .. " in row " .. i)
+        end
+    end
+
+
+    _P("---------------Names Dump-----------------")
+    _P("Names Dump:")
+    for i = 1, #names do
+    _P(names[i].Label)
+    _P(names[i].IDContext)
+    end
+    _P("---------------Button Dump-----------------")
+    _P("Buttons Dump:")
+    for i = 1, #buttons do
+    _P(buttons[i].Label)
+    _P(buttons[i].IDContext)
+    end
+end
 
 --#endregion
 

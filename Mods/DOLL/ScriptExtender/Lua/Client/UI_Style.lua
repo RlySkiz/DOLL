@@ -3,12 +3,14 @@
 --                      UI Style                    --
 --                                                  --
 ------------------------------------------------------ 
--- d.Closeable = true
--- d.Closed = false
+
+-- d.Visible = false -- Doesn't work for Demo
+
 w.Closeable = true
--- w.Closed = true
+w.Visible = false
 w.NoTitleBar = false
--- w.MenuBar = true
+
+w.NoFocusOnAppearing = true
 w:SetStyle("WindowMinSize", 200, 200)
 w:SetStyle("WindowRounding", 15)
 w:SetColor("WindowBg", {0.4824, 0.4078, 0.9333, 0.2})

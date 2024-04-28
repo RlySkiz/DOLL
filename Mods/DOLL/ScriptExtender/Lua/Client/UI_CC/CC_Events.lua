@@ -12,18 +12,18 @@ wingsCCAV = {}
 --                                                  --
 ------------------------------------------------------ 
 
-        local function populateSelector(selector, table)
-            for i, entry in pairs(table) do
-                local name = entry.name
-                local uuid = entry.uuid
+local function populateSelector(selector, table)
+    for i, entry in pairs(table) do
+        local name = entry.name
+        local uuid = entry.uuid
 
-                --print("[CC_Events.lua] - Entry: ", entry, " with name: ", name, " and UUID: ", uuid)
+        --print("[CC_Events.lua] - Entry: ", entry, " with name: ", name, " and UUID: ", uuid)
 
-                selector.Options[i] = name .. "_" .. uuid
+        selector.Options[i] = name .. "_" .. uuid
 
-                --print("[CC_Events.lua] - Set Selector.Option: ", selector.Options[i])
-            end
-        end
+        --print("[CC_Events.lua] - Set Selector.Option: ", selector.Options[i])
+    end
+end
 
 --------------------------------------------------------
 
@@ -53,8 +53,8 @@ Ext.Events.NetMessage:Subscribe(function(e)
     -- Recieves getHostCharacter()
     if (e.Channel == "SendHost") then
         print("[CC_Events.lua] - Host recieved")
-        local msg = Ext.Json.Parse(e.Payload)
-        print(msg)
+        sessionHost = Ext.Json.Parse(e.Payload)
+        print(sessionHost)
     end
 
     -- Recieves available CCAVs based on requested type and controlled character race
