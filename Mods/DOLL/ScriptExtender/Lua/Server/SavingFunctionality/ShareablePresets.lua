@@ -1,0 +1,3 @@
+-- Make visuals applied to a character
+-- saveable in a json file so they can be shared
+-- among gamers
