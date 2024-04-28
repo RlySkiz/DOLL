@@ -6,17 +6,25 @@
 
 --#region Key Input Event Listener - Open/Close mechanism
 
+
+
 Ext.Events.KeyInput:Subscribe(function (e)
-    
+
     if e.Event == "KeyDown" and e.Repeat == false then
+
+        local logKeyInput = false
+        if e.Key == "NUM_0" then
+            logKeyInput = not logKeyInput -- Toggles logKeyInput
+        end
+        if logKeyInput == true then
+            _P("--------------------------")
+            _P("[KEYINPUT] Key Pressed: ", e.Key)
+            _P("[KEYINPUT] Modifiers pressed: ", e.Modifiers)
+        end
 
         if e.Key == "GRAVE" then
             w.Visible = true
-            if w.Open == true then
-                w.Open = false
-            else
-                w.Open = true
-            end
+            w.Open = not w.Open
         end
 
         -- Host Dump when pressing 1
@@ -24,19 +32,21 @@ Ext.Events.KeyInput:Subscribe(function (e)
         --     _D(Ext.Entity.Get(sessionHost):GetAllComponents())
         -- end
         if e.Key == "NUM_1" then
-            populateColors(skinColorTable, skinColorRows, skinColorButtons, skinColorNames)            
+            populateColors(skinColorTable, skinColorRows, skinColorButtons, skinColorNames)
         end
         if e.Key == "NUM_2" then
             table.insert(skinColorNames, "Testi")
             skinColorButtons = {}
             skinColorRows = {}
-            populateColors(skinColorTable, skinColorRows, skinColorButtons, skinColorNames)            
+            populateColors(skinColorTable, skinColorRows, skinColorButtons, skinColorNames)
         end
         if e.Key == "NUM_3" then
             _D(e)
         end
     end
 end)
+
+
 
 --#endregion
 
