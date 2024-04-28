@@ -5,7 +5,7 @@
 ------------------------------------------------------ 
 -- d.Closable = true
 -- d.Closed = false
-w.Closable = true
+w.Closeable = true
 -- w.Closed = true
 w.NoTitleBar = false
 -- w.MenuBar = true

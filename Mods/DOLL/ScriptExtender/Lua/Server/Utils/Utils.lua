@@ -95,3 +95,20 @@ function ListToSet(list)
     end
     return set
 end
+
+
+
+-- Concatenate 2 tables into one
+-- @param t1 		
+-- @parma t2
+-- @return 			- concatenated lists
+function ConcatenateTables(t1, t2)
+    local result = {}
+    for i = 1, #t1 do
+        result[#result + 1] = t1[i]
+    end
+    for i = 1, #t2 do
+        result[#result + 1] = t2[i]
+    end
+    return result
+end
