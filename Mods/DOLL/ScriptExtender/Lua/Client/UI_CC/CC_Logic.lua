@@ -32,21 +32,68 @@ Ext.Events.KeyInput:Subscribe(function (e)
         --     _D(Ext.Entity.Get(sessionHost):GetAllComponents())
         -- end
         if e.Key == "NUM_1" then
-            populateColors(skinColorTable, skinColorRows, skinColorButtons, skinColorNames)
+            populateTable(skinColorTable, skinColorRows, skinColorButtons, skinColorNames)
         end
         if e.Key == "NUM_2" then
             table.insert(skinColorNames, "Testi")
-            skinColorButtons = {}
-            skinColorRows = {}
-            populateColors(skinColorTable, skinColorRows, skinColorButtons, skinColorNames)
+            populateTable(skinColorTable, skinColorRows, skinColorButtons, skinColorNames)
         end
         if e.Key == "NUM_3" then
             _D(e)
         end
+
+        if e.Key == "NUM_4" then
+            Ext.Net.PostMessageToServer("RequestHost", "Hi")
+            _D(Ext.Entity.Get(sessionHost):GetAllComponents())
+        end
     end
 end)
 
+--#endregion
 
+--#region populateTable Function
+
+-- Resets an IMGUI table based on parameters
+-- @param rows	                - List of rows to destroy and reset
+-- @param buttons 	     	    - List of buttons to reset
+function resetTable(rows, buttons)
+    for i = 2, #rows do
+        rows[i]:Destroy()
+    end
+
+    rows = rows[1]
+    buttons = buttons[1]
+end
+
+-- Populates an IMGUI table based on parameters
+-- @param tableToPopulate	    - The table to populate
+-- @param rows 	     	        - Empty list of rows except its own name within its first index
+-- @param buttons 	     	    - Empty list of buttons except its own name within its first index
+-- @param names 	     	    - List of Items
+function populateTable(tableToPopulate, rows, buttons, names)
+    if buttons[2] then -- Check if any button already exist
+    resetTable(rows, buttons) -- Before table gets populated, reset it first
+    end
+
+    local rowName = rows[1] -- Get name to name rows later
+    local buttonName = buttons[1] -- Get name to name buttons later
+    table.insert(rows, tableToPopulate:AddRow()) -- Add first row to table
+    rows[2].IDContext =  rowName .. 1 -- Add IDContext to first row based on row input and append 1 for first row
+    local j = 2 -- Rows[i]
+    for i = 1, #names do
+        table.insert(buttons, rows[j]:AddCell():AddButton(names[i])) -- Add a button to current row and add it to the list of buttons
+        local currentButton = buttons[i+1]
+        currentButton.Label = "  " -- Makes buttons show up without a label
+        currentButton.IDContext = buttonName .. i -- Gives buttons a continous ID
+        currentButton:Tooltip():AddText(names[i]) -- Gives buttons a popup with their actual name
+        _P("Button: " .. i .. " with Name " .. names[i] .. " and ID " .. currentButton.IDContext .. " in row " .. j-1)
+        if i % tableToPopulate.Columns == 0 then -- If i is dividable by column count of the table
+            j = j+1 -- Increase Rows[i]
+            table.insert(rows, tableToPopulate:AddRow()) -- Add new row
+            rows[j].IDContext = rowName .. j-1 -- Give the new row the correct IDContext
+        end
+    end
+end
 
 --#endregion
 
@@ -64,7 +111,7 @@ end
 
 --#endregion
 
---#region Race Selector
+--#region [NYI] Race Selector
 --probably needs everything else set up first so we can reset those to base values whenever you change race
 
 --#endregion
@@ -156,44 +203,6 @@ end
 
 --#region Skincolor
 --same as heads, but with colors instead and new rows after 10 items
-
-function populateColors(tableToPopulate, rows, buttons, names)
-    table.insert(rows, tableToPopulate:AddRow())
-    rows[1].IDContext = "Row" .. 1
-    _P("---------------Initial Row Dump-----------------")
-    _D(rows)
-    _D(rows[1].IDContext)
-    _P("--------------------------------")
-    n = 1
-    for i = 1, #rows do
-        table.insert(rows, tableToPopulate:AddRow())
-        rows[i+1].IDContext = "Row" .. i+1
-        _P("---------------New Rows Dump-----------------")
-        _D(rows[i+1].IDContext)
-
-        for j = 1, 10 do
-            table.insert(buttons, rows[i]:AddCell():AddButton(names[n]))
-            buttons[j].Label = names[j] .. j
-            buttons[j].IDContext = names[j] .. n
-            n = n+1
-            _P("Button: " .. j .. " with Name " .. names[j] .. " and ID " .. buttons[j].IDContext .. " in row " .. i)
-        end
-    end
-
-
-    _P("---------------Names Dump-----------------")
-    _P("Names Dump:")
-    for i = 1, #names do
-    _P(names[i].Label)
-    _P(names[i].IDContext)
-    end
-    _P("---------------Button Dump-----------------")
-    _P("Buttons Dump:")
-    for i = 1, #buttons do
-    _P(buttons[i].Label)
-    _P(buttons[i].IDContext)
-    end
-end
 
 --#endregion
 
@@ -422,23 +431,26 @@ end
 
 --#region Hair Style
 --same as heads but with hair styles instead
+
+
+-- OnChange of Selector, sends the selected Index's value to the server
+-- @param selector      - The selector to use (combobox)
+-- @param previous 	    - The previousX created above the individual selector to have a starting comparison
+function selectorChangeVisual(selector, previous)
+    if selector.SelectedIndex ~= previous then
+        local newRequest = selector.Options[selector.SelectedIndex+1]
+        _P("Changing Visual " .. previous .. " to " .. newRequest)
+        Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newRequest))
+        previous = newRequest
+        selector.Options[0] = previous
+        _P("Setting previous to " .. previous .. " until next choice.")
+    end
+end
+
+
 local previousHair = hairSelector.Options[hairSelector.SelectedIndex]
 hairSelector.OnChange = function()
-
-    print("Clicked")
-    if hairSelector.SelectedIndex ~= previousHair then
-        print("clicked")
-        print("-----------------------------")
-        print("New Hair Chosen")
-
-        local newHair = hairSelector.Options[hairSelector.SelectedIndex+1]
-        print("Changing Visual ", previousHair, " to ", newHair)
-        Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newHair))
-
-        previousHair = newHair
-        hairSelector.Options[0] = previousHair
-        print("Setting previousHair to", previousHair, " until next choice.")
-    end
+    selectorChangeVisual(hairSelector, previousHair)
 end
 
 --#endregion

@@ -83,9 +83,9 @@ CCBody:AddDummy(0,5)
 --#region Skincolor
 skinColorHeader = CCBody:AddCollapsingHeader("Skincolor")
 skinColorTable = skinColorHeader:AddTable("", 10)
-skinColorRows = {}
-skinColorButtons = {}
-skinColorNames = {"Peepee", "Poopoo", "Peetapoo", "Papeepoo", "Papoopee", "Poopoo", "Toopee", "Peetoo", "Tapatoo", "Pooteepa"}
+skinColorRows = {"skinColorRow"}
+skinColorButtons = {"skinColorButton"}
+skinColorNames = {"Peepee", "Poopoo", "Peetapoo", "Papeepoo", "Papoopee", "Poopoo", "Toopee", "Peetoo", "Tapatoo", "Pooteepa", "Toopapeetoo"}
 --#endregion
 
 CCBody:AddDummy(0,5)
