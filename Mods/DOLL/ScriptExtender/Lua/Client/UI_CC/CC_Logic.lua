@@ -39,7 +39,17 @@ Ext.Events.KeyInput:Subscribe(function (e)
             populateTable(skinColorTable, skinColorRows, skinColorButtons, skinColorNames)
         end
         if e.Key == "NUM_3" then
-            _D(e)
+            for i, name in ipairs(skinColorNames) do
+                if skinColorButtons[i].IDContext == skinColorNames[1] .. 3 then
+                    _P(skinColorButtons[i].IDContext .. " found!")
+                    table.remove(skinColorNames, i)
+                    table.remove(skinColorButtons, i)
+                    _P("skinColorNames[" .. i .. "]" .. " is now " .. skinColorNames[i])
+                    break
+                end
+                _P("Iterating " .. i)
+            end
+            populateTable(skinColorTable, skinColorRows, skinColorButtons, skinColorNames)
         end
 
         if e.Key == "NUM_4" then
@@ -58,11 +68,14 @@ end)
 -- @param buttons 	     	    - List of buttons to reset
 function resetTable(rows, buttons)
     for i = 2, #rows do
-        rows[i]:Destroy()
+        rows[i]:Destroy() -- Destroys all IMGUI components and their children
     end
-
-    rows = rows[1]
-    buttons = buttons[1]
+    while #rows > 1 do
+        table.remove(rows) -- Resets rows to just its name on index 1
+    end
+    while #buttons > 1 do
+        table.remove(buttons) -- Resets buttons to just its name on index 1
+    end
 end
 
 -- Populates an IMGUI table based on parameters
@@ -73,11 +86,14 @@ end
 function populateTable(tableToPopulate, rows, buttons, names)
     if buttons[2] then -- Check if any button already exist
     resetTable(rows, buttons) -- Before table gets populated, reset it first
+    _P("rows and buttons reset")
     end
 
     local rowName = rows[1] -- Get name to name rows later
     local buttonName = buttons[1] -- Get name to name buttons later
+    _P(rowName .. " and " .. buttonName)
     table.insert(rows, tableToPopulate:AddRow()) -- Add first row to table
+    _P(rows[1], rows[2], rows[3], rows[4])
     rows[2].IDContext =  rowName .. 1 -- Add IDContext to first row based on row input and append 1 for first row
     local j = 2 -- Rows[i]
     for i = 1, #names do
