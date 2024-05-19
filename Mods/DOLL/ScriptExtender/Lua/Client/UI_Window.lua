@@ -11,6 +11,7 @@ w = Ext.IMGUI.NewWindow("DOLL Character Editor")
 --- Tab Bar
 tBar = w:AddTabBar("")
 tCC = tBar:AddTabItem("Character Creation")
+tEQ = tBar:AddTabItem("Equipment")
 -- tSET = tBar:AddTabItem("Settings")
 tABO = tBar:AddTabItem("About")
 

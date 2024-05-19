@@ -212,6 +212,6 @@ Ext.Events.NetMessage:Subscribe(function(e)
 
             TestText.Label = "CCAVs/CCSVs Recieved"
     end
-    print("-- All Selectors populated! --")
+    -- print("-- All Selectors populated! --")
 
 end)

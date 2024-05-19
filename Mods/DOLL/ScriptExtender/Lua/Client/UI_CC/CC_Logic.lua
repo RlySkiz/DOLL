@@ -22,7 +22,7 @@ Ext.Events.KeyInput:Subscribe(function (e)
             _P("[KEYINPUT] Modifiers pressed: ", e.Modifiers)
         end
 
-        if e.Key == "GRAVE" then
+        if e.Key == "NUM_5" then
             w.Visible = true
             w.Open = not w.Open
         end

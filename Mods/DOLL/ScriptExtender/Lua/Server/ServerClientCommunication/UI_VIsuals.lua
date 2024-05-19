@@ -1,8 +1,8 @@
-------------------------------------------------------
---                                                  --
---                 UI Event Listener                --
---                                                  --
-------------------------------------------------------
+-----------------------------------------------------------------
+--                                                             --
+--                 UI Event Listener for Visuals               --
+--                                                             --
+-----------------------------------------------------------------
 
 
 
@@ -10,7 +10,6 @@
 
 -- Events to be received:
 
--- RequestHost                   - Client requests the HostCharacter
 -- RequestCCVisuals, Type        - Client requests list of all Visual of one type (ex: private parts)     
 -- ChangeVisual,uuidNewItem      - Client requests removal of Visual of type and addition of certain Visual uuid
 -- addVisual, uuidNewItem        - Client requests addition of certain Visual uuid
@@ -26,14 +25,16 @@
 
 
 
+
+
 --------------------------------------------------------------------------------------------------------------------------------------
 
 -- Events to be sent:
 
--- SendHost              - Server sends Osi.GetHostCharacter()
 -- SendVisual, items      - Server sends table of all Visual of one type
 
 -- InitialPopulate       - Server sends message on LevelGameplayStarted
+
 --------------------------------------------------------------------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------------
@@ -53,18 +54,6 @@ local filter = true
 
 --------------------------------------------------------------------------------
 
--- Send Host Character on Request
-Ext.Events.NetMessage:Subscribe(function(e)
-    if (e.Channel == "RequestHost") then
-        host = Osi.GetHostCharacter()
-        Ext.Net.BroadcastMessage("SendHost", Ext.Json.Stringify(host)) 
-        Ext.IO.SaveFile("output.json", Ext.DumpExport(Ext.Entity.Get(host):GetAllComponents()))
-    end
-end)
-
-
-
--- TODO - filter based on HostCharacter/Clicked Character/NPC
 
 
 
