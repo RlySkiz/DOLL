@@ -1,13 +1,75 @@
-local imguiTables = {}
-local helmetEQ = {}
-local cloakEQ = {}
-local breastEQ = {}
-local glovesEQ = {}
-local bootsEQ = {}
-local vanitybodyEQ = {}
-local vanitybootsEQ = {}
-local underwearEQ = {}
-local amuletEQ = {}
+--------------------------------------------------------
+
+
+--                  Variables
+
+
+--------------------------------------------------------
+
+
+
+
+-- Combined map for linking both EQ and IMGUI tables to SlotName
+-- Access this like so:
+-- helmetEQ = COMBINED_TABLE["Helmet"].EQ
+-- helmetTable = COMBINED_TABLE["Helmet"].IMGUI   -- these have been set in EQ_Window
+
+COMBINED_TABLE = {
+    ["Helmet"] = { EQ = {}, IMGUI = HelmetTable},
+    ["Cloak"] = { EQ = {}, IMGUI = CloakTable },
+    ["Breast"] = { EQ = {}, IMGUI = BreastTable },
+    ["Gloves"] = { EQ = {}, IMGUI = GlovesTable },
+    ["Boots"] = { EQ = {}, IMGUI = BootsTable },
+    ["VanityBody"] = { EQ = {}, IMGUI = VanityBodyTable },
+    ["VanityBoots"] = { EQ = {}, IMGUI = VanityBootsTable },
+    ["Underwear"] = { EQ = {}, IMGUI = UnderwearTable },
+    ["Amulet"] = { EQ = {}, IMGUI = AmuletTable }
+}
+
+
+--------------------------------------------------------
+
+
+--                  Getters and setters
+
+
+--------------------------------------------------------
+
+
+-- Returns the EQ table based on slot name
+-- @param slot string - allowed string (see COMBINED_TABLE keys)
+-- @return eqTable table or nil if slot does not exist
+function GetEQTable(slot)
+    local entry = COMBINED_TABLE[slot]
+    if entry then
+        return entry.EQ
+    else
+        _P("[EQ_Events.lua] - Error - GetEQTable() - ", slot, " is not a valid Slot")
+        return nil
+    end
+end
+
+-- Returns the IMGUI table based on slot name
+-- @param slot string - allowed string (see COMBINED_TABLE keys)
+-- @return imguiTable table or nil if slot does not exist
+function GetImguiTable(slot)
+    local entry = COMBINED_TABLE[slot]
+    if entry then
+        return entry.IMGUI
+    else
+        _P("[EQ_Events.lua] - Error - GetImguiTable() - ", slot, " is not a valid Slot")
+        return nil
+    end
+end
+
+
+-- Adds the data from server to the EQ element
+-- @param payload table - table containing slot and data 
+local function setEQTable(payload)
+    _P("Populating table for key ", payload.slot)
+    table.insert(COMBINED_TABLE[payload.slot].EQ, payload.data)
+end
+
 
 --------------------------------------------------------
 
@@ -17,140 +79,33 @@ local amuletEQ = {}
 
 --------------------------------------------------------
 
-local function setEquipmentData(equipmentSlotData)
-    local slot = equipmentSlotData.slot
-    local data = equipmentSlotData.data
-    if slot == "Helmet" then
-        table.insert(helmetEQ,data)
 
-    elseif slot == "Cloak" then
-        table.insert(cloakEQ,data)
-
-    elseif slot == "Breast" then
-        table.insert(breastEQ,data)
-
-    elseif slot == "Gloves" then
-        table.insert(glovesEQ,data)
-
-    elseif slot == "Boots" then
-        table.insert(bootsEQ,data)
-
-    elseif slot == "VanityBody" then
-        table.insert(vanitybodyEQ,data)
-
-    elseif slot == "VanityBoots" then
-        table.insert(vanitybootsEQ,data)
-
-    elseif slot == "Underwear" then
-        table.insert(underwearEQ,data)
-
-    elseif slot == "Amulet" then
-        table.insert(amuletEQ,data)
-
-    else
-        _P("[EQ_Events.lua] - Error - setEquipmentData() - ", slot ," is not a valid Slot")
-    end
-end
-
-function GetEquipmentData(slot)
-    if slot == "Helmet" then
-        return helmetEQ
-
-    elseif slot == "Cloak" then
-        return helmetEQ
-
-    elseif slot == "Breast" then
-        return helmetEQ
-
-    elseif slot == "Gloves" then
-        return glovesEQ
-
-    elseif slot == "Boots" then
-        return bootsEQ
-
-    elseif slot == "VanityBody" then
-        return vanitybodyEQ
-
-    elseif slot == "VanityBoots" then
-        return vanitybootsEQ
-
-    elseif slot == "Underwear" then
-        return underwearEQ
-
-    elseif slot == "Amulet" then
-        return amuletEQ
-
-    else
-        _P("[EQ_Events.lua] - Error - GetEquipmentData() - ", slot ," is not a valid Slot")
-    end
-end
-
-local function setupImguiTable(slot)
-    _P("set imgui table for slot ", slot)
-    if slot == "Helmet" then
-        table.insert(imguiTables, {tbl = HelmetTable, slotName = "Helmet"})
-
-    elseif slot == "Cloak" then
-        table.insert(imguiTables, {tbl = CloakTable, slotName = "Cloak"})
-
-    elseif slot == "Breast" then
-        table.insert(imguiTables, {tbl = BreastTable, slotName = "Breast"})
-
-    elseif slot == "Gloves" then
-        table.insert(imguiTables, {tbl = GlovesTable, slotName = "Gloves"})
-
-    elseif slot == "Boots" then
-        table.insert(imguiTables, {tbl = BootsTable, slotName = "Boots"})
-
-    elseif slot == "VanityBody" then
-        table.insert(imguiTables, {tbl = VanityBodyTable, slotName = "VanityBody"})
-
-    elseif slot == "VanityBoots" then
-        table.insert(imguiTables, {tbl = VanityBootsTable, slotName = "VanityBoots"})
-
-    elseif slot == "Underwear" then
-        table.insert(imguiTables, {tbl = UnderwearTable, slotName = "Underwear"})
-
-    elseif slot == "Amulet" then
-       table.insert(imguiTables, {tbl = AmuletTable, slotName = "Amulet"})
-
-    else
-        _P("[EQ_Events.lua] - Error - setupImguiTable() - ", slot ," is not a valid Slot")
-    end    
-end
-
-function GetImguiTable(searchSlot)
-    local table = imguiTables
-    for _, entry in pairs(table) do
-        local tbl = entry.tbl
-        local slotName = entry.slotName
-
-        if slotName == searchSlot then
-            return tbl
-
-            _P("[EQ_Events.lua] - Error - GetImguiTable() - ", slot ," is not a valid Slot")
-        end
-    end
-end
-
+-- populates the IMGUI element for DOLL
+--@param slot string - slot that will be populated
 local function populateImguiTable(slot)
 
-    for i, equipmentTable in pairs(GetImguiTable(slot)) do
-        _P("EquipmentTable iteration: ", i)
-        local imguiTable = equipmentTable.tbl
-        local slotName = equipmentTable.slotName
-        local slotData = GetEquipmentData(slotName)
-        
+    local imguiTable = GetImguiTable(slot)
+    local eqTable = GetEQTable(slot)
+
+
+    for i, dataPacket in pairs(eqTable) do
+
         local imguiTableRow = imguiTable:AddRow()
 
-        for j, dataTable in pairs(slotData) do
-            _P("imguiTable iteration: ", j)
-            local uuid = dataTable.uuid
-            local slot = dataTable.slot
-            local icon = dataTable.icon
-            local name = dataTable.name
-            
-            if m % 6 == 0 then -- if i is multiple of 6
+          
+        --local imguiTable = tableOfMapkeys.tbl
+        --local slotName = tableOfMapkeys.slotName
+        --local slotData = tableOfMapkeys.data
+
+        for j, data in pairs(dataPacket) do
+
+            local uuid = data.uuid
+            local slot = data.slot
+            local icon = data.icon
+            local name = data.name
+
+
+            if i % 6 == 0 then -- if i is multiple of 6
                 _P("New Row iteration: ", m+1)
                 local imguiTableRow = imguiTable:AddRow()
             end
@@ -207,18 +162,10 @@ end
 -- Listens to OnLevelGameplayStarted event
 Ext.Events.NetMessage:Subscribe(function(e) 
     if (e.Channel == "PopulateEquipment") then
-        _P("[EQ_Events.lua] - PopulateEquipment Event recieved from server")
-        local data = Ext.Json.Parse(e.Payload)
-        local slot = data.slot
-        _P("Processing ", slot, "table population.")
-        _P(slot)
-        _D(slot)
-        setEquipmentData(data)
-        setupImguiTable(slot)
-        _P("populateImguiTable start")
+        local payload = Ext.Json.Parse(e.Payload)
+        local slot = payload.slot
+
+        setEQTable(payload)
         populateImguiTable(slot)
-        _P("populateImguiTable finish")
     end
 end)
-
-_P("parsed EQ_Events.lua")

@@ -125,7 +125,7 @@ function Armor:getAllEquipmentOfType(type)
 
     for _, entry in pairs(allEquipment) do
         if entry.slot == type then
-            table.insert(allEquipmentOfType, entry.uuid)
+            table.insert(allEquipmentOfType, entry)
         end
     end
     return allEquipmentOfType 
