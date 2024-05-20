@@ -16,23 +16,32 @@ tEQ:AddSeparatorText("")
 -- Overhead = 15,
 
 --#region Categories
-EQHelmet = tEQ:AddCollapsingHeader("Helmet")
+EQHelmet = tEQ:AddTree("Helmet")
+EQHelmet.Framed = true
 tEQ:AddSeparatorText("")
-EQCloak = tEQ:AddCollapsingHeader("Cloak")
+EQCloak = tEQ:AddTree("Cloak")
+EQCloak.Framed = true
 tEQ:AddSeparatorText("")
-EQBreast = tEQ:AddCollapsingHeader("Breast")
+EQBreast = tEQ:AddTree("Breast")
+EQBreast.Framed = true
 tEQ:AddSeparatorText("")
-EQGloves = tEQ:AddCollapsingHeader("Gloves")
+EQGloves = tEQ:AddTree("Gloves")
+EQGloves.Framed = true
 tEQ:AddSeparatorText("")
-EQBoots = tEQ:AddCollapsingHeader("Boots")
+EQBoots = tEQ:AddTree("Boots")
+EQBoots.Framed = true
 tEQ:AddSeparatorText("")
-EQVanityBody = tEQ:AddCollapsingHeader("VanityBody")
+EQVanityBody = tEQ:AddTree("VanityBody")
+EQVanityBody.Framed = true
 tEQ:AddSeparatorText("")
-EQVanityBoots = tEQ:AddCollapsingHeader("VanityBoots")
+EQVanityBoots = tEQ:AddTree("VanityBoots")
+EQVanityBoots.Framed = true
 tEQ:AddSeparatorText("")
-EQUnderwear = tEQ:AddCollapsingHeader("Underwear")
+EQUnderwear = tEQ:AddTree("Underwear")
+EQUnderwear.Framed = true
 tEQ:AddSeparatorText("")
-EQAmulet = tEQ:AddCollapsingHeader("Amulet")
+EQAmulet = tEQ:AddTree("Amulet")
+EQAmulet.Framed = true
 --#endregion
 
 --#endregion
@@ -46,7 +55,8 @@ EQAmulet = tEQ:AddCollapsingHeader("Amulet")
 --#region Helmet
 EQHelmet:AddDummy(0,5)
 
-HelmetTable = EQHelmet:AddTable("", 5)
+HelmetAmount = EQHelmet:AddText("")
+HelmetTable = EQHelmet:AddTable("", 3)
 
 EQHelmet:AddDummy(0,5)
 --#endregion
@@ -60,7 +70,8 @@ EQHelmet:AddDummy(0,5)
 --#region Eyes
 EQCloak:AddDummy(0,5)
 
-CloakTable = EQCloak:AddTable("", 5)
+CloakAmount = EQCloak:AddText("")
+CloakTable = EQCloak:AddTable("", 3)
 
 EQCloak:AddDummy(0,5)
 --#endregion
@@ -74,7 +85,8 @@ EQCloak:AddDummy(0,5)
 --#region Breast
 EQBreast:AddDummy(0,5)
 
-BreastTable = EQBreast:AddTable("", 5)
+BreastAmount = EQBreast:AddText("")
+BreastTable = EQBreast:AddTable("", 3)
 
 EQBreast:AddDummy(0,5)
 --#endregion
@@ -88,7 +100,8 @@ EQBreast:AddDummy(0,5)
 --#region Gloves
 EQGloves:AddDummy(0,5)
 
-GlovesTable = EQGloves:AddTable("", 5)
+GlovesAmount = EQGloves:AddText("")
+GlovesTable = EQGloves:AddTable("", 3)
 
 EQGloves:AddDummy(0,5)
 --#endregion
@@ -102,7 +115,8 @@ EQGloves:AddDummy(0,5)
 --#region Hair
 EQBoots:AddDummy(0,5)
 
-BootsTable = EQBoots:AddTable("", 5)
+BootsAmount = EQBoots:AddText("")
+BootsTable = EQBoots:AddTable("", 3)
 
 EQBoots:AddDummy(0,5)
 --#endregion
@@ -116,7 +130,8 @@ EQBoots:AddDummy(0,5)
 --#region VanityBody
 EQVanityBody:AddDummy(0,5)
 
-VanityBodyTable = EQVanityBody:AddTable("", 5)
+VanityBodyAmount = EQVanityBody:AddText("")
+VanityBodyTable = EQVanityBody:AddTable("", 3)
 
 EQVanityBody:AddDummy(0,5)
 --#endregion
@@ -130,7 +145,8 @@ EQVanityBody:AddDummy(0,5)
 --#region VanityBoots
 EQVanityBoots:AddDummy(0,5)
 
-VanityBootsTable = EQVanityBoots:AddTable("", 5)
+VanityBootsAmount = EQVanityBoots:AddText("")
+VanityBootsTable = EQVanityBoots:AddTable("", 3)
 
 EQVanityBoots:AddDummy(0,5)
 --#endregion
@@ -144,7 +160,8 @@ EQVanityBoots:AddDummy(0,5)
 --#region Underwear
 EQUnderwear:AddDummy(0,5)
 
-UnderwearTable = EQUnderwear:AddTable("", 5)
+UnderwearAmount = EQUnderwear:AddText("")
+UnderwearTable = EQUnderwear:AddTable("", 3)
 
 EQUnderwear:AddDummy(0,5)
 --#endregion
@@ -158,7 +175,8 @@ EQUnderwear:AddDummy(0,5)
 --#region Amulet
 EQAmulet:AddDummy(0,5)
 
-AmuletTable = EQAmulet:AddTable("", 5)
+AmuletAmount = EQAmulet:AddText("")
+AmuletTable = EQAmulet:AddTable("", 3)
 
 EQAmulet:AddDummy(0,5)
 --#endregion

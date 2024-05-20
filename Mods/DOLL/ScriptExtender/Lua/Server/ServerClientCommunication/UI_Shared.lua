@@ -25,18 +25,37 @@
 --------------------------------------------------------------------------------------------------------------------------------------
 
 
--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------------------
+--
+--                                     CONSTANTS
+--
+--
+--------------------------------------------------------------------------------------------
+
+
+
 
 -- Send Host Character on Request
 Ext.Events.NetMessage:Subscribe(function(e)
+
+
+    -------------------------------------------------
+    --                                             --
+    --       Client requests Host Character        --
+    --                                             --
+    -------------------------------------------------
     if (e.Channel == "RequestHost") then
         host = Osi.GetHostCharacter()
         Ext.Net.BroadcastMessage("SendHost", Ext.Json.Stringify(host)) 
         Ext.IO.SaveFile("output.json", Ext.DumpExport(Ext.Entity.Get(host):GetAllComponents()))
     end
+
 end)
 
 
 
--- TODO - filter based on HostCharacter/Clicked Character/NPC
+ 
+
 

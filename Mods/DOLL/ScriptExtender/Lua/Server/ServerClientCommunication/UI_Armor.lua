@@ -10,7 +10,7 @@
 
 -- Events to be received:
 
--- "InitEquipmentTable"         - Client requests Equipments
+-- "RequestSlotData"         - Client requests Equipments
 --                              - CLient requests to dress  the character in a certain equipment
 
 -------------------------------------------------------------------------------------------------------------------------------------
@@ -22,32 +22,52 @@
 -- Events to be sent:
 
 
--- "PopulateEquipment"   - Server sends Equipments of a certain type
+-- "PopulateSlotTables"   - Server sends Equipments of a certain type
 
 --------------------------------------------------------------------------------------------------------------------------------------
 
 
+--------------------------------------------------------------------------------------------
+--
+--                                     CONSTANTS
+--
+--
+--------------------------------------------------------------------------------------------
+
+
+local ARMOR = {
+    ["Helmet"] = true,
+    ["Breast"] = true,
+    ["Cloak"] = true,
+    ["Underwear"] = true,
+    ["Boots"] = true,
+    ["Gloves"] = true,
+    ["Amulet"] = true,
+    ["VanityBody"] = true,
+    ["VanityBoots"] = true
+}
 
 -----------------------------------------------------------------------------------
 
 
 Ext.Events.NetMessage:Subscribe(function(e)
 
-    -----------------------------------------------------------------
-    --                                                             --
-    --   Client requests to receive armor  of certain type         --
-    --                                                             --
-    ------------------------------------------------------------------
 
-    if (e.Channel == "InitEquipmentTable") then
+    -------------------------------------------------
+    --                                             --
+    --   Client request content to populate UI     --
+    --                                             --
+    -------------------------------------------------
+
+    if (e.Channel == "RequestSlotData") then
         local slot = Ext.Json.Parse(e.Payload)
-        local armor = Armor:getAllEquipmentOfType(slot)
-        local payload = {slot = slot, data = armor}
 
+        if ARMOR[slot] then
 
-        print("[UI_Armor.lua] - PopulateEquipment Event sending to client")
-
-        Ext.Net.BroadcastMessage("PopulateEquipment",Ext.Json.Stringify(payload)) 
+            local armor = Armor:getAllEquipmentOfType(slot)
+            local payload = {slot = slot, data = armor}
+            Ext.Net.BroadcastMessage("PopulateSlotTables",Ext.Json.Stringify(payload))
+        end
     end
 
 
@@ -57,10 +77,10 @@ Ext.Events.NetMessage:Subscribe(function(e)
     --                                              --
     --------------------------------------------------
 
-    if (e.Channel == "?") then
-
+    if (e.Channel == "RequestEquipmentChange") then
         local mapkey = Ext.Json.Parse(e.Payload)
-        Armor.equipArmor(Osi.GetHostCharacter(), mapkey)
+        local doll = Osi.GetHostCharacter()
+        Armor:equipArmor(doll, mapkey)
     end
 
 end)

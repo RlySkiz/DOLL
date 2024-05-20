@@ -10,12 +10,11 @@
 
 -- Events to be received:
 
--- RequestCCVisuals, Type        - Client requests list of all Visual of one type (ex: private parts)     
+-- "RequestSlotData", Slot        - Client requests list of all Visual of one type (ex: private parts)     
 -- ChangeVisual,uuidNewItem      - Client requests removal of Visual of type and addition of certain Visual uuid
 -- addVisual, uuidNewItem        - Client requests addition of certain Visual uuid
 -- removeVisual, uuidVisual      - Client requests removal of Visual
 
--- RequestCCVisualsOfType, type  - Client request lists of Visuals of certian type (ex: "Private Parts")
 
 
 -- "DisableFilter"              - Client requests to disable race filter
@@ -31,13 +30,35 @@
 
 -- Events to be sent:
 
--- SendVisual, items      - Server sends table of all Visual of one type
+-- PopulateSlotTables, items      - Server sends table of all Visual of one type
 
 -- InitialPopulate       - Server sends message on LevelGameplayStarted
 
 --------------------------------------------------------------------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------------
+
+
+
+--------------------------------------------------------------------------------------------
+--
+--                                     CONSTANTS
+--
+--
+--------------------------------------------------------------------------------------------
+
+local VISUALS = {
+    ["Head"] = true,
+    ["Private Parts"] = true,
+    ["Piercing"] = true,
+    ["Hair"] = true,
+    ["Beard"] = true,
+    ["Horns"] = true,
+    ["Amulet"] = true,
+    ["Tail"] = true,
+}
+
+
 
 -- Classes
 
@@ -78,21 +99,29 @@ Ext.Events.NetMessage:Subscribe(function(e)
         Ext.Net.BroadcastMessage("PopulateRefresh", "LevelGameplayStarted")
     end
 
+    -- TODO - filter based on HostCharacter/Clicked Character/NPC
+
+
     -------------------------------------------------
     --                                             --
     --   Client request content to populate UI     --
     --                                             --
     -------------------------------------------------
+        
 
-    -- TODO - hair might not get removed correctly, maybe handle differently? 
-    if (e.Channel == "RequestCCVisualsOfType") then
-        local type = Ext.Json.Parse(e.Payload)
-        -- TODO - instead of hostCharacter, take clicked character 
-        local doll = Osi.GetHostCharacter()
-        local character = Osi.GetHostCharacter()       
-        local visuals = vis:getAllVisualsWithName(type,character, filter)
-        local payload = {type, visuals}
-        Ext.Net.BroadcastMessage("SendVisual",Ext.Json.Stringify(payload)) 
+    if (e.Channel == "RequestSlotData") then
+
+        local slot = Ext.Json.Parse(e.Payload)
+
+        if VISUALS[slot] then
+
+            -- TODO - instead of hostCharacter, take clicked character 
+            local doll = Osi.GetHostCharacter()
+            local visuals = Visual:getAllVisualsWithName(slot,doll, filter)
+            local payload = {slot = slot, data = visuals}
+            Ext.Net.BroadcastMessage("PopulateSlotTables",Ext.Json.Stringify(payload))
+
+        end
     end
 
 

@@ -28,30 +28,42 @@ showAllOptionsCheck.Checked = false
 tCC:AddSeparatorText("")
 
 --#region Categories
-CCBody = tCC:AddCollapsingHeader("Body")
+CCBody = tCC:AddTree("Body")
+CCBody.Framed = true
 tCC:AddSeparatorText("")
-CCFace = tCC:AddCollapsingHeader("Face")
+CCFace = tCC:AddTree("Face")
+CCFace.Framed = true
 tCC:AddSeparatorText("")
-CCEyes = tCC:AddCollapsingHeader("Eyes")
+CCEyes = tCC:AddTree("Eyes")
+CCEyes.Framed = true
 tCC:AddSeparatorText("")
-CCMakeup = tCC:AddCollapsingHeader("Makeup")
+CCMakeup = tCC:AddTree("Makeup")
+CCMakeup.Framed = true
 tCC:AddSeparatorText("")
-CCHair = tCC:AddCollapsingHeader("Hair")
+CCHair = tCC:AddTree("Hair")
+CCHair.IDContext = "HairTree"
+CCHair.Framed = true
 CCBeardSep = tCC:AddSeparatorText("")
 CCBeardSep.Visible = true
-CCBeard = tCC:AddCollapsingHeader("Facial Hair")
+CCBeard = tCC:AddTree("Facial Hair")
+CCBeard.Framed = true
 CCBeard.Visible = true
 CCHornsSep = tCC:AddSeparatorText("")
 CCHornsSep.Visible = true
-CCHorns = tCC:AddCollapsingHeader("Horns")
+CCHorns = tCC:AddTree("Horns")
+CCHorns.IDContext = "HornsTree"
+CCHorns.Framed = true
 CCHorns.Visible = true
 CCTailsSep = tCC:AddSeparatorText("")
 CCTailsSep.Visible = true
-CCTails = tCC:AddCollapsingHeader("Tail")
+CCTails = tCC:AddTree("Tail")
+CCTails.IDContext = "TailsTree"
+CCTails.Framed = true
 CCTails.Visible = true
 CCWingsSep = tCC:AddSeparatorText("")
 CCWingsSep.Visible = true
-CCWings = tCC:AddCollapsingHeader("Wings")
+CCWings = tCC:AddTree("Wings")
+CCWings.Framed = true
 CCWings.Visible = true
 --#endregion
 
@@ -68,14 +80,12 @@ CCWings.Visible = true
 CCBody:AddDummy(0,5)
 
 --#region Heads
--- headsHeader = CCBody:AddCollapsingHeader("Heads")
--- headsAdder = headsHeader:AddButton("Add Head")
--- headsTable = headsHeader:AddTable("", 4)
--- headsRow = headsTable:AddRow()
--- headButton1 = headsRow:AddCell():AddButton("X")
--- headButton2 = headsRow:AddCell():AddButton("X")
--- headButton3 = headsRow:AddCell():AddButton("X")
-headSelector = CCBody:AddCombo("Heads")
+HeadsHeader = CCBody:AddTree("Head")
+HeadsHeader.Framed = true
+HeadsAmount = HeadsHeader:AddText("")
+HeadsTable = HeadsHeader:AddTable("", 4)
+
+-- headSelector = CCBody:AddCombo("Heads")
 --#endregion
 
 CCBody:AddDummy(0,5)
@@ -149,7 +159,7 @@ CCBody:AddDummy(0,5)
 --#region Genital
 -- genitalHeader = CCBody:AddSeparatorText("Genital")
 -- genitalPrevious = CCBody:AddButton("<")
-genitalSelector = CCBody:AddCombo("Genital")
+PrivatePartsCombo = CCBody:AddCombo("Private Parts")
 -- genitalSelector.SameLine = true
 -- genitalNext = CCBody:AddButton(">")
 -- genitalNext.SameLine = true
@@ -181,12 +191,12 @@ tattooButton4 = tattooRow:AddCell():AddButton("X")
 CCFace:AddDummy(0,5)
 
 --#region Piercing
--- piercingHeader = CCFace:AddCollapsingHeader("Piercing")
--- piercingPrevious = piercingHeader:AddButton("<")
-piercingSelector = CCFace:AddCombo("Piercing")
--- piercingSelector.SameLine = true
--- piercingNext = piercingHeader:AddButton(">")
--- piercingNext.SameLine = true
+-- PiercingHeader = CCFace:AddTree("")
+-- PiercingHeader.Framed = true
+-- PiercingAmount = PiercingHeader:AddText("")
+-- PiercingTable = PiercingHeader:AddTable("", 4)
+
+PiercingCombo = CCFace:AddCombo("Piercing")
 --#endregion
 
 CCFace:AddDummy(0,5)
@@ -362,13 +372,12 @@ CCMakeup:AddDummy(0,5)
 CCHair:AddDummy(0,5)
 
 --#region Hair Style
--- hairStyleHeader = CCHair:AddCollapsingHeader("Hair Style")
--- hairStyleTable = hairStyleHeader:AddTable("", 4)
--- hairStyleRow = hairStyleTable:AddRow()
--- hairStylePrevious = hairStyleRow:AddCell():AddButton("<")
--- hairStyleSelector = hairStyleRow:AddCell():AddCombo("")
--- hairStyleNext = hairStyleRow:AddCell():AddButton(">")
-hairSelector = CCHair:AddCombo("Hair Style")
+HairStyleHeader = CCHair:AddTree("Hair")
+HairStyleHeader.Framed = true
+HairStyleAmount = HairStyleHeader:AddText("")
+HairStyleTable = HairStyleHeader:AddTable("", 4)
+
+-- hairSelector = CCHair:AddCombo("Hair Style")
 --#endregion
 
 CCHair:AddDummy(0,5)
@@ -467,13 +476,12 @@ CCHair:AddDummy(0,5)
 CCBeard:AddDummy(0,5)
 
 --#region Hair Style
--- beardstyleHeader = CCBeard:AddCollapsingHeader("Beard")
--- beardstyleTable = beardstyleHeader:AddTable("", 4)
--- beardstyleRow = beardstyleTable:AddRow()
--- beardstyleButton1 = beardstyleRow:AddCell():AddButton("X")
--- beardstyleButton2 = beardstyleRow:AddCell():AddButton("X")
--- beardstyleButton3 = beardstyleRow:AddCell():AddButton("X")
-beardSelector = CCBeard:AddCombo("Beard Types")
+BeardStyleHeader = CCBeard:AddTree("Beard")
+BeardStyleHeader.Framed = true
+BeardStyleAmount = BeardStyleHeader:AddText("")
+BeardStyleTable = BeardStyleHeader:AddTable("", 4)
+
+-- beardSelector = CCBeard:AddCombo("Beard Types")
 --#endregion
 
 CCBeard:AddDummy(0,5)
@@ -524,13 +532,12 @@ CCBeard:AddDummy(0,5)
 CCHorns:AddDummy(0,5)
 
 --#region Horn Style
--- hornstyleHeader = CCHorns:AddCollapsingHeader("Horn Style")
--- hornstyleTable = hornstyleHeader:AddTable("", 4)
--- hornstyleRow = hornstyleTable:AddRow()
--- hornstyleButton1 = hornstyleRow:AddCell():AddButton("X")
--- hornstyleButton2 = hornstyleRow:AddCell():AddButton("X")
--- hornstyleButton3 = hornstyleRow:AddCell():AddButton("X")
-hornSelector = CCHorns:AddCombo("Horns Types")
+HornsHeader = CCBeard:AddTree("Horns")
+HornsHeader.Framed = true
+HornsAmount = HornsHeader:AddText("")
+HornsTable = HornsHeader:AddTable("", 4)
+
+-- hornSelector = CCHorns:AddCombo("Horns Types")
 --#endregion
 
 CCHorns:AddDummy(0,5)
@@ -583,13 +590,12 @@ CCHorns:AddDummy(0,5)
 CCTails:AddDummy(0,5)
 
 --#region Tail Style
--- tailHeader = CCTails:AddCollapsingHeader("Tails")
--- tailTable = tailHeader:AddTable("", 4)
--- tailRow = tailTable:AddRow()
--- tailButton1 = tailRow:AddCell():AddButton("X")
--- tailButton2 = tailRow:AddCell():AddButton("X")
--- tailButton3 = tailRow:AddCell():AddButton("X")
-tailSelector = CCTails:AddCombo("Tail Types")
+TailHeader = CCTails:AddTree("Tail")
+TailHeader.Framed = true
+TailAmount = TailHeader:AddText("")
+TailTable = TailHeader:AddTable("", 4)
+
+-- tailSelector = CCTails:AddCombo("Tail Types")
 --#endregion
 
 CCTails:AddDummy(0,5)

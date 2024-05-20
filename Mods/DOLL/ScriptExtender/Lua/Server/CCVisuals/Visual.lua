@@ -60,7 +60,7 @@ function Visual:getVisualsWithName(type, uuid, visualType, filter)
 	local permittedVisuals = {}
     local allVisualsOfType = Visual:getAllVisualsOfType(type, visualType)
     permittedVisuals = Visual:getPermittedVisual(uuid, allVisualsOfType, visualType, filter)
-    local visualsWithName = Visual:addName(permittedVisuals, visualType)
+    local visualsWithName = Visual:addName(uuid, permittedVisuals, visualType, type)
     return visualsWithName
 end
 
@@ -84,6 +84,51 @@ end
 -- 				 read information saved in xml files from game
 -- 
 ----------------------------------------------------------------------------------------------------
+
+
+
+--@param visualType string - type of Visual: "CharacterCreationAppearanceVisual" or "CharacterCreatioNSharedVisual" 
+--@param visual string 		 - uuid of the CCAV/CCSV
+--@param doll string  		 - uuid of the character
+--@return iconName string    - uuid of the icon
+function Visual:buildIconName(visualType, visual, doll)
+	-- icon name: starts with 0 or 1 - 0 for female, 1 for male - for CCAV pulled from data, for CCSV pulled from character
+	-- then _ separator
+	-- then slotName (ex: Head or Hair)
+	-- then _ 
+	-- then VisualResourceID
+
+
+	local iconName
+	local bodytype
+	local visualData = Ext.StaticData.Get(visual, visualType)
+
+	-- If an Icon Override exists, use that instead
+	local override = GetPropertyOrDefault(visualData, "IconIdOverride", nil)
+	
+	if override then
+		iconName = override
+	else
+
+		local slotName = visualData.SlotName
+		local visualResource = visualData.VisualResource
+
+		if visualType == "CharacterCreationAppearanceVisual" then
+			bodytype = visualData.BodyType
+
+		elseif visualType == "CharacterCreationSharedVisual" then
+
+			-- bodytype, bodyshape, race
+			bt,bs,race = Visual:getCharacterProperties(doll)
+			bodytype = bt
+		end
+
+		iconName = bodytype .. "_" .. slotName .. "_" .. visualResource
+	end
+
+	return iconName
+
+end
 
 
 -- Get all CharacterCreationAppearaceVisuals loaded in the game
@@ -113,16 +158,21 @@ end
 
 
 -- Add the name of the Visuals to the list
+--@param doll string    - uuid of the character for whom the list is created
 --@param listOfVisual	- list of CharacterCreationAppearaceVisual IDs for Visual
 --@param visualType     - "CharacterCreationAppearanceVisual" or "CharacterCreationSharedVisual"
+--@param type string    - type of the visual (Ex. Private Parts) 			
 ---return 				- list of names and CharacterCreationAppearaceVisual IDs
-function Visual:addName(listOfVisual, visualType)
+function Visual:addName(doll, listOfVisual, visualType, type)
 
 	local namesWithVisual = {}
     for _, item in pairs(listOfVisual) do
 		local content = Ext.StaticData.Get(item,visualType)
-        local handle = content.DisplayName.Handle.Handle
-        local entry = {name = Ext.Loca.GetTranslatedString(handle), uuid = item}
+		local handle = content.DisplayName.Handle.Handle
+
+		local icon =  Visual:buildIconName(visualType, item, doll)
+		
+        local entry = {name = Ext.Loca.GetTranslatedString(handle), uuid = item, slot = type , icon = icon }
         table.insert(namesWithVisual, entry)
 	end
 	return namesWithVisual

@@ -197,23 +197,23 @@ end
 --populate in steps of 4, then create new line with headsTable:AddRow()
 --each row needs to recieve 4x :AddCell():AddButton()
 
-local previousHead = headSelector.Options[headSelector.SelectedIndex]
--- TODO doesn't fire when selecting an item avobe the previously selected index 
-headSelector.OnChange = function()
-    _D(previousHead)
-    if headSelector.SelectedIndex ~= previousHead then
-        print("-----------------------------")
-        print("New Head Chosen")
+-- local previousHead = headSelector.Options[headSelector.SelectedIndex]
+-- -- TODO doesn't fire when selecting an item avobe the previously selected index 
+-- headSelector.OnChange = function()
+--     _D(previousHead)
+--     if headSelector.SelectedIndex ~= previousHead then
+--         print("-----------------------------")
+--         print("New Head Chosen")
 
-        local newHead = headSelector.Options[headSelector.SelectedIndex+1]
-        print("Changing Visual ", previousHead, " to ", newHead)
-        Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newHead))
+--         local newHead = headSelector.Options[headSelector.SelectedIndex+1]
+--         print("Changing Visual ", previousHead, " to ", newHead)
+--         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newHead))
 
-       previousHead = newHead
-       headSelector.Options[0] = previousHead
-       print("Setting previousHead to", previousHead, " until next choice.")
-    end
-end
+--        previousHead = newHead
+--        headSelector.Options[0] = previousHead
+--        print("Setting previousHead to", previousHead, " until next choice.")
+--     end
+-- end
 
 --#endregion
 
@@ -259,21 +259,21 @@ end
 --#endregion
 
 --region Genital
-local previousGenital = genitalSelector.Options[genitalSelector.SelectedIndex]
-genitalSelector.OnChange = function()
-    if genitalSelector.SelectedIndex ~= previousGenital then
-        print("-----------------------------")
-        print("New Genital Chosen")
+-- local previousGenital = genitalSelector.Options[genitalSelector.SelectedIndex]
+-- genitalSelector.OnChange = function()
+--     if genitalSelector.SelectedIndex ~= previousGenital then
+--         print("-----------------------------")
+--         print("New Genital Chosen")
 
-        local newGenital = genitalSelector.Options[genitalSelector.SelectedIndex+1]
-        print("Changing Visual ", previousGenital, " to ", newGenital)
-        Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newGenital))
+--         local newGenital = genitalSelector.Options[genitalSelector.SelectedIndex+1]
+--         print("Changing Visual ", previousGenital, " to ", newGenital)
+--         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newGenital))
 
-        previousGenital = newGenital
-        genitalSelector.Options[0] = previousGenital
-        print("Setting previousGenital to", previousGenital, " until next choice.")
-    end
-end
+--         previousGenital = newGenital
+--         genitalSelector.Options[0] = previousGenital
+--         print("Setting previousGenital to", previousGenital, " until next choice.")
+--     end
+-- end
 
 --- Handles "Previous" and "Next" Button Clicks
 -- local genitalIndexMax = genitals[#genitals]
@@ -311,21 +311,21 @@ end
 --#endregion
 
 --#region Piercing
-local previousPiercing = piercingSelector.Options[piercingSelector.SelectedIndex]
-piercingSelector.OnChange = function()
-    if piercingSelector.SelectedIndex ~= previousPiercing then
-        print("-----------------------------")
-        print("New Piercing Chosen")
+-- local previousPiercing = piercingSelector.Options[piercingSelector.SelectedIndex]
+-- piercingSelector.OnChange = function()
+--     if piercingSelector.SelectedIndex ~= previousPiercing then
+--         print("-----------------------------")
+--         print("New Piercing Chosen")
 
-        local newPiercing = piercingSelector.Options[piercingSelector.SelectedIndex+1]
-        print("Changing Visual ", previousPiercing, " to ", newPiercing)
-        Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newPiercing))
+--         local newPiercing = piercingSelector.Options[piercingSelector.SelectedIndex+1]
+--         print("Changing Visual ", previousPiercing, " to ", newPiercing)
+--         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newPiercing))
 
-        previousPiercing = newPiercing
-        piercingSelector.Options[0] = previousPiercing
-        print("Setting previousPiercing to", previousPiercing, " until next choice.")
-    end
-end
+--         previousPiercing = newPiercing
+--         piercingSelector.Options[0] = previousPiercing
+--         print("Setting previousPiercing to", previousPiercing, " until next choice.")
+--     end
+-- end
 
 --#endregion
 
@@ -452,22 +452,22 @@ end
 -- OnChange of Selector, sends the selected Index's value to the server
 -- @param selector      - The selector to use (combobox)
 -- @param previous 	    - The previousX created above the individual selector to have a starting comparison
-function selectorChangeVisual(selector, previous)
-    if selector.SelectedIndex ~= previous then
-        local newRequest = selector.Options[selector.SelectedIndex+1]
-        _P("Changing Visual " .. previous .. " to " .. newRequest)
-        Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newRequest))
-        previous = newRequest
-        selector.Options[0] = previous
-        _P("Setting previous to " .. previous .. " until next choice.")
-    end
-end
+-- function selectorChangeVisual(selector, previous)
+--     if selector.SelectedIndex ~= previous then
+--         local newRequest = selector.Options[selector.SelectedIndex+1]
+--         _P("Changing Visual " .. previous .. " to " .. newRequest)
+--         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newRequest))
+--         previous = newRequest
+--         selector.Options[0] = previous
+--         _P("Setting previous to " .. previous .. " until next choice.")
+--     end
+-- end
 
 
-local previousHair = hairSelector.Options[hairSelector.SelectedIndex]
-hairSelector.OnChange = function()
-    selectorChangeVisual(hairSelector, previousHair)
-end
+-- local previousHair = hairSelector.Options[hairSelector.SelectedIndex]
+-- hairSelector.OnChange = function()
+--     selectorChangeVisual(hairSelector, previousHair)
+-- end
 
 --#endregion
 
@@ -517,23 +517,23 @@ end
 --#region Hair Style
 
 --same as heads but with facialhair styles instead
-local previousBeard = beardSelector.Options[beardSelector.SelectedIndex]
-beardSelector.OnChange = function()
-    _P("previousbeard : ", previousBeard )
-    if hairSelector.SelectedIndex ~= previousBeard then
-        print("-----------------------------")
-        print("New Beard Chosen")
+-- local previousBeard = beardSelector.Options[beardSelector.SelectedIndex]
+-- beardSelector.OnChange = function()
+--     _P("previousbeard : ", previousBeard )
+--     if hairSelector.SelectedIndex ~= previousBeard then
+--         print("-----------------------------")
+--         print("New Beard Chosen")
 
-        local newBeard = beardSelector.Options[beardSelector.SelectedIndex+1]
-        _P("new beard : ", newBeard )
-        print("Changing Visual ", previousBeard, " to ", newBeard)
-        Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newBeard))
+--         local newBeard = beardSelector.Options[beardSelector.SelectedIndex+1]
+--         _P("new beard : ", newBeard )
+--         print("Changing Visual ", previousBeard, " to ", newBeard)
+--         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newBeard))
 
-        previousBeard = newBeard
-        beardSelector.Options[0] = previousBeard
-        print("Setting previousBeard to", previousBeard, " until next choice.")
-    end
-end
+--         previousBeard = newBeard
+--         beardSelector.Options[0] = previousBeard
+--         print("Setting previousBeard to", previousBeard, " until next choice.")
+--     end
+-- end
 
 --#endregion
 
@@ -569,21 +569,21 @@ end
 --#region Horn Style
 
 --same as heads but with horns styles instead
-local previousHorn = hornSelector.Options[hornSelector.SelectedIndex]
-hornSelector.OnChange = function()
-    if hornSelector.SelectedIndex ~= previousHorn then
-        print("-----------------------------")
-        print("New Horns Chosen")
+-- local previousHorn = hornSelector.Options[hornSelector.SelectedIndex]
+-- hornSelector.OnChange = function()
+--     if hornSelector.SelectedIndex ~= previousHorn then
+--         print("-----------------------------")
+--         print("New Horns Chosen")
 
-        local newHorn = hornSelector.Options[hornSelector.SelectedIndex+1]
-        print("Changing Visual ", previousHorn, " to ", newHorn)
-        Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newHorn))
+--         local newHorn = hornSelector.Options[hornSelector.SelectedIndex+1]
+--         print("Changing Visual ", previousHorn, " to ", newHorn)
+--         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newHorn))
 
-        previousHorn = newHorn
-        hornSelector.Options[0] = previousHorn
-        print("Setting previousHorn to", previousHorn, " until next choice.")
-    end
-end
+--         previousHorn = newHorn
+--         hornSelector.Options[0] = previousHorn
+--         print("Setting previousHorn to", previousHorn, " until next choice.")
+--     end
+-- end
 
 --#endregion
 
@@ -609,21 +609,21 @@ end
 
 --#region Tail Style
 --same as heads but with tail styles instead
-local previousTail = tailSelector.Options[tailSelector.SelectedIndex]
-tailSelector.OnChange = function()
-    if tailSelector.SelectedIndex ~= previousTail then
-        print("-----------------------------")
-        print("New Tail Chosen")
+-- local previousTail = tailSelector.Options[tailSelector.SelectedIndex]
+-- tailSelector.OnChange = function()
+--     if tailSelector.SelectedIndex ~= previousTail then
+--         print("-----------------------------")
+--         print("New Tail Chosen")
 
-        local newTail = tailSelector.Options[tailSelector.SelectedIndex+1]
-        print("Changing Visual ", previousTail, " to ", newTail)
-        Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newTail))
+--         local newTail = tailSelector.Options[tailSelector.SelectedIndex+1]
+--         print("Changing Visual ", previousTail, " to ", newTail)
+--         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newTail))
 
-        previousTail = newTail
-        tailSelector.Options[0] = previousTail
-        print("Setting previousTail to: ", previousTail, " until next choice.")
-    end
-end
+--         previousTail = newTail
+--         tailSelector.Options[0] = previousTail
+--         print("Setting previousTail to: ", previousTail, " until next choice.")
+--     end
+-- end
 
 --#endregion
 
@@ -639,21 +639,21 @@ end
 
 --#region Wing Style
 --same as heads but with wing styles instead
-local previousWings = wingsSelector.Options[wingsSelector.SelectedIndex]
-wingsSelector.OnChange = function()
-    if wingsSelector.SelectedIndex ~= previousWings then
-        print("-----------------------------")
-        print("New Wings Chosen")
+-- local previousWings = wingsSelector.Options[wingsSelector.SelectedIndex]
+-- wingsSelector.OnChange = function()
+--     if wingsSelector.SelectedIndex ~= previousWings then
+--         print("-----------------------------")
+--         print("New Wings Chosen")
 
-        local newWings = wingsSelector.Options[wingsSelector.SelectedIndex+1]
-        print("Changing Visual ", previousWings, " to ", newWings)
-        Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newWings))
+--         local newWings = wingsSelector.Options[wingsSelector.SelectedIndex+1]
+--         print("Changing Visual ", previousWings, " to ", newWings)
+--         Ext.Net.PostMessageToServer("ChangeVisual", Ext.Json.Stringify(newWings))
 
-        previousWings = newWings
-        wingsSelector.Options[0] = previousWings
-        print("Setting previousWings to: ", previousWings, " until next choice.")
-    end
-end
+--         previousWings = newWings
+--         wingsSelector.Options[0] = previousWings
+--         print("Setting previousWings to: ", previousWings, " until next choice.")
+--     end
+-- end
 
 --#endregion
 

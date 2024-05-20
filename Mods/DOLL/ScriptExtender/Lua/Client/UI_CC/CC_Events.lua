@@ -37,22 +37,22 @@ Ext.Events.NetMessage:Subscribe(function(e)
 
     -- Listens to OnLevelGameplayStarted event
     if (e.Channel == "PopulateRefresh") then
-        Ext.Net.PostMessageToServer("RequestHost", "Hi")
-        Ext.Net.PostMessageToServer("RequestCCVisualsOfType", Ext.Json.Stringify("Head"))
-        Ext.Net.PostMessageToServer("RequestCCVisualsOfType", Ext.Json.Stringify("Hair"))
-        Ext.Net.PostMessageToServer("RequestCCVisualsOfType", Ext.Json.Stringify("Piercing"))
-        Ext.Net.PostMessageToServer("RequestCCVisualsOfType", Ext.Json.Stringify("Beard"))
-        Ext.Net.PostMessageToServer("RequestCCVisualsOfType", Ext.Json.Stringify("Horns"))
-        Ext.Net.PostMessageToServer("RequestCCVisualsOfType", Ext.Json.Stringify("Tail"))
-        Ext.Net.PostMessageToServer("RequestCCVisualsOfType", Ext.Json.Stringify("Private Parts"))
-        Ext.Net.PostMessageToServer("RequestCCVisualsOfType", Ext.Json.Stringify("Wings"))
+        -- Ext.Net.PostMessageToServer("RequestHost", "Hi")
+        -- Ext.Net.PostMessageToServer("RequestCCVisualsOfType", Ext.Json.Stringify("Head"))
+        -- Ext.Net.PostMessageToServer("RequestCCVisualsOfType", Ext.Json.Stringify("Hair"))
+        -- Ext.Net.PostMessageToServer("RequestCCVisualsOfType", Ext.Json.Stringify("Piercing"))
+        -- Ext.Net.PostMessageToServer("RequestCCVisualsOfType", Ext.Json.Stringify("Beard"))
+        -- Ext.Net.PostMessageToServer("RequestCCVisualsOfType", Ext.Json.Stringify("Horns"))
+        -- Ext.Net.PostMessageToServer("RequestCCVisualsOfType", Ext.Json.Stringify("Tail"))
+        -- Ext.Net.PostMessageToServer("RequestCCVisualsOfType", Ext.Json.Stringify("Private Parts"))
+        -- Ext.Net.PostMessageToServer("RequestCCVisualsOfType", Ext.Json.Stringify("Wings"))
 
-        print("[CC_Events.lua] - SEND START MESSAGE")
+        print("[CC_Events.lua] - PopulateRefresh Event Recieved")
     end
 
     -- Recieves getHostCharacter()
     if (e.Channel == "SendHost") then
-        print("[CC_Events.lua] - Host recieved")
+        print("[CC_Events.lua] - SendHost Event recieved")
         sessionHost = Ext.Json.Parse(e.Payload)
         print(sessionHost)
     end
@@ -63,7 +63,7 @@ Ext.Events.NetMessage:Subscribe(function(e)
 
         print("------------------------------------------------")
         local type = payload[1]
-        print("[CC_Events.lua] - SendVisual recieved of Type: ")
+        print("[CC_Events.lua] - SendVisual Event recieved of Type: ")
         print("[CC_Events.lua] - ", type)
         local listOfUUIDs = payload[2]
 

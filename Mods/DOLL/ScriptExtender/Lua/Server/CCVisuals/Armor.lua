@@ -36,6 +36,7 @@ local ARMOR = {
 --------------------------------------------------------------
 
 local allEquipmentTypes = {}
+local allTextureEntities = {}
 
 
 -- GETTERS AND SETTERS
@@ -55,6 +56,22 @@ end
 function Armor:setAllEquipmentTypes(value)
     if value then
         allEquipmentTypes = value
+    end
+end
+
+----------------------------------------------------------
+
+-- saves someVariable
+--@param  value type - new value of some variable
+function Armor:getAllTexturesEntities()
+   return allTextureEntities
+end
+    
+    -- saves someVariable
+--@param  value type - new value of some variable
+function Armor:setAllTextureEntities(value)
+    if value then
+        allTextureEntities = value
     end
 end
 
@@ -85,13 +102,27 @@ end
 
 
 
-
+-- retrieves all Texture entities in the game
+--@return allTextures table - list of all texture entities in the game
+function Armor:getAllTextures()
+    allTextures = {}
+    local allTextureIds = Ext.Resource.GetAll("Texture")
+    for _, uuid in pairs(allTextureIds) do
+        local thisTexture =  Ext.Resource.Get(uuid, "Texture") -- TODO - this return the incorrect data, it does not include name
+        table.insert(allTextures, thisTexture)
+    end
+    return allTextures
+end
 
 -- iterates over all RootTemplates and finds the Armors (rings, cloaks etc.)
 --@return allEquipment table - list of all equipments in the game
 function Armor:getAllEquipment()
 
     local allEquipment = {}
+
+    local allTextures = Armor:getAllTexturesEntities()
+
+    -- Name of texture bank has to be === Icon of Stats Resource
 
     for id,entity in pairs(Ext.ServerTemplate.GetAllRootTemplates()) do
 
@@ -100,11 +131,25 @@ function Armor:getAllEquipment()
             local stats = Ext.Stats.Get(entityStats, 2)
             if stats then
                 local slot = Armor:findSlot(stats) 
-            
+                
+                -- current entity is of type armor
                 if ARMOR[slot] then
+
+                    -- get the icon (texture) uuid
+                    --local iconUUID 
+                    --for _, texture in pairs(allTextures) do 
+                        -- _D(texture)
+                        --_P("Texture Name is ", texture.Name)
+                        --if texture.Name == entity.Icon then
+                          --  _P("Found texture")
+                           -- iconUUID = texture.ID
+                        --end
+                    --end
+
                     -- entity.Id is the mapkey
                     local entry = {uuid = entity.Id, slot = slot, name = entity.Name, icon = entity.Icon}
                     table.insert(allEquipment, entry)
+
                 end
             end
         end
@@ -132,35 +177,56 @@ function Armor:getAllEquipmentOfType(type)
 end
 
 
+-- TODO - this will break in MP. Can timer carry information? Or register who has clicked?
+-- item that is currently being equipped
+-- key uuid of character
+-- value mapkey of equipment
+local equiping = {}
+
 -- equips a character with an armor
 --@param character string
 --@param mapkey string - mapkey
-function equipArmor(character, mapkey)
+function Armor:equipArmor(character, mapkey)
+
+    table.insert(equiping, {character = character, mapkey = mapkey})
 
     -- First we have to spawn an item in with the Mapkey 
-    Osi.TemplateAddTo(character, mapkey, 1)
+    Osi.TemplateAddTo(mapkey, character, 1)
 
+    -- Delay since else the function is too fast for the item to get added 
+    Osi.TimerLaunch("AddedItemToInventory",10000)
 
-    -- Then we have to get the actual id
-    local uuid = Osi.GetItemByTemplateInInventory(mapkey, character)
-
-    -- Then we can equip
-    Osi.Equip(character,uuid)
 
     -- TODO After that we probably should destroy unusued ones, or give the player a button or something
 
 end
 
-
-
-
 -- get all stats once per load and save
+Armor:setAllTextureEntities(Armor:getAllTextures())
 Armor:setAllEquipmentTypes(Armor:getAllEquipment())
-
 
 
 -- LISTENERS
 --------------------------------------------------------------
+
+ Ext.Osiris.RegisterListener("TimerFinished",1,"after",function(event) 
+  if (event == "AddedItemToInventory") then
+    _P("ten second has passed")
+
+    for  _, entry in pairs(equiping) do
+        character = entry.character
+        mapkey = entry.mapkey
+
+        -- Then we have to get the actual id
+        _P("local uuid = Osi.GetItemByTemplateInInventory( ",mapkey ,", ", character ," ) ")
+        local uuid = Osi.GetItemByTemplateInInventory(mapkey, character)
+        _P("Id of spawned item is ", uuid)
+
+        -- Then we can equip
+        Osi.Equip(character,uuid)
+        end
+    end
+end)
 
 
 
