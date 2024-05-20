@@ -85,20 +85,20 @@ end
 
 -- gets the earliest occurence of the "Slot" component
 --@param stats string - searchTerm
-function Armor:findSlot(stats) 
-    local slot = GetPropertyOrDefault(stats, "Slot", nil) 
-    if slot then
-        return slot
-    else
-        local parent = GetPropertyOrDefault(stats, "Using", nil) 
-        if parent then
-            local parentStats = Ext.Stats.Get(parent, 2)
-            return Armor:findSlot(parentStats)
-        else
-            return nil
-        end
-    end
-end
+--function Armor:findSlot(stats) 
+--    local slot = GetPropertyOrDefault(stats, "Slot", nil) 
+--    if slot then
+--        return slot
+--    else
+--        local parent = GetPropertyOrDefault(stats, "Using", nil) 
+ --       if parent then
+  --          local parentStats = Ext.Stats.Get(parent, 2)
+   --         return Armor:findSlot(parentStats)
+    --    else
+     --       return nil
+      --  end
+    --end
+--end
 
 
 
@@ -116,45 +116,90 @@ end
 
 -- iterates over all RootTemplates and finds the Armors (rings, cloaks etc.)
 --@return allEquipment table - list of all equipments in the game
+--function Armor:getAllEquipment()
+
+    -- local allEquipment = {}
+
+    -- local allTextures = Armor:getAllTexturesEntities()
+
+    -- -- Name of texture bank has to be === Icon of Stats Resource
+
+    -- for id,entity in pairs(Ext.ServerTemplate.GetAllRootTemplates()) do
+
+    --     local entityStats = GetPropertyOrDefault(entity, "Stats", nil) 
+    --     if entityStats then
+    --         local stats = Ext.Stats.Get(entityStats, 2)
+    --         if stats then
+    --             local slot = Armor:findSlot(stats) 
+                
+    --             -- current entity is of type armor
+    --             if ARMOR[slot] then
+
+    --                 -- get the icon (texture) uuid
+    --                 --local iconUUID 
+    --                 --for _, texture in pairs(allTextures) do 
+    --                     -- _D(texture)
+    --                     --_P("Texture Name is ", texture.Name)
+    --                     --if texture.Name == entity.Icon then
+    --                       --  _P("Found texture")
+    --                        -- iconUUID = texture.ID
+    --                     --end
+    --                 --end
+
+    --                 -- entity.Id is the mapkey
+    --                 local entry = {uuid = entity.Id, slot = slot, name = entity.Name, icon = entity.Icon}
+    --                 table.insert(allEquipment, entry)
+
+    --             end
+    --         end
+    --     end
+    -- end
+
+    -- return allEquipment
+--end
+
+
+-- TODO - underwear is not armor
+
+-- Original Code by Norbyte, modified by me (˶◕‿◕˶✿)
+-- iterates over all RootTemplates and finds the Armors (rings, cloaks etc.)
+--@return allEquipment table - list of all equipments in the game
 function Armor:getAllEquipment()
 
     local allEquipment = {}
 
-    local allTextures = Armor:getAllTexturesEntities()
+    -- TODO - maybe roottempaltes is wrong, check templates in general? We need access to Type but roottemplate doesnt have it
+    local allRootTemplates = Ext.Template.GetAllRootTemplates()
 
-    -- Name of texture bank has to be === Icon of Stats Resource
+    for id, statsName in pairs(Ext.Stats.GetStats()) do
+         if statsName == "ARM_Underwear_Gale" then
+                    print("Checking Gales undies: ", statsName)
+        end
+        local stats = Ext.Stats.Get(statsName)
+        
+        _P("Type of stats: ", stats.Type)
+        if (stats.ModifierList == "Armor") and (stats.Type == "item") then -- stats is userdata
+            -- check matching rootTemplate by Name
+            for id,template in pairs(allRootTemplates) do
+                -- local templateType = Ext.Types.GetAllTypes(template)
+                -- _P("Type of Template: ", templateType)
 
-    for id,entity in pairs(Ext.ServerTemplate.GetAllRootTemplates()) do
+                if template.Type == "item" and (statsName == template.Stats) then
 
-        local entityStats = GetPropertyOrDefault(entity, "Stats", nil) 
-        if entityStats then
-            local stats = Ext.Stats.Get(entityStats, 2)
-            if stats then
-                local slot = Armor:findSlot(stats) 
-                
-                -- current entity is of type armor
-                if ARMOR[slot] then
+                    if statsName == "ARM_Underwear_Gale" then
+                        _P("Found Gales undies root within: ", template)
+                    end
 
-                    -- get the icon (texture) uuid
-                    --local iconUUID 
-                    --for _, texture in pairs(allTextures) do 
-                        -- _D(texture)
-                        --_P("Texture Name is ", texture.Name)
-                        --if texture.Name == entity.Icon then
-                          --  _P("Found texture")
-                           -- iconUUID = texture.ID
-                        --end
-                    --end
 
+                    local template = Ext.Template.GetRootTemplate(stats.RootTemplate)
+                    local name = Ext.Loca.GetTranslatedString(template.DisplayName.Handle.Handle)
                     -- entity.Id is the mapkey
-                    local entry = {uuid = entity.Id, slot = slot, name = entity.Name, icon = entity.Icon}
+                    local entry = {uuid = template.Id, slot = stats.Slot, name = statsName, icon = template.Icon}
                     table.insert(allEquipment, entry)
-
                 end
             end
         end
     end
-
     return allEquipment
 end
 
@@ -164,6 +209,10 @@ end
 --@return allEquipmentOfType table - list of all uuids of a certain type
 function Armor:getAllEquipmentOfType(type)
 
+    if type == "Underwear" then
+        print("Underwear")
+    end
+
     local allEquipmentOfType = {}
 
     local allEquipment = Armor:getAllEquipmentTypes()
@@ -171,6 +220,11 @@ function Armor:getAllEquipmentOfType(type)
     for _, entry in pairs(allEquipment) do
         if entry.slot == type then
             table.insert(allEquipmentOfType, entry)
+        else
+            if type == "Underwear" then
+                print(type , " is not ",  entry.slot )
+            end
+            
         end
     end
     return allEquipmentOfType 
@@ -194,7 +248,7 @@ function Armor:equipArmor(character, mapkey)
     Osi.TemplateAddTo(mapkey, character, 1)
 
     -- Delay since else the function is too fast for the item to get added 
-    Osi.TimerLaunch("AddedItemToInventory",10000)
+    Osi.TimerLaunch("AddedItemToInventory",1000)
 
 
     -- TODO After that we probably should destroy unusued ones, or give the player a button or something

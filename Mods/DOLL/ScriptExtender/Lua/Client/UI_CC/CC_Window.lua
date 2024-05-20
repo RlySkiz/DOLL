@@ -532,7 +532,7 @@ CCBeard:AddDummy(0,5)
 CCHorns:AddDummy(0,5)
 
 --#region Horn Style
-HornsHeader = CCBeard:AddTree("Horns")
+HornsHeader = CCHorns:AddTree("Horns")
 HornsHeader.Framed = true
 HornsAmount = HornsHeader:AddText("")
 HornsTable = HornsHeader:AddTable("", 4)

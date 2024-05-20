@@ -143,11 +143,12 @@ local function populateImguiTable(slot)
     
     local dataTable = GetDATATable(slot)
     local tableToPopulate = GetIMGUITable(slot)
+    tableToPopulate.ScrollY = true
     local tableRow
     local cellAmount = 0
     local totalIcons = 0
-    _P("[DataTableHandling.lua] - populateImguiTable() - dataTable Dump:")
-    _D(dataTable)
+    -- _P("[DataTableHandling.lua] - populateImguiTable() - dataTable Dump:") -- DEBUG
+    -- _D(dataTable)
     for i, data in pairs(dataTable) do
         local uuid = data.uuid
         -- local slot = data.slot
@@ -168,32 +169,33 @@ local function populateImguiTable(slot)
         objInstanceTable.Borders = true
 
         --  Worki
-        local objInstanceRow = objInstanceTable:AddRow()
-        local objInstanceCell = objInstanceRow:AddCell()
-        local objInstanceName = objInstanceCell:AddText(name)
-
-        local objInstanceRow2 = objInstanceTable:AddRow()
-        local objInstanceCell2 = objInstanceRow2:AddCell()
-        local objInstanceButton = objInstanceCell2:AddButton("Select")
-
-        local objInstanceRow3 = objInstanceTable:AddRow()
-        local objInstanceCell3 = objInstanceRow3:AddCell()
-        local objInstanceIcon = objInstanceCell3:AddIcon(icon)
-
-        --  Not Worki
         -- local objInstanceRow = objInstanceTable:AddRow()
         -- local objInstanceCell = objInstanceRow:AddCell()
         -- local objInstanceName = objInstanceCell:AddText(name)
-        
-        -- local objInstanceRow2 = objInstanceTable:AddRow()
-        -- local objInstanceTableRow2Cell = objInstanceRow2:AddCell()
-        -- local objInstanceTableInner = objInstanceTableRow2Cell:AddTable("",2)
 
-        -- local objInstanceTableInnerRow = objInstanceTableInner:AddRow()
-        -- local objInstanceTableInnerCell = objInstanceTableInnerRow:AddCell()
-        -- local objInstanceIcon = objInstanceTableInnerCell:AddIcon(icon)
-        -- local objInstanceTableInnerCell2 = objInstanceTableInnerRow:AddCell()
-        -- local objInstanceButton = objInstanceTableInnerCell2:AddButton("Select")
+        -- local objInstanceRow2 = objInstanceTable:AddRow()
+        -- local objInstanceCell2 = objInstanceRow2:AddCell()
+        -- local objInstanceButton = objInstanceCell2:AddButton("Select")
+
+        -- local objInstanceRow3 = objInstanceTable:AddRow()
+        -- local objInstanceCell3 = objInstanceRow3:AddCell()
+        -- local objInstanceIcon = objInstanceCell3:AddIcon(icon)
+
+        --  Not Worki - But better lookie
+        local objInstanceRow = objInstanceTable:AddRow()
+        local objInstanceCell = objInstanceRow:AddCell()
+        local objInstanceName = objInstanceCell:AddText(name)
+        
+        local objInstanceRow2 = objInstanceTable:AddRow()
+        local objInstanceTableRow2Cell = objInstanceRow2:AddCell()
+        local objInstanceTableInner = objInstanceTableRow2Cell:AddTable("",2)
+        objInstanceTableInner.IDContext = "IconButtonWrapper"
+
+        local objInstanceTableInnerRow = objInstanceTableInner:AddRow()
+        local objInstanceTableInnerCell = objInstanceTableInnerRow:AddCell()
+        local objInstanceIcon = objInstanceTableInnerCell:AddIcon(icon)
+        local objInstanceTableInnerCell2 = objInstanceTableInnerRow:AddCell()
+        local objInstanceButton = objInstanceTableInnerCell2:AddButton("Select")
 
         
         objInstanceButton.OnClick = function()
