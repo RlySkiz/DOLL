@@ -42,6 +42,10 @@ local VISUALDATA_TABLE = {
 
 --------------------------------------------------------
 
+function GetVISUALDATA_TABLE()
+    return VISUALDATA_TABLE
+end
+
 
 -- Returns the DATA table based on slot name
 -- @param slot string - allowed string (see VISUALDATA_TABLE keys)
@@ -52,6 +56,19 @@ function GetDATATable(slot)
         return entry.DATA
     else
         _P("[DataTableHandling.lua] - Error - GetDATATable() - ", slot, " is not a valid Slot")
+        return nil
+    end
+end
+
+-- Returns the TABLE table based on slot name
+-- @param slot string - allowed string (see VISUALDATA_TABLE keys)
+-- @return imguiTable table or nil if slot does not exist
+function GetHEADERTable(slot)
+    local entry = VISUALDATA_TABLE[slot]
+    if entry then
+        return entry.HEADER
+    else
+        _P("[DataTableHandling.lua] - Error - GetHEADERTable() - ", slot, " is not a valid Slot")
         return nil
     end
 end
@@ -90,7 +107,6 @@ end
 --------------------------------------------------------
 
 local function populateSlotTables(slot)
-
     if VISUALDATA_TABLE[slot] then
         Ext.Net.PostMessageToServer("RequestSlotData", Ext.Json.Stringify(slot))
         _P("[DataTableHandling.lua] - 'RequestSlotData' Event for slot ", slot, " send to server!")
@@ -99,11 +115,19 @@ local function populateSlotTables(slot)
     end
 end
 
+local dataRefreshed = false
+function SetDataRefreshed()
+    dataRefreshed = true
+end
+
 for slot, entry in pairs(VISUALDATA_TABLE) do
     local HEADER = entry.HEADER
     local usedBefore = false
-    
+
     HEADER.OnClick = function()
+        if dataRefreshed == true then
+            usedBefore = false
+        end
         if usedBefore == false then
             usedBefore = true
             populateSlotTables(slot)
@@ -142,13 +166,39 @@ end
 local function populateImguiTable(slot)
     
     local dataTable = GetDATATable(slot)
-    local tableToPopulate = GetIMGUITable(slot)
-    tableToPopulate.ScrollY = true
+    _D(dataTable)
     local tableRow
     local cellAmount = 0
     local totalIcons = 0
+    
+    -- Create CCInfoTable about having to enter CharacterCreation/Mirror to load Vanilla Icons
+    local header = GetHEADERTable(slot)
+    local CCInfoTable = header:AddTable("", 2)
+    local CCInfoTableRow = CCInfoTable:AddRow()
+    local CCInfoTableCell = CCInfoTableRow:AddCell()
+    local CCInfoTableCell2 = CCInfoTableRow:AddCell()
+    local CCInfoText = CCInfoTableCell:AddText("Vanilla Icon Textures are only accessible\nif you have been in Character Creation/Mirror\nat least once after installing this mod.\nThis Button will automate it. (Takes roughly 3 seconds)")
+    local CCInfoButton = CCInfoTableCell2:AddButton("Load Vanilla Icons")
+    
+    CCInfoButton.OnClick = function()
+        _P("[DataTableHandling.lua.lua] - CCButton Pressed - Initialize Character Creation/Mirror to load Vanilla Icons!")
+        CCInfoButton.Visible = false
+        CCInfoText.Visible = false
+        CCInfoTableCell2.Visible = false
+        CCInfoTableCell.Visible = false
+        CCInfoTableRow.Visible = false
+        CCInfoTable.Visible = false
+    end
+    
+    -- local refreshButton = header:AddButton("Refresh") -- unused
+
     -- _P("[DataTableHandling.lua] - populateImguiTable() - dataTable Dump:") -- DEBUG
     -- _D(dataTable)
+    
+    local entryAmount = header:AddText("")
+    -- local tableToPopulate = GetIMGUITable(slot)
+    local tableToPopulate = header:AddTable("", 4)
+    tableToPopulate.ScrollY = true
     for i, data in pairs(dataTable) do
         local uuid = data.uuid
         -- local slot = data.slot
@@ -196,7 +246,47 @@ local function populateImguiTable(slot)
         local objInstanceIcon = objInstanceTableInnerCell:AddIcon(icon)
         local objInstanceTableInnerCell2 = objInstanceTableInnerRow:AddCell()
         local objInstanceButton = objInstanceTableInnerCell2:AddButton("Select")
-
+        
+        local imguiToPad
+        if slot == "Head" then
+            imguiToPad = CCBody
+            local dummyPadding = imguiToPad:AddDummy(0,5)
+        -- elseif slot == "Private Parts" then
+        --     imguiToPad = 
+        -- elseif slot  == "Piercing" then
+        --     imguiToPad = 
+        elseif slot  == "Hair" then
+            imguiToPad = CCHair
+            local dummyPadding = imguiToPad:AddDummy(0,5)
+        elseif slot  == "Beard" then
+            imguiToPad = CCBeard
+            local dummyPadding = imguiToPad:AddDummy(0,5)
+        elseif slot  == "Horns" then
+            imguiToPad = CCHorns
+            local dummyPadding = imguiToPad:AddDummy(0,5)
+        -- elseif slot  == "Tail" then
+        --     imguiToPad = CCTail
+        --     local dummyPadding = imguiToPad:AddDummy(0,5)
+        -- -- Equipment
+        -- elseif slot  == "Helmet" then
+        --     imguiToPad = 
+        -- elseif slot  == "Cloak" then
+        --     imguiToPad = 
+        -- elseif slot  == "Breast" then
+        --     imguiToPad = 
+        -- elseif slot  == "Gloves" then
+        --     imguiToPad = 
+        -- elseif slot  == "Boots" then
+        --     imguiToPad = 
+        -- elseif slot  == "VanityBody" then
+        --     imguiToPad = 
+        -- elseif slot  == "VanityBoots" then
+        --     imguiToPad = 
+        -- elseif slot  == "Underwear" then
+        --     imguiToPad = 
+        -- elseif slot  == "Amulet" then
+        --     imguiToPad = 
+        end
         
         objInstanceButton.OnClick = function()
             _P("[DataTableHandling.lua] - Button clicked for: ", name, " , with UUID: ", uuid, " clicked!")
@@ -209,9 +299,14 @@ local function populateImguiTable(slot)
         --     _P("[EQ_Events.lua] - ", objInstanceIcon, " clicked!")
         -- end          
     end
+
+    -- refreshButton.OnClick = function()
+    --     Ext.Net.PostMessageToServer("RefreshAllData", Ext.Json.Stringify(slot))
+    -- end
+
     _P("[DataTableHandling.lua] - populateImGuiTable(", slot, ") executed!")
     _P("[DataTableHandling.lua] - Total Icons created: ", totalIcons)
-    VISUALDATA_TABLE[slot].AMOUNT.Label = "Loaded: " .. tostring(totalIcons) .. " items."
+    entryAmount.Label = "Loaded: " .. tostring(totalIcons) .. " items."
 end
 
 local function populateCombo(slot)
@@ -238,7 +333,6 @@ end
 --     name = entry.name
 
 -- end
-    
 
 ------------------------------------------------------
 --                                                  --
@@ -247,14 +341,28 @@ end
 ------------------------------------------------------ 
 
 -- local payload = {slot = slot, data = armor}
-
-
 -- Listens to OnLevelGameplayStarted event
 Ext.Events.NetMessage:Subscribe(function(e) 
+
+    if (e.Channel == "RefreshAllTables") then
+        for slot, entry in pairs(VISUALDATA_TABLE) do
+            local HEADER = entry.HEADER
+            if slot == "Private Parts" or slot == "Piercing" then
+                _P("TODO - Combobox Refresh Handling")
+            else
+                for i, child in ipairs(HEADER.Children) do
+                    HEADER.Children[i]:Destroy()
+                end
+            end
+
+            Ext.Net.PostMessageToServer("RequestSlotData", Ext.Json.Stringify(slot))
+        end
+    end
+
     if (e.Channel == "PopulateSlotTables") then
         local payload = Ext.Json.Parse(e.Payload)
         local slot = payload.slot
-
+        
         setDATATable(payload)
         if slot == "Private Parts" or slot == "Piercing" then
             populateCombo(slot)

@@ -19,8 +19,8 @@ Ext.Require("Server/NPC/NPCVisuals.lua")
 Ext.Require("Server/NPC/NPCTargeting.lua")
 
 -- Saving Functionality
-Ext.Require("Server/SavingFunctionaloty/ShareablePresets.lua")
-Ext.Require("Server/SavingFunctionaloty/VisualSave.lua")
+Ext.Require("Server/SavingFunctionality/ShareablePresets.lua")
+Ext.Require("Server/SavingFunctionality/VisualSave.lua")
 
 -- Client Communication
 Ext.Require("Server/ServerClientCommunication/UI_Shared.lua")

@@ -10,8 +10,10 @@
 
 -- Events to be received:
 
--- "RequestSlotData"         - Client requests Equipments
---                              - CLient requests to dress  the character in a certain equipment
+-- "RequestSlotData"           - Client requests Equipments
+-- "RequestEquipmentChange"    - CLient requests to dress  the character in a certain equipment
+
+-- "RefreshAllData"             - Client requests to refresh a table with new data
 
 -------------------------------------------------------------------------------------------------------------------------------------
 
@@ -23,6 +25,7 @@
 
 
 -- "PopulateSlotTables"   - Server sends Equipments of a certain type
+-- "RefreshAllTables"    - Server sends new data to populate table with
 
 --------------------------------------------------------------------------------------------------------------------------------------
 
@@ -81,6 +84,19 @@ Ext.Events.NetMessage:Subscribe(function(e)
         local mapkey = Ext.Json.Parse(e.Payload)
         local doll = Osi.GetHostCharacter()
         Armor:equipArmor(doll, mapkey)
+    end
+
+
+    --------------------------------------------------
+    --                                              --
+    --   Client requests to refresh all Data        --
+    --                                              --
+    --------------------------------------------------
+
+    if (e.Channel == "RefreshAllData") then
+        _P("RefreshSlotData Event for Armor received from Client")
+        Armor:initializeEquipment()
+        Ext.Net.BroadcastMessage("RefreshAllTables" ,Ext.Json.Stringify(payload))
     end
 
 end)

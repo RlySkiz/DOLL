@@ -9,8 +9,18 @@
 tCC:AddDummy(0,5)
 
 --#region WingColorTest
+
 -- TESTBUTTON = tCC:AddButton("BUMP ME")
 --#endregion
+
+--#region Search/Refresh
+CCSearchField = tCC:AddInputText("")
+CCSearchField.Text = "Search"
+CCRefreshDataButton = tCC:AddButton("Refresh All Data")
+CCRefreshDataButton.SameLine = true
+--#endregion
+
+tCC:AddSeparatorText("")
 
 --#region Race/ShowAll
 -- raceHeader = CCBody:AddSeparatorText("Race")
@@ -82,13 +92,13 @@ CCBody:AddDummy(0,5)
 --#region Heads
 HeadsHeader = CCBody:AddTree("Head")
 HeadsHeader.Framed = true
-HeadsAmount = HeadsHeader:AddText("")
-HeadsTable = HeadsHeader:AddTable("", 4)
+-- HeadsAmount = HeadsHeader:AddText("")
+-- HeadsTable = HeadsHeader:AddTable("", 4)
 
 -- headSelector = CCBody:AddCombo("Heads")
 --#endregion
 
-CCBody:AddDummy(0,5)
+-- CCBody:AddDummy(0,5)
 
 --#region Skincolor
 skinColorHeader = CCBody:AddCollapsingHeader("Skincolor")
@@ -374,13 +384,13 @@ CCHair:AddDummy(0,5)
 --#region Hair Style
 HairStyleHeader = CCHair:AddTree("Hair")
 HairStyleHeader.Framed = true
-HairStyleAmount = HairStyleHeader:AddText("")
-HairStyleTable = HairStyleHeader:AddTable("", 4)
+-- HairStyleAmount = HairStyleHeader:AddText("")
+-- HairStyleTable = HairStyleHeader:AddTable("", 4)
 
 -- hairSelector = CCHair:AddCombo("Hair Style")
 --#endregion
 
-CCHair:AddDummy(0,5)
+-- CCHair:AddDummy(0,5)
 
 --#region Hair Color
 hairColorHeader = CCHair:AddCollapsingHeader("Hair Color")
@@ -478,13 +488,13 @@ CCBeard:AddDummy(0,5)
 --#region Hair Style
 BeardStyleHeader = CCBeard:AddTree("Beard")
 BeardStyleHeader.Framed = true
-BeardStyleAmount = BeardStyleHeader:AddText("")
-BeardStyleTable = BeardStyleHeader:AddTable("", 4)
+-- BeardStyleAmount = BeardStyleHeader:AddText("")
+-- BeardStyleTable = BeardStyleHeader:AddTable("", 4)
 
 -- beardSelector = CCBeard:AddCombo("Beard Types")
 --#endregion
 
-CCBeard:AddDummy(0,5)
+-- CCBeard:AddDummy(0,5)
 
 --#region Hair Color
 beardColorHeader = CCBeard:AddCollapsingHeader("Hair Color")
@@ -534,13 +544,13 @@ CCHorns:AddDummy(0,5)
 --#region Horn Style
 HornsHeader = CCHorns:AddTree("Horns")
 HornsHeader.Framed = true
-HornsAmount = HornsHeader:AddText("")
-HornsTable = HornsHeader:AddTable("", 4)
+-- HornsAmount = HornsHeader:AddText("")
+-- HornsTable = HornsHeader:AddTable("", 4)
 
 -- hornSelector = CCHorns:AddCombo("Horns Types")
 --#endregion
 
-CCHorns:AddDummy(0,5)
+-- CCHorns:AddDummy(0,5)
 
 --#region Horn Color
 hornColorHeader = CCHorns:AddCollapsingHeader("Horn Color")
@@ -592,13 +602,13 @@ CCTails:AddDummy(0,5)
 --#region Tail Style
 TailHeader = CCTails:AddTree("Tail")
 TailHeader.Framed = true
-TailAmount = TailHeader:AddText("")
-TailTable = TailHeader:AddTable("", 4)
+-- TailAmount = TailHeader:AddText("")
+-- TailTable = TailHeader:AddTable("", 4)
 
 -- tailSelector = CCTails:AddCombo("Tail Types")
 --#endregion
 
-CCTails:AddDummy(0,5)
+-- CCTails:AddDummy(0,5)
 
 --#endregion
 

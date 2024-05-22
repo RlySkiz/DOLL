@@ -47,7 +47,7 @@ Ext.Events.NetMessage:Subscribe(function(e)
         -- Ext.Net.PostMessageToServer("RequestCCVisualsOfType", Ext.Json.Stringify("Private Parts"))
         -- Ext.Net.PostMessageToServer("RequestCCVisualsOfType", Ext.Json.Stringify("Wings"))
 
-        print("[CC_Events.lua] - PopulateRefresh Event Recieved")
+        -- print("[CC_Events.lua] - PopulateRefresh Event Recieved")
     end
 
     -- Recieves getHostCharacter()

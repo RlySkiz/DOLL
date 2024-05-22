@@ -9,6 +9,11 @@
 --Dummies are used for spacing until i figure it out in UI_Style
 tEQ:AddDummy(0,5)
 
+EQSearchField = tEQ:AddInputText("")
+EQSearchField.Text = "Search"
+EQRefreshDataButton = tEQ:AddButton("Refresh All Data")
+EQRefreshDataButton.SameLine = true
+
 tEQ:AddSeparatorText("")
 
 -- @enum StatsItemSlot
@@ -55,10 +60,10 @@ EQAmulet.Framed = true
 --#region Helmet
 EQHelmet:AddDummy(0,5)
 
-HelmetAmount = EQHelmet:AddText("")
-HelmetTable = EQHelmet:AddTable("", 3)
+-- HelmetAmount = EQHelmet:AddText("")
+-- HelmetTable = EQHelmet:AddTable("", 3)
 
-EQHelmet:AddDummy(0,5)
+-- EQHelmet:AddDummy(0,5)
 --#endregion
 
 ------------------------------------------------------
@@ -70,10 +75,10 @@ EQHelmet:AddDummy(0,5)
 --#region Eyes
 EQCloak:AddDummy(0,5)
 
-CloakAmount = EQCloak:AddText("")
-CloakTable = EQCloak:AddTable("", 3)
+-- CloakAmount = EQCloak:AddText("")
+-- CloakTable = EQCloak:AddTable("", 3)
 
-EQCloak:AddDummy(0,5)
+-- EQCloak:AddDummy(0,5)
 --#endregion
 
 ------------------------------------------------------
@@ -85,10 +90,10 @@ EQCloak:AddDummy(0,5)
 --#region Breast
 EQBreast:AddDummy(0,5)
 
-BreastAmount = EQBreast:AddText("")
-BreastTable = EQBreast:AddTable("", 3)
+-- BreastAmount = EQBreast:AddText("")
+-- BreastTable = EQBreast:AddTable("", 3)
 
-EQBreast:AddDummy(0,5)
+-- EQBreast:AddDummy(0,5)
 --#endregion
 
 ------------------------------------------------------
@@ -100,10 +105,10 @@ EQBreast:AddDummy(0,5)
 --#region Gloves
 EQGloves:AddDummy(0,5)
 
-GlovesAmount = EQGloves:AddText("")
-GlovesTable = EQGloves:AddTable("", 3)
+-- GlovesAmount = EQGloves:AddText("")
+-- GlovesTable = EQGloves:AddTable("", 3)
 
-EQGloves:AddDummy(0,5)
+-- EQGloves:AddDummy(0,5)
 --#endregion
 
 ------------------------------------------------------
@@ -115,10 +120,10 @@ EQGloves:AddDummy(0,5)
 --#region Hair
 EQBoots:AddDummy(0,5)
 
-BootsAmount = EQBoots:AddText("")
-BootsTable = EQBoots:AddTable("", 3)
+-- BootsAmount = EQBoots:AddText("")
+-- BootsTable = EQBoots:AddTable("", 3)
 
-EQBoots:AddDummy(0,5)
+-- EQBoots:AddDummy(0,5)
 --#endregion
 
 ------------------------------------------------------
@@ -130,10 +135,10 @@ EQBoots:AddDummy(0,5)
 --#region VanityBody
 EQVanityBody:AddDummy(0,5)
 
-VanityBodyAmount = EQVanityBody:AddText("")
-VanityBodyTable = EQVanityBody:AddTable("", 3)
+-- VanityBodyAmount = EQVanityBody:AddText("")
+-- VanityBodyTable = EQVanityBody:AddTable("", 3)
 
-EQVanityBody:AddDummy(0,5)
+-- EQVanityBody:AddDummy(0,5)
 --#endregion
 
 ------------------------------------------------------
@@ -145,10 +150,10 @@ EQVanityBody:AddDummy(0,5)
 --#region VanityBoots
 EQVanityBoots:AddDummy(0,5)
 
-VanityBootsAmount = EQVanityBoots:AddText("")
-VanityBootsTable = EQVanityBoots:AddTable("", 3)
+-- VanityBootsAmount = EQVanityBoots:AddText("")
+-- VanityBootsTable = EQVanityBoots:AddTable("", 3)
 
-EQVanityBoots:AddDummy(0,5)
+-- EQVanityBoots:AddDummy(0,5)
 --#endregion
 
 ------------------------------------------------------
@@ -160,10 +165,10 @@ EQVanityBoots:AddDummy(0,5)
 --#region Underwear
 EQUnderwear:AddDummy(0,5)
 
-UnderwearAmount = EQUnderwear:AddText("")
-UnderwearTable = EQUnderwear:AddTable("", 3)
+-- UnderwearAmount = EQUnderwear:AddText("")
+-- UnderwearTable = EQUnderwear:AddTable("", 3)
 
-EQUnderwear:AddDummy(0,5)
+-- EQUnderwear:AddDummy(0,5)
 --#endregion
 
 ------------------------------------------------------
@@ -175,8 +180,8 @@ EQUnderwear:AddDummy(0,5)
 --#region Amulet
 EQAmulet:AddDummy(0,5)
 
-AmuletAmount = EQAmulet:AddText("")
-AmuletTable = EQAmulet:AddTable("", 3)
+-- AmuletAmount = EQAmulet:AddText("")
+-- AmuletTable = EQAmulet:AddTable("", 3)
 
-EQAmulet:AddDummy(0,5)
+-- EQAmulet:AddDummy(0,5)
 --#endregion

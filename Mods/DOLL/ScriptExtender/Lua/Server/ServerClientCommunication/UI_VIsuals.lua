@@ -20,6 +20,9 @@
 -- "DisableFilter"              - Client requests to disable race filter
 -- "EnableFilter"               - Client requests to filter all options by bodytype, bodyshape and race
 
+
+-- "RefreshAllData"             - Client requests to refresh a table with new data
+
 -------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -33,6 +36,8 @@
 -- PopulateSlotTables, items      - Server sends table of all Visual of one type
 
 -- InitialPopulate       - Server sends message on LevelGameplayStarted
+
+-- "RefreshAllTables"    - Server sends new data to populate table with
 
 --------------------------------------------------------------------------------------------------------------------------------------
 
@@ -91,12 +96,14 @@ Ext.Events.NetMessage:Subscribe(function(e)
     -- disabling filter as human doesnt give tails until one dragonborn has been selected
     if (e.Channel == "DisableFilter") then
         filter = false
-        Ext.Net.BroadcastMessage("PopulateRefresh", "LevelGameplayStarted")
+        -- Ext.Net.BroadcastMessage("PopulateRefresh", "LevelGameplayStarted")
+        Ext.Net.BroadcastMessage("RefreshAllTables", "LevelGameplayStarted")
     end
 
     if (e.Channel == "EnableFilter") then
         filter = true
-        Ext.Net.BroadcastMessage("PopulateRefresh", "LevelGameplayStarted")
+        -- Ext.Net.BroadcastMessage("PopulateRefresh", "LevelGameplayStarted")
+        Ext.Net.BroadcastMessage("RefreshAllTables", "LevelGameplayStarted")
     end
 
     -- TODO - filter based on HostCharacter/Clicked Character/NPC
@@ -170,6 +177,19 @@ Ext.Events.NetMessage:Subscribe(function(e)
         Osi.AddCustomVisualOvirride(Osi.GetHostCharacter(), visual)
      end
 
+
+    --------------------------------------------------
+    --                                              --
+    --   Client requests to refresh all Data        --
+    --                                              --
+    --------------------------------------------------
+
+    if (e.Channel == "RefreshAllData") then
+        _P("RefreshSlotData Event for Visuals received from Client")
+        -- Ext.Net.BroadcastMessage("PopulateRefresh", "GainedControl")
+        Ext.Net.BroadcastMessage("RefreshAllTables", "GainedControl")
+    end
+
 end)
 
 
@@ -181,7 +201,8 @@ end)
     -----------------------------------------------------------------------
 
 Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "after", function(_, _)  
-    Ext.Net.BroadcastMessage("PopulateRefresh", "LevelGameplayStarted")
+    -- Ext.Net.BroadcastMessage("PopulateRefresh", "LevelGameplayStarted")
+    Ext.Net.BroadcastMessage("RefreshAllTables", "LevelGameplayStarted")
 end)
 
     ------------------------------------------------------------------------------------
@@ -191,7 +212,9 @@ end)
     ------------------------------------------------------------------------------------
 
 Ext.Osiris.RegisterListener("GainedControl", 1, "after", function(target)  
-    Ext.Net.BroadcastMessage("PopulateRefresh", "GainedControl")
+    -- Ext.Net.BroadcastMessage("PopulateRefresh", "GainedControl")
+    Ext.Net.BroadcastMessage("RefreshAllTables", "GainedControl")
+
 end)
 
 

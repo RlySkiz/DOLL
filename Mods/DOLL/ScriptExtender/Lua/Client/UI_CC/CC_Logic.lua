@@ -183,6 +183,11 @@ end
 -- Ext.Net.PostMessageToServer("Teleport", _)
 -------------------------------------------
 
+CCRefreshDataButton.OnClick = function()
+    Ext.Net.PostMessageToServer("RefreshAllData", "")
+    SetDataRefreshed()
+end
+
 ------------------------------------------------------
 --                                                  --
 --                      Body                        --

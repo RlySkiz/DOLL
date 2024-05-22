@@ -13,6 +13,12 @@
 ------------------------------------------------------
 
 --#region Functions
+-- EQSearchField
+EQRefreshDataButton.OnClick = function()
+    Ext.Net.PostMessageToServer("RefreshAllData", "")
+    SetDataRefreshed()
+end
+
 -- local function populateSlotTables(slot)
 
 --     if visualDataTable[slot] then
